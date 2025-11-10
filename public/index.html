@@ -116,10 +116,27 @@
             .shortlink {
                 display: inline-block;
                 background: #eef6ff;
-                padding: 8px 12px;
+                padding: 12px 16px;
                 border-radius: 8px;
-                margin-top: 5px;
+                margin-top: 8px;
                 word-break: break-all;
+                transition: all 0.2s;
+                border: 2px solid transparent;
+            }
+            .shortlink:hover {
+                background: #d4e9ff;
+                border-color: #007bff;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
+            }
+            .shortlink a {
+                color: #007bff;
+                text-decoration: none;
+                font-weight: 600;
+                font-size: 16px;
+            }
+            .shortlink a:hover {
+                text-decoration: underline;
             }
             .list {
                 margin-top: 25px;
@@ -134,6 +151,26 @@
     <body>
         <!-- User Bar -->
         <div class="user-bar hidden" id="userBar">
+            <a
+                href="/my-urls"
+                style="
+                    text-decoration: none;
+                    color: #007bff;
+                    font-size: 14px;
+                    font-weight: 500;
+                "
+                >🔗 URL ของฉัน</a
+            >
+            <a
+                href="/admin"
+                style="
+                    text-decoration: none;
+                    color: #007bff;
+                    font-size: 14px;
+                    font-weight: 500;
+                "
+                >📊 Admin</a
+            >
             <div class="user-info">
                 <img class="user-photo" id="userPhoto" src="" alt="User" />
                 <span class="user-name" id="userName"></span>
@@ -178,6 +215,12 @@
                 type="text"
                 id="urlInput"
                 placeholder="กรอกลิงก์ยาวที่นี่..."
+            />
+            <input
+                type="text"
+                id="memoInput"
+                placeholder="บันทึก note (ตัวเลือก) เช่น: ลิงก์โปรโมชั่น, เอกสารโปรเจค"
+                style="margin-top: 10px"
             />
             <button id="shortenBtn">สร้างลิงก์</button>
             <div class="result" id="result"></div>
@@ -234,28 +277,35 @@
 
             btn.addEventListener("click", async () => {
                 const url = input.value.trim();
+                const memo = document.getElementById("memoInput").value.trim();
                 if (!url) {
                     result.innerHTML = "⚠️ กรุณาใส่ URL ก่อน";
                     return;
                 }
                 result.innerHTML = "⏳ กำลังสร้างลิงก์...";
                 try {
-                    const res = await fetch("/shorten", {
+                    const res = await fetch("/api/shorten", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ url }),
+                        body: JSON.stringify({ url, memo }),
                     });
                     const data = await res.json();
                     if (data.short) {
                         result.innerHTML = `
             ✅ ลิงก์สั้นของคุณ:<br>
             <div class="shortlink">
-              <a href="${data.short}" target="_blank">${data.short}</a>
-            </div><br>
-            <button onclick="navigator.clipboard.writeText('${data.short}')">📋 คัดลอก</button>
+              <a href="${data.short}" target="_blank" style="color: #007bff; text-decoration: none; font-weight: 600; font-size: 16px;">${data.short}</a>
+            </div>
+            <div style="margin-top: 12px; font-size: 13px; color: #666;">
+              👆 คลิกเพื่อทดสอบ หรือ
+              <button onclick="navigator.clipboard.writeText('${data.short}')" style="margin-left: 5px;">📋 คัดลอกลิงก์</button>
+            </div>
           `;
                         history.unshift(data);
                         renderList();
+                        // Clear inputs after success
+                        input.value = "";
+                        document.getElementById("memoInput").value = "";
                     } else {
                         result.innerHTML = "❌ สร้างไม่สำเร็จ";
                     }

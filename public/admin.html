@@ -1,0 +1,515 @@
+<!doctype html>
+<html lang="th">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Admin - TinyURL</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            body {
+                font-family: system-ui, sans-serif;
+                background: #f6f8fb;
+                min-height: 100vh;
+                padding: 20px;
+            }
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+            }
+            .header {
+                background: white;
+                padding: 20px 30px;
+                border-radius: 12px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 20px;
+            }
+            .header h1 {
+                font-size: 24px;
+                color: #333;
+            }
+            .nav {
+                display: flex;
+                gap: 15px;
+                align-items: center;
+            }
+            .nav a {
+                color: #007bff;
+                text-decoration: none;
+                font-size: 14px;
+                padding: 8px 15px;
+                border-radius: 8px;
+                transition: background 0.2s;
+            }
+            .nav a:hover {
+                background: #f0f0f0;
+            }
+            .user-info {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 8px 15px;
+                background: #f8f9fa;
+                border-radius: 20px;
+            }
+            .user-photo {
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+            }
+            .logout-btn {
+                background: #dc3545;
+                color: white;
+                padding: 8px 15px;
+                font-size: 13px;
+                border: none;
+                border-radius: 8px;
+                cursor: pointer;
+            }
+            .logout-btn:hover {
+                background: #c82333;
+            }
+            .stats {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 20px;
+                margin-bottom: 20px;
+            }
+            .stat-card {
+                background: white;
+                padding: 20px;
+                border-radius: 12px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            }
+            .stat-card h3 {
+                font-size: 14px;
+                color: #666;
+                margin-bottom: 10px;
+            }
+            .stat-card .number {
+                font-size: 32px;
+                font-weight: bold;
+                color: #007bff;
+            }
+            .content {
+                background: white;
+                padding: 30px;
+                border-radius: 12px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            }
+            .search-box {
+                margin-bottom: 20px;
+            }
+            .search-box input {
+                width: 100%;
+                padding: 12px;
+                font-size: 14px;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+            thead {
+                background: #f8f9fa;
+            }
+            th {
+                padding: 12px;
+                text-align: left;
+                font-size: 13px;
+                font-weight: 600;
+                color: #666;
+                border-bottom: 2px solid #dee2e6;
+            }
+            td {
+                padding: 12px;
+                font-size: 14px;
+                border-bottom: 1px solid #dee2e6;
+            }
+            tr:hover {
+                background: #f8f9fa;
+            }
+            .code-cell {
+                font-family: system-ui, sans-serif;
+                min-width: 120px;
+            }
+            .url-cell {
+                max-width: 300px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            .url-cell a {
+                color: #333;
+                text-decoration: none;
+            }
+            .url-cell a:hover {
+                text-decoration: underline;
+            }
+            .date-cell {
+                color: #666;
+                font-size: 13px;
+            }
+            .user-cell {
+                font-size: 13px;
+            }
+            .user-name {
+                font-weight: 500;
+                color: #333;
+            }
+            .user-email {
+                color: #666;
+                font-size: 12px;
+            }
+            .copy-btn {
+                background: #007bff;
+                color: white;
+                border: none;
+                padding: 4px 10px;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 12px;
+            }
+            .copy-btn:hover {
+                background: #0056b3;
+            }
+            .loading {
+                text-align: center;
+                padding: 40px;
+                color: #666;
+            }
+            .empty {
+                text-align: center;
+                padding: 40px;
+                color: #999;
+            }
+            .login-container {
+                max-width: 400px;
+                margin: 100px auto;
+                background: white;
+                padding: 40px;
+                border-radius: 16px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                text-align: center;
+            }
+            .login-btn {
+                background: white;
+                color: #333;
+                padding: 12px 24px;
+                font-size: 14px;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                cursor: pointer;
+                display: inline-flex;
+                align-items: center;
+                gap: 10px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            }
+            .login-btn:hover {
+                background: #f8f9fa;
+            }
+            .hidden {
+                display: none;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Login Screen -->
+        <div class="login-container hidden" id="loginContainer">
+            <h2>ยินดีต้อนรับ</h2>
+            <p style="margin: 20px 0">กรุณาเข้าสู่ระบบเพื่อเข้าถึงหน้า Admin</p>
+            <button
+                class="login-btn"
+                onclick="window.location.href='/auth/google'"
+            >
+                <svg width="18" height="18" viewBox="0 0 18 18">
+                    <path
+                        fill="#4285F4"
+                        d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"
+                    />
+                    <path
+                        fill="#34A853"
+                        d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z"
+                    />
+                    <path
+                        fill="#FBBC05"
+                        d="M3.964 10.707c-.18-.54-.282-1.117-.282-1.707 0-.593.102-1.167.282-1.707V4.961H.957C.347 6.175 0 7.55 0 9s.348 2.825.957 4.039l3.007-2.332z"
+                    />
+                    <path
+                        fill="#EA4335"
+                        d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.961L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z"
+                    />
+                </svg>
+                เข้าสู่ระบบด้วย Google
+            </button>
+        </div>
+
+        <!-- Main Admin Panel -->
+        <div class="container hidden" id="adminPanel">
+            <div class="header">
+                <h1>📊 Admin Panel - TinyURL</h1>
+                <div class="nav">
+                    <a href="/">🏠 หน้าแรก</a>
+                    <a href="/my-urls">🔗 URL ของฉัน</a>
+                    <div class="user-info">
+                        <img class="user-photo" id="userPhoto" src="" alt="" />
+                        <span id="userName"></span>
+                    </div>
+                    <button class="logout-btn" id="logoutBtn">
+                        ออกจากระบบ
+                    </button>
+                </div>
+            </div>
+
+            <div class="stats">
+                <div class="stat-card">
+                    <h3>จำนวน URL ทั้งหมด</h3>
+                    <div class="number" id="totalUrls">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>สร้างวันนี้</h3>
+                    <div class="number" id="todayUrls">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>ผู้ใช้งานทั้งหมด</h3>
+                    <div class="number" id="totalUsers">0</div>
+                </div>
+            </div>
+
+            <div class="content">
+                <div class="search-box">
+                    <input
+                        type="text"
+                        id="searchInput"
+                        placeholder="🔍 ค้นหา URL, รหัส, หรือผู้สร้าง..."
+                    />
+                </div>
+
+                <div id="tableContainer">
+                    <div class="loading">⏳ กำลังโหลดข้อมูล...</div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            let allUrls = [];
+            let filteredUrls = [];
+
+            // Check authentication
+            async function checkAuth() {
+                try {
+                    const res = await fetch("/auth/user");
+                    if (res.ok) {
+                        const user = await res.json();
+                        document
+                            .getElementById("loginContainer")
+                            .classList.add("hidden");
+                        document
+                            .getElementById("adminPanel")
+                            .classList.remove("hidden");
+                        document.getElementById("userName").textContent =
+                            user.name;
+                        document.getElementById("userPhoto").src = user.photo;
+                        loadUrls();
+                    } else {
+                        document
+                            .getElementById("loginContainer")
+                            .classList.remove("hidden");
+                        document
+                            .getElementById("adminPanel")
+                            .classList.add("hidden");
+                    }
+                } catch (e) {
+                    console.error("Auth check failed:", e);
+                    document
+                        .getElementById("loginContainer")
+                        .classList.remove("hidden");
+                    document
+                        .getElementById("adminPanel")
+                        .classList.add("hidden");
+                }
+            }
+
+            // Logout
+            document
+                .getElementById("logoutBtn")
+                ?.addEventListener("click", () => {
+                    window.location.href = "/auth/logout";
+                });
+
+            // Load URLs from API
+            async function loadUrls() {
+                try {
+                    const res = await fetch("/api/urls");
+                    if (res.ok) {
+                        allUrls = await res.json();
+                        filteredUrls = allUrls;
+                        updateStats();
+                        renderTable();
+                    } else {
+                        document.getElementById("tableContainer").innerHTML =
+                            '<div class="empty">❌ ไม่สามารถโหลดข้อมูลได้</div>';
+                    }
+                } catch (e) {
+                    console.error("Failed to load URLs:", e);
+                    document.getElementById("tableContainer").innerHTML =
+                        '<div class="empty">❌ เกิดข้อผิดพลาดในการโหลดข้อมูล</div>';
+                }
+            }
+
+            // Update statistics
+            function updateStats() {
+                const total = allUrls.length;
+                const today = allUrls.filter((url) => {
+                    const created = new Date(url.created_at);
+                    const now = new Date();
+                    return (
+                        created.getDate() === now.getDate() &&
+                        created.getMonth() === now.getMonth() &&
+                        created.getFullYear() === now.getFullYear()
+                    );
+                }).length;
+
+                const uniqueUsers = new Set(
+                    allUrls
+                        .filter((url) => url.created_by)
+                        .map((url) => url.created_by.id),
+                ).size;
+
+                document.getElementById("totalUrls").textContent = total;
+                document.getElementById("todayUrls").textContent = today;
+                document.getElementById("totalUsers").textContent = uniqueUsers;
+            }
+
+            // Render table
+            function renderTable() {
+                const container = document.getElementById("tableContainer");
+
+                if (filteredUrls.length === 0) {
+                    container.innerHTML =
+                        '<div class="empty">ไม่พบข้อมูล URL</div>';
+                    return;
+                }
+
+                const table = `
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Short Link</th>
+                                <th>URL เป้าหมาย</th>
+                                <th>บันทึก</th>
+                                <th>ผู้สร้าง</th>
+                                <th>วันที่สร้าง</th>
+                                <th>คัดลอก</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${filteredUrls
+                                .map(
+                                    (url) => `
+                                <tr>
+                                    <td class="code-cell">
+                                        <a href="${window.location.origin}/${url.code}" target="_blank"
+                                           style="color: #007bff; text-decoration: none; font-weight: 600; font-family: 'Courier New', monospace; font-size: 14px;"
+                                           onmouseover="this.style.textDecoration='underline'"
+                                           onmouseout="this.style.textDecoration='none'"
+                                           title="คลิกเพื่อทดสอบ: ${window.location.origin}/${url.code}">
+                                            🔗 ${url.code}
+                                        </a>
+                                    </td>
+                                    <td class="url-cell">
+                                        <a href="${url.target}" target="_blank" title="${url.target}">
+                                            ${url.target}
+                                        </a>
+                                    </td>
+                                    <td class="date-cell">${url.memo || "-"}</td>
+                                    <td class="user-cell">
+                                        ${
+                                            url.created_by
+                                                ? `
+                                            <div class="user-name">${url.created_by.name}</div>
+                                            <div class="user-email">${url.created_by.email}</div>
+                                        `
+                                                : '<span style="color: #999">-</span>'
+                                        }
+                                    </td>
+                                    <td class="date-cell">${formatDate(url.created_at)}</td>
+                                    <td>
+                                        <button class="copy-btn" onclick="copyUrl('${window.location.origin}/${url.code}')">
+                                            📋 คัดลอก
+                                        </button>
+                                    </td>
+                                </tr>
+                            `,
+                                )
+                                .join("")}
+                        </tbody>
+                    </table>
+                `;
+
+                container.innerHTML = table;
+            }
+
+            // Format date
+            function formatDate(dateStr) {
+                const date = new Date(dateStr);
+                const now = new Date();
+                const diffMs = now - date;
+                const diffMins = Math.floor(diffMs / 60000);
+                const diffHours = Math.floor(diffMs / 3600000);
+                const diffDays = Math.floor(diffMs / 86400000);
+
+                if (diffMins < 1) return "เมื่อสักครู่";
+                if (diffMins < 60) return `${diffMins} นาทีที่แล้ว`;
+                if (diffHours < 24) return `${diffHours} ชั่วโมงที่แล้ว`;
+                if (diffDays < 7) return `${diffDays} วันที่แล้ว`;
+
+                return date.toLocaleDateString("th-TH", {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                });
+            }
+
+            // Copy URL to clipboard
+            function copyUrl(url) {
+                navigator.clipboard.writeText(url).then(() => {
+                    alert("✅ คัดลอกลิงก์แล้ว!");
+                });
+            }
+
+            // Search functionality
+            document
+                .getElementById("searchInput")
+                ?.addEventListener("input", (e) => {
+                    const query = e.target.value.toLowerCase();
+                    filteredUrls = allUrls.filter((url) => {
+                        return (
+                            url.code.toLowerCase().includes(query) ||
+                            url.target.toLowerCase().includes(query) ||
+                            (url.created_by &&
+                                (url.created_by.name
+                                    .toLowerCase()
+                                    .includes(query) ||
+                                    url.created_by.email
+                                        .toLowerCase()
+                                        .includes(query)))
+                        );
+                    });
+                    renderTable();
+                });
+
+            // Initialize
+            checkAuth();
+        </script>
+    </body>
+</html>
