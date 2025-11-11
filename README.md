@@ -46,7 +46,12 @@ BASE_URL=http://localhost:8080
 2. Create a new project or select an existing one
 3. Enable Google+ API
 4. Create OAuth 2.0 credentials
-5. Add authorized redirect URI: `http://localhost:8080/auth/google/callback`
+5. Add authorized redirect URIs (add all URLs you'll use):
+   - `http://localhost:8080/auth/google/callback`
+   - `http://192.168.1.87:8080/auth/google/callback` (your local network IP)
+   - Add any other IPs or domains you need
+
+**Note**: The application now uses relative callback URLs, so it will work with any host/IP as long as it's registered in Google OAuth Console.
 
 ## Usage
 

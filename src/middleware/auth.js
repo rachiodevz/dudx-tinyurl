@@ -30,7 +30,8 @@ export function setupAuth(userDatabase) {
       {
         clientID: config.google.clientId,
         clientSecret: config.google.clientSecret,
-        callbackURL: `${config.baseUrl}/auth/google/callback`,
+        callbackURL: "/auth/google/callback", // Use relative URL for dynamic host resolution
+        proxy: true, // Trust proxy headers (important for production)
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
