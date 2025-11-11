@@ -1,6 +1,7 @@
 import Datastore from "nedb";
 import { log } from "../utils/logger.js";
 import config from "../config/index.js";
+import { saveUserAvatar } from "../utils/avatarHandler.js";
 
 export const USER_ROLES = {
   USER: "USER",
@@ -10,7 +11,10 @@ export const USER_ROLES = {
 
 export class UserDatabase {
   constructor() {
-    this.db = new Datastore({ filename: config.database.userPath, autoload: true });
+    this.db = new Datastore({
+      filename: config.database.userPath,
+      autoload: true,
+    });
   }
 
   async initialize() {
@@ -43,8 +47,29 @@ export class UserDatabase {
         }
 
         if (user) {
-          // Update last login
+          // Update last login and refresh avatar if needed
           user.lastLogin = new Date();
+
+          // Download/update avatar in background (non-blocking)
+          const googlePhoto = profile.photos[0]?.value;
+          if (googlePhoto) {
+            saveUserAvatar(googleId, googlePhoto, profile.displayName)
+              .then((localAvatar) => {
+                if (localAvatar && localAvatar !== user.photo) {
+                  this.db.update(
+                    { googleId },
+                    { $set: { photo: localAvatar } },
+                    {},
+                    (err) => {
+                      if (err) log(`❌ Error updating user avatar: ${err}`);
+                      else log(`✅ Updated avatar for ${profile.displayName}`);
+                    },
+                  );
+                }
+              })
+              .catch((err) => log(`⚠️  Avatar update failed: ${err.message}`));
+          }
+
           this.db.update({ googleId }, user, {}, (err) => {
             if (err) log(`❌ Error updating user: ${err}`);
           });
@@ -52,28 +77,58 @@ export class UserDatabase {
           return;
         }
 
-        // Create new user
+        // Create new user - download avatar first
         const role = this.determineRole(email);
-        const newUser = {
-          googleId,
-          email,
-          name: profile.displayName,
-          photo: profile.photos[0].value,
-          role,
-          isActive: true,
-          createdAt: new Date(),
-          lastLogin: new Date(),
-        };
+        const googlePhoto = profile.photos[0]?.value;
 
-        this.db.insert(newUser, (err, doc) => {
-          if (err) {
-            log(`❌ Error creating user: ${err}`);
-            reject(err);
-            return;
-          }
-          log(`✅ New user created: ${email} (${role})`);
-          resolve(doc);
-        });
+        // Try to save avatar (async)
+        saveUserAvatar(googleId, googlePhoto, profile.displayName)
+          .then((localAvatar) => {
+            const newUser = {
+              googleId,
+              email,
+              name: profile.displayName,
+              photo: localAvatar || googlePhoto || null, // Use local avatar, fallback to Google URL, or null
+              role,
+              isActive: true,
+              createdAt: new Date(),
+              lastLogin: new Date(),
+            };
+
+            this.db.insert(newUser, (err, doc) => {
+              if (err) {
+                log(`❌ Error creating user: ${err}`);
+                reject(err);
+                return;
+              }
+              log(`✅ New user created: ${email} (${role})`);
+              resolve(doc);
+            });
+          })
+          .catch((err) => {
+            // If avatar download fails, create user with Google URL or null
+            log(`⚠️  Avatar download failed, using fallback: ${err.message}`);
+            const newUser = {
+              googleId,
+              email,
+              name: profile.displayName,
+              photo: googlePhoto || null,
+              role,
+              isActive: true,
+              createdAt: new Date(),
+              lastLogin: new Date(),
+            };
+
+            this.db.insert(newUser, (err, doc) => {
+              if (err) {
+                log(`❌ Error creating user: ${err}`);
+                reject(err);
+                return;
+              }
+              log(`✅ New user created: ${email} (${role})`);
+              resolve(doc);
+            });
+          });
       });
     });
   }

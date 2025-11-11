@@ -62,6 +62,9 @@
                 width: 32px;
                 height: 32px;
                 border-radius: 50%;
+                object-fit: cover;
+                background: #4ecdc4;
+                display: inline-block;
             }
             .logout-btn {
                 background: #dc3545;
@@ -649,8 +652,18 @@
                             .classList.remove("hidden");
                         document.getElementById("userName").textContent =
                             currentUser.name;
-                        document.getElementById("userPhoto").src =
-                            currentUser.photo;
+
+                        // Set photo with error handling
+                        const userPhoto = document.getElementById("userPhoto");
+                        if (currentUser.photo) {
+                            userPhoto.src = currentUser.photo;
+                            userPhoto.onerror = function () {
+                                this.style.display = "none";
+                                console.warn("Failed to load avatar");
+                            };
+                        } else {
+                            userPhoto.style.display = "none";
+                        }
                         loadUrls();
                         loadUsers();
                     } else {

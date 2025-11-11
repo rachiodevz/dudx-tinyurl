@@ -62,6 +62,9 @@
                 width: 32px;
                 height: 32px;
                 border-radius: 50%;
+                object-fit: cover;
+                background: #4ecdc4;
+                display: inline-block;
             }
             .logout-btn {
                 background: #dc3545;
@@ -666,7 +669,18 @@
                             .classList.remove("hidden");
                         document.getElementById("userName").textContent =
                             user.name;
-                        document.getElementById("userPhoto").src = user.photo;
+
+                        // Set photo with error handling
+                        const userPhoto = document.getElementById("userPhoto");
+                        if (user.photo) {
+                            userPhoto.src = user.photo;
+                            userPhoto.onerror = function () {
+                                this.style.display = "none";
+                                console.warn("Failed to load avatar");
+                            };
+                        } else {
+                            userPhoto.style.display = "none";
+                        }
 
                         // Show admin link only for ADMIN or SUPER_ADMIN
                         const adminLink = document.getElementById("adminLink");

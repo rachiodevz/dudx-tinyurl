@@ -37,6 +37,22 @@
                 width: 32px;
                 height: 32px;
                 border-radius: 50%;
+                object-fit: cover;
+                background: #4ecdc4;
+                display: inline-block;
+            }
+            .user-photo[alt]::after {
+                content: attr(alt);
+                display: block;
+                width: 32px;
+                height: 32px;
+                line-height: 32px;
+                text-align: center;
+                font-size: 14px;
+                font-weight: bold;
+                color: white;
+                background: #4ecdc4;
+                border-radius: 50%;
             }
             .user-name {
                 font-size: 14px;
@@ -368,12 +384,31 @@
                     const res = await fetch("/auth/user");
                     if (res.ok) {
                         const user = await res.json();
+                        console.log("User data:", user);
+                        console.log("User photo:", user.photo);
                         // User is authenticated
                         loginContainer.classList.add("hidden");
                         mainApp.classList.remove("hidden");
                         userBar.classList.remove("hidden");
                         userName.textContent = user.name;
-                        userPhoto.src = user.photo;
+
+                        // Set photo with error handling
+                        if (user.photo) {
+                            userPhoto.src = user.photo;
+                            userPhoto.onerror = function () {
+                                // If image fails to load, hide it and show initials via CSS
+                                this.style.display = "none";
+                                console.warn(
+                                    "Failed to load avatar, using fallback",
+                                );
+                            };
+                        } else {
+                            // No photo URL, use initials
+                            userPhoto.style.display = "none";
+                        }
+
+                        console.log("userPhoto element:", userPhoto);
+                        console.log("userPhoto.src after set:", userPhoto.src);
 
                         // Show admin link only for ADMIN or SUPER_ADMIN
                         const adminLink = document.getElementById("adminLink");
