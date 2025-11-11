@@ -889,14 +889,21 @@
                 link.click();
                 document.body.removeChild(link);
 
-                alert("✅ ดาวน์โหลด QR Code แล้ว!");
+                // Change button text temporarily to show success
+                const btn = event.target;
+                const originalText = btn.innerHTML;
+                btn.innerHTML = "✅ ดาวน์โหลดแล้ว!";
+                btn.style.background = "#28a745";
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.style.background = "";
+                }, 2000);
             }
 
             // Export to CSV
             function exportCSV() {
                 if (allUrls.length === 0) {
-                    alert("❌ ไม่มีข้อมูลให้ Export");
-                    return;
+                    return; // Silently do nothing
                 }
 
                 const headers = [
@@ -928,15 +935,12 @@
                 link.href = URL.createObjectURL(blob);
                 link.download = `my-urls-${new Date().toISOString().split("T")[0]}.csv`;
                 link.click();
-
-                alert("✅ Export CSV สำเร็จ!");
             }
 
             // Export to JSON
             function exportJSON() {
                 if (allUrls.length === 0) {
-                    alert("❌ ไม่มีข้อมูลให้ Export");
-                    return;
+                    return; // Silently do nothing
                 }
 
                 const data = JSON.stringify(allUrls, null, 2);
@@ -945,8 +949,6 @@
                 link.href = URL.createObjectURL(blob);
                 link.download = `my-urls-${new Date().toISOString().split("T")[0]}.json`;
                 link.click();
-
-                alert("✅ Export JSON สำเร็จ!");
             }
 
             // Delete URL
