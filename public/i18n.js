@@ -29,6 +29,7 @@ const translations = {
     "nav.home": "🏠 หน้าแรก",
     "nav.create": "✨ สร้างลิงก์",
     "nav.myUrls": "🔗 URL ของฉัน",
+    "nav.chat": "💬 แชท",
     "nav.admin": "📊 Admin",
 
     // Home page
@@ -80,6 +81,12 @@ const translations = {
     // My URLs page
     "myUrls.title": "🔗 จัดการ URL ของฉัน",
     "myUrls.loginDescription": "กรุณาเข้าสู่ระบบเพื่อจัดการ URL ของคุณ",
+
+    // Chat page
+    "chat.title": "💬 แชทกับ AI",
+    "chat.welcome": "สวัสดีครับ! ผมคือ AI Assistant พร้อมช่วยเหลือคุณแล้วครับ",
+    "chat.inputPlaceholder": "พิมพ์ข้อความของคุณที่นี่...",
+    "chat.send": "ส่ง",
 
     // Stats
     "stats.totalUrls": "URL ของฉันทั้งหมด",
@@ -206,6 +213,7 @@ const translations = {
     "nav.home": "🏠 Home",
     "nav.create": "✨ Create Link",
     "nav.myUrls": "🔗 My URLs",
+    "nav.chat": "💬 Chat",
     "nav.admin": "📊 Admin",
 
     // Home page
@@ -230,6 +238,12 @@ const translations = {
     // My URLs page
     "myUrls.title": "🔗 Manage My URLs",
     "myUrls.loginDescription": "Please login to manage your URLs",
+
+    // Chat page
+    "chat.title": "💬 Chat with AI",
+    "chat.welcome": "Hello! I'm your AI Assistant, ready to help you!",
+    "chat.inputPlaceholder": "Type your message here...",
+    "chat.send": "Send",
 
     // Stats
     "stats.totalUrls": "Total URLs",

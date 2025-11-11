@@ -15,6 +15,12 @@ class Navbar {
         id: "myUrlsLink",
       },
       {
+        href: "/chat",
+        i18nKey: "nav.chat",
+        id: "chatLink",
+        icon: "💬",
+      },
+      {
         href: "/admin",
         i18nKey: "nav.admin",
         id: "adminLink",

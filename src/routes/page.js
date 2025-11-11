@@ -69,6 +69,12 @@ export default function initPageRoutes(urlShortener) {
     );
   });
 
+  router.get("/chat", (req, res) => {
+    res.sendFile(
+      path.join(__dirname, "..", "..", "public", "page", "chat.html"),
+    );
+  });
+
   // ----- URL redirect (MUST BE LAST) -----
   router.get("/:code", (req, res) => {
     const url = urlShortener.getUrlByCode(req.params.code);

@@ -10,6 +10,7 @@ import { log } from "./utils/logger.js";
 import initApiRoutes from "./routes/api.js";
 import initPageRoutes from "./routes/page.js";
 import initAdminRoutes from "./routes/admin.js";
+import chatRoutes from "./routes/chat.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -41,6 +42,9 @@ export function createApp(urlShortener, userDb) {
   // ----- routes -----
   // Admin routes (must come before other routes)
   app.use("/api/admin", initAdminRoutes(userDb));
+
+  // Chat routes
+  app.use(chatRoutes);
 
   // API routes
   app.use("/api", initApiRoutes(urlShortener));
