@@ -655,6 +655,7 @@
                                 <th>Short Link</th>
                                 <th>URL เป้าหมาย</th>
                                 <th>บันทึก</th>
+                                <th>👁️ Clicks</th>
                                 <th>ผู้สร้าง</th>
                                 <th>วันที่สร้าง</th>
                                 <th>คัดลอก</th>
@@ -677,6 +678,9 @@
                                         </a>
                                     </td>
                                     <td class="date-cell">${url.memo || "-"}</td>
+                                    <td class="date-cell" style="text-align: center; font-weight: 600; color: #007bff;">
+                                        ${url.clicks || 0}
+                                    </td>
                                     <td class="user-cell">
                                         ${
                                             url.created_by

@@ -60,8 +60,13 @@ export default function initPageRoutes(urlShortener) {
   // ----- URL redirect (MUST BE LAST) -----
   router.get("/:code", (req, res) => {
     const url = urlShortener.getUrlByCode(req.params.code);
-    if (url) res.redirect(url.target);
-    else res.status(404).send("Not found");
+    if (url) {
+      // Track click before redirecting
+      urlShortener.trackClick(req.params.code);
+      res.redirect(url.target);
+    } else {
+      res.status(404).send("Not found");
+    }
   });
 
   return router;

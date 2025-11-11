@@ -46,6 +46,7 @@ export class URLShortener {
       code,
       target: targetUrl,
       memo,
+      clicks: 0,
       created_at: new Date(),
       created_by: {
         id: user.googleId,
@@ -63,6 +64,27 @@ export class URLShortener {
    */
   getUrlByCode(code) {
     return this.db.findByCode(code);
+  }
+
+  /**
+   * Track click/visit for a URL
+   */
+  trackClick(code) {
+    const url = this.db.findByCode(code);
+    if (!url) {
+      return false;
+    }
+
+    // Initialize clicks if not exists
+    if (typeof url.clicks !== "number") {
+      url.clicks = 0;
+    }
+
+    url.clicks += 1;
+    url.last_clicked = new Date();
+
+    this.db.update({ code }, url);
+    return true;
   }
 
   /**
