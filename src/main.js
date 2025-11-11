@@ -131,6 +131,7 @@ export class URLShortener {
   trackClick(code) {
     const url = this.db.findByCode(code);
     if (!url) {
+      console.log(`[trackClick] URL not found: ${code}`);
       return false;
     }
 
@@ -142,6 +143,7 @@ export class URLShortener {
     url.clicks += 1;
     url.last_clicked = new Date();
 
+    console.log(`[trackClick] Updating ${code}: clicks=${url.clicks}`);
     this.db.update({ code }, url);
     return true;
   }
