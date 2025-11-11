@@ -27,6 +27,7 @@ const translations = {
 
     // Navigation
     "nav.home": "🏠 หน้าแรก",
+    "nav.create": "✨ สร้างลิงก์",
     "nav.myUrls": "🔗 URL ของฉัน",
     "nav.admin": "📊 Admin",
 
@@ -203,6 +204,7 @@ const translations = {
 
     // Navigation
     "nav.home": "🏠 Home",
+    "nav.create": "✨ Create Link",
     "nav.myUrls": "🔗 My URLs",
     "nav.admin": "📊 Admin",
 

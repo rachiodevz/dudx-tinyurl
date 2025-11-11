@@ -1,0 +1,125 @@
+/* Navbar Component Styles */
+
+/* Language buttons (used in login screen and navbar) */
+.lang-btn {
+    background: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.lang-btn:hover {
+    background: #5a6268;
+}
+
+.lang-btn.active {
+    background: #28a745 !important;
+}
+
+.user-bar {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.menu-btn {
+    background: transparent;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.menu-btn:hover {
+    opacity: 0.7;
+}
+
+.floating-menu {
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 999;
+}
+
+.floating-menu.hidden {
+    display: none;
+}
+
+.menu-item {
+    background: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    transition: background 0.2s;
+}
+
+.menu-item:hover {
+    background: #5a6268;
+}
+
+.menu-item.active {
+    background: #28a745 !important;
+}
+
+.menu-item.logout {
+    background: #dc3545;
+}
+
+.menu-item.logout:hover {
+    background: #c82333;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: white;
+    padding: 8px 15px;
+    border-radius: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.user-photo {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #4ecdc4;
+    display: inline-block;
+}
+
+.user-photo[alt]::after {
+    content: attr(alt);
+    display: block;
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    background: #4ecdc4;
+    border-radius: 50%;
+}
+
+.user-name {
+    font-size: 14px;
+    font-weight: 500;
+}

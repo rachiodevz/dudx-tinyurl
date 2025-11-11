@@ -1,0 +1,53 @@
+/* Login Page Styles */
+
+body {
+    font-family: system-ui, sans-serif;
+    background: #f6f8fb;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+}
+
+.login-container {
+    text-align: center;
+    background: white;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.lang-buttons {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.lang-btn {
+    padding: 5px 10px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.login-btn {
+    background: white;
+    color: #333;
+    padding: 10px 20px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin: 20px auto 0;
+}
+
+.login-btn:hover {
+    background: #f8f9fa;
+}

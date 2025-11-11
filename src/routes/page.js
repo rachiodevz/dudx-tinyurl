@@ -18,7 +18,7 @@ export default function initPageRoutes(urlShortener) {
   router.get(
     "/auth/google/callback",
     passport.authenticate("google", { failureRedirect: "/" }),
-    (req, res) => res.redirect("/"),
+    (req, res) => res.redirect("/create"),
   );
 
   router.get("/auth/logout", (req, res) => {
@@ -46,15 +46,27 @@ export default function initPageRoutes(urlShortener) {
 
   // ----- page routes (without .html) -----
   router.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "..", "..", "public", "index.html"));
+    res.sendFile(
+      path.join(__dirname, "..", "..", "public", "page", "login.html"),
+    );
+  });
+
+  router.get("/create", (req, res) => {
+    res.sendFile(
+      path.join(__dirname, "..", "..", "public", "page", "create.html"),
+    );
   });
 
   router.get("/my-urls", (req, res) => {
-    res.sendFile(path.join(__dirname, "..", "..", "public", "my-urls.html"));
+    res.sendFile(
+      path.join(__dirname, "..", "..", "public", "page", "my-urls.html"),
+    );
   });
 
   router.get("/admin", (req, res) => {
-    res.sendFile(path.join(__dirname, "..", "..", "public", "admin.html"));
+    res.sendFile(
+      path.join(__dirname, "..", "..", "public", "page", "admin.html"),
+    );
   });
 
   // ----- URL redirect (MUST BE LAST) -----
