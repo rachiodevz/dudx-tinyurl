@@ -323,8 +323,15 @@ class I18n {
   }
 
   // Get translation
-  t(key) {
-    return this.translations[this.currentLang][key] || key;
+  t(key, params = {}) {
+    let translation = this.translations[this.currentLang][key] || key;
+
+    // Replace placeholders like {n}, {name}, etc.
+    Object.keys(params).forEach((param) => {
+      translation = translation.replace(`{${param}}`, params[param]);
+    });
+
+    return translation;
   }
 
   // Switch language
