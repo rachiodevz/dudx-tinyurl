@@ -1,5 +1,6 @@
 import express from "express";
 import { requireAuth } from "../middleware/auth.js";
+import QRCode from "qrcode";
 
 const router = express.Router();
 
@@ -80,6 +81,32 @@ export default function initApiRoutes(urlShortener) {
       res.json({ short: `${req.protocol}://${req.get("host")}/${entry.code}` });
     } catch (error) {
       res.status(400).json({ error: error.message });
+    }
+  });
+
+  // ----- API: generate QR code -----
+  router.get("/qr/:code", requireAuth, async (req, res) => {
+    const { code } = req.params;
+    const url = urlShortener.getUrlByCode(code);
+
+    if (!url) {
+      return res.status(404).json({ error: "URL not found" });
+    }
+
+    // Check ownership
+    if (!url.created_by || url.created_by.id !== req.user.googleId) {
+      return res.status(403).json({ error: "You don't own this URL" });
+    }
+
+    try {
+      const shortUrl = `${req.protocol}://${req.get("host")}/${code}`;
+      const qrCodeDataURL = await QRCode.toDataURL(shortUrl, {
+        width: 300,
+        margin: 2,
+      });
+      res.json({ qrCode: qrCodeDataURL });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to generate QR code" });
     }
   });
 

@@ -430,10 +430,39 @@
             </div>
         </div>
 
+        <!-- QR Code Modal -->
+        <div class="modal" id="qrModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>📱 QR Code</h2>
+                </div>
+                <div style="text-align: center; padding: 20px">
+                    <img
+                        id="qrImage"
+                        src=""
+                        alt="QR Code"
+                        style="max-width: 100%; border-radius: 8px"
+                    />
+                    <div style="margin-top: 15px; font-size: 14px; color: #666">
+                        <p id="qrUrl" style="word-break: break-all"></p>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn-secondary" onclick="closeQRModal()">
+                        ปิด
+                    </button>
+                    <button class="btn-primary" onclick="downloadQR()">
+                        💾 ดาวน์โหลด
+                    </button>
+                </div>
+            </div>
+        </div>
+
         <script>
             let allUrls = [];
             let filteredUrls = [];
             let currentEditCode = null;
+            let currentQRData = null;
 
             // Check authentication
             async function checkAuth() {
@@ -584,6 +613,9 @@
                                             <button class="btn btn-copy" onclick="copyUrl('${window.location.origin}/${url.code}')">
                                                 📋
                                             </button>
+                                            <button class="btn btn-copy" onclick="showQRCode('${url.code}')" style="background: #17a2b8;">
+                                                📱 QR
+                                            </button>
                                             <button class="btn btn-edit" onclick="openEditModal('${url.code}')">
                                                 ✏️ แก้ไข
                                             </button>
@@ -710,6 +742,49 @@
                     console.error("Edit failed:", e);
                     errorDiv.textContent = "เกิดข้อผิดพลาดในการเชื่อมต่อ";
                 }
+            }
+
+            // Show QR Code
+            async function showQRCode(code) {
+                try {
+                    const res = await fetch(`/api/qr/${code}`);
+                    const data = await res.json();
+
+                    if (res.ok) {
+                        currentQRData = data.qrCode;
+                        document.getElementById("qrImage").src = data.qrCode;
+                        document.getElementById("qrUrl").textContent =
+                            `${window.location.origin}/${code}`;
+                        document
+                            .getElementById("qrModal")
+                            .classList.add("show");
+                    } else {
+                        alert("❌ " + data.error);
+                    }
+                } catch (e) {
+                    console.error("QR generation failed:", e);
+                    alert("❌ เกิดข้อผิดพลาด");
+                }
+            }
+
+            // Close QR Modal
+            function closeQRModal() {
+                document.getElementById("qrModal").classList.remove("show");
+                currentQRData = null;
+            }
+
+            // Download QR Code
+            function downloadQR() {
+                if (!currentQRData) return;
+
+                const link = document.createElement("a");
+                link.href = currentQRData;
+                link.download = "qrcode.png";
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
+                alert("✅ ดาวน์โหลด QR Code แล้ว!");
             }
 
             // Delete URL
