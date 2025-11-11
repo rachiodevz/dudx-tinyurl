@@ -151,6 +151,30 @@
     <body>
         <!-- User Bar -->
         <div class="user-bar hidden" id="userBar">
+            <div style="display: flex; gap: 8px; align-items: center">
+                <button
+                    onclick="window.i18n.setLang('th')"
+                    style="
+                        background: #6c757d;
+                        padding: 6px 12px;
+                        font-size: 13px;
+                        border-radius: 6px;
+                    "
+                >
+                    🇹🇭 ไทย
+                </button>
+                <button
+                    onclick="window.i18n.setLang('en')"
+                    style="
+                        background: #6c757d;
+                        padding: 6px 12px;
+                        font-size: 13px;
+                        border-radius: 6px;
+                    "
+                >
+                    🇬🇧 EN
+                </button>
+            </div>
             <a
                 href="/my-urls"
                 style="
@@ -159,6 +183,7 @@
                     font-size: 14px;
                     font-weight: 500;
                 "
+                data-i18n="nav.myUrls"
                 >🔗 URL ของฉัน</a
             >
             <a
@@ -171,19 +196,57 @@
                     font-size: 14px;
                     font-weight: 500;
                 "
+                data-i18n="nav.admin"
                 >📊 Admin</a
             >
             <div class="user-info">
                 <img class="user-photo" id="userPhoto" src="" alt="User" />
                 <span class="user-name" id="userName"></span>
             </div>
-            <button class="logout-btn" id="logoutBtn">ออกจากระบบ</button>
+            <button class="logout-btn" id="logoutBtn" data-i18n="button.logout">
+                ออกจากระบบ
+            </button>
         </div>
 
         <!-- Login Screen -->
         <div class="login-container" id="loginContainer">
-            <h2>ยินดีต้อนรับ</h2>
-            <p>กรุณาเข้าสู่ระบบเพื่อใช้งาน TinyURL</p>
+            <div
+                style="
+                    display: flex;
+                    gap: 8px;
+                    justify-content: center;
+                    margin-bottom: 20px;
+                "
+            >
+                <button
+                    onclick="window.i18n.setLang('th')"
+                    style="
+                        background: #6c757d;
+                        padding: 6px 12px;
+                        font-size: 13px;
+                        border-radius: 6px;
+                        color: white;
+                    "
+                >
+                    🇹🇭 ไทย
+                </button>
+                <button
+                    onclick="window.i18n.setLang('en')"
+                    style="
+                        background: #6c757d;
+                        padding: 6px 12px;
+                        font-size: 13px;
+                        border-radius: 6px;
+                        color: white;
+                    "
+                >
+                    🇬🇧 EN
+                </button>
+            </div>
+            <h2 data-i18n="login.welcome">ยินดีต้อนรับ</h2>
+            <p data-i18n="login.pleaseLogin">
+                กรุณาเข้าสู่ระบบเพื่อใช้งาน TinyURL
+            </p>
             <button
                 class="login-btn"
                 onclick="window.location.href='/auth/google'"
@@ -206,21 +269,25 @@
                         d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.961L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z"
                     />
                 </svg>
-                เข้าสู่ระบบด้วย Google
+                <span data-i18n="button.loginGoogle"
+                    >เข้าสู่ระบบด้วย Google</span
+                >
             </button>
         </div>
 
         <!-- Main App -->
         <div class="card hidden" id="mainApp">
-            <h2>สร้างลิงก์สั้น</h2>
+            <h2 data-i18n="home.title">สร้างลิงก์สั้น</h2>
             <input
                 type="text"
                 id="urlInput"
+                data-i18n-placeholder="placeholder.enterUrl"
                 placeholder="กรอกลิงก์ยาวที่นี่..."
             />
             <input
                 type="text"
                 id="customCodeInput"
+                data-i18n-placeholder="placeholder.customCode"
                 placeholder="รหัสสั้นที่ต้องการ (ตัวเลือก) เช่น: meeting, docs2024"
                 style="margin-top: 10px"
             />
@@ -231,6 +298,7 @@
                     margin-top: 5px;
                     margin-left: 5px;
                 "
+                data-i18n="home.customCodeHint"
             >
                 💡 ว่างไว้ = สร้างรหัสอัตโนมัติ | กำหนดเอง =
                 ใช้ตัวอักษรและตัวเลข 3-20 ตัว
@@ -246,20 +314,35 @@
                     width: 100%;
                 "
             >
-                <option value="">⏰ ไม่มีวันหมดอายุ (ถาวร)</option>
-                <option value="1">หมดอายุใน 1 วัน</option>
-                <option value="7">หมดอายุใน 7 วัน</option>
-                <option value="30">หมดอายุใน 30 วัน</option>
-                <option value="90">หมดอายุใน 90 วัน</option>
-                <option value="365">หมดอายุใน 1 ปี</option>
+                <option value="" data-i18n="expiry.permanent">
+                    ⏰ ไม่มีวันหมดอายุ (ถาวร)
+                </option>
+                <option value="1" data-i18n="expiry.1day">
+                    หมดอายุใน 1 วัน
+                </option>
+                <option value="7" data-i18n="expiry.7days">
+                    หมดอายุใน 7 วัน
+                </option>
+                <option value="30" data-i18n="expiry.30days">
+                    หมดอายุใน 30 วัน
+                </option>
+                <option value="90" data-i18n="expiry.90days">
+                    หมดอายุใน 90 วัน
+                </option>
+                <option value="365" data-i18n="expiry.1year">
+                    หมดอายุใน 1 ปี
+                </option>
             </select>
             <input
                 type="text"
                 id="memoInput"
+                data-i18n-placeholder="placeholder.memo"
                 placeholder="บันทึก note (ตัวเลือก) เช่น: ลิงก์โปรโมชั่น, เอกสารโปรเจค"
                 style="margin-top: 10px"
             />
-            <button id="shortenBtn">สร้างลิงก์</button>
+            <button id="shortenBtn" data-i18n="button.createLink">
+                สร้างลิงก์
+            </button>
             <div class="result" id="result"></div>
             <div class="list" id="list"></div>
         </div>
@@ -395,5 +478,6 @@
                     .join("");
             }
         </script>
+        <script src="i18n.js"></script>
     </body>
 </html>

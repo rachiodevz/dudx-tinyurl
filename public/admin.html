@@ -382,8 +382,47 @@
     <body>
         <!-- Login Screen -->
         <div class="login-container hidden" id="loginContainer">
-            <h2>ยินดีต้อนรับ</h2>
-            <p style="margin: 20px 0">กรุณาเข้าสู่ระบบเพื่อเข้าถึงหน้า Admin</p>
+            <div
+                style="
+                    display: flex;
+                    gap: 8px;
+                    justify-content: center;
+                    margin-bottom: 20px;
+                "
+            >
+                <button
+                    onclick="window.i18n.setLang('th')"
+                    style="
+                        background: #6c757d;
+                        padding: 6px 12px;
+                        font-size: 13px;
+                        border-radius: 6px;
+                        color: white;
+                        border: none;
+                        cursor: pointer;
+                    "
+                >
+                    🇹🇭 ไทย
+                </button>
+                <button
+                    onclick="window.i18n.setLang('en')"
+                    style="
+                        background: #6c757d;
+                        padding: 6px 12px;
+                        font-size: 13px;
+                        border-radius: 6px;
+                        color: white;
+                        border: none;
+                        cursor: pointer;
+                    "
+                >
+                    🇬🇧 EN
+                </button>
+            </div>
+            <h2 data-i18n="login.welcome">ยินดีต้อนรับ</h2>
+            <p style="margin: 20px 0" data-i18n="admin.loginDescription">
+                กรุณาเข้าสู่ระบบเพื่อเข้าถึงหน้า Admin
+            </p>
             <button
                 class="login-btn"
                 onclick="window.location.href='/auth/google'"
@@ -406,22 +445,58 @@
                         d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.961L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z"
                     />
                 </svg>
-                เข้าสู่ระบบด้วย Google
+                <span data-i18n="button.loginGoogle"
+                    >เข้าสู่ระบบด้วย Google</span
+                >
             </button>
         </div>
 
         <!-- Main Admin Panel -->
         <div class="container hidden" id="adminPanel">
             <div class="header">
-                <h1>📊 Admin Panel - TinyURL</h1>
+                <h1 data-i18n="admin.title">📊 Admin Panel - TinyURL</h1>
                 <div class="nav">
-                    <a href="/">🏠 หน้าแรก</a>
-                    <a href="/my-urls">🔗 URL ของฉัน</a>
+                    <div style="display: flex; gap: 8px; align-items: center">
+                        <button
+                            onclick="window.i18n.setLang('th')"
+                            style="
+                                background: #6c757d;
+                                padding: 6px 12px;
+                                font-size: 13px;
+                                border-radius: 6px;
+                                color: white;
+                                border: none;
+                                cursor: pointer;
+                            "
+                        >
+                            🇹🇭 ไทย
+                        </button>
+                        <button
+                            onclick="window.i18n.setLang('en')"
+                            style="
+                                background: #6c757d;
+                                padding: 6px 12px;
+                                font-size: 13px;
+                                border-radius: 6px;
+                                color: white;
+                                border: none;
+                                cursor: pointer;
+                            "
+                        >
+                            🇬🇧 EN
+                        </button>
+                    </div>
+                    <a href="/" data-i18n="nav.home">🏠 หน้าแรก</a>
+                    <a href="/my-urls" data-i18n="nav.myUrls">🔗 URL ของฉัน</a>
                     <div class="user-info">
                         <img class="user-photo" id="userPhoto" src="" alt="" />
                         <span id="userName"></span>
                     </div>
-                    <button class="logout-btn" id="logoutBtn">
+                    <button
+                        class="logout-btn"
+                        id="logoutBtn"
+                        data-i18n="button.logout"
+                    >
                         ออกจากระบบ
                     </button>
                 </div>
@@ -429,10 +504,18 @@
 
             <!-- Tabs -->
             <div class="tabs">
-                <button class="tab-btn active" onclick="switchTab('urls')">
+                <button
+                    class="tab-btn active"
+                    onclick="switchTab('urls')"
+                    data-i18n="admin.urlManagement"
+                >
                     🔗 URL Management
                 </button>
-                <button class="tab-btn" onclick="switchTab('users')">
+                <button
+                    class="tab-btn"
+                    onclick="switchTab('users')"
+                    data-i18n="admin.userManagement"
+                >
                     👥 User Management
                 </button>
             </div>
@@ -441,15 +524,15 @@
             <div class="tab-content active" id="urlsTab">
                 <div class="stats">
                     <div class="stat-card">
-                        <h3>จำนวน URL ทั้งหมด</h3>
+                        <h3 data-i18n="admin.totalUrls">จำนวน URL ทั้งหมด</h3>
                         <div class="number" id="totalUrls">0</div>
                     </div>
                     <div class="stat-card">
-                        <h3>สร้างวันนี้</h3>
+                        <h3 data-i18n="stats.createdToday">สร้างวันนี้</h3>
                         <div class="number" id="todayUrls">0</div>
                     </div>
                     <div class="stat-card">
-                        <h3>ผู้ใช้งานทั้งหมด</h3>
+                        <h3 data-i18n="admin.totalUsers">ผู้ใช้งานทั้งหมด</h3>
                         <div class="number" id="totalUsers">0</div>
                     </div>
                 </div>
@@ -459,11 +542,14 @@
                         <input
                             type="text"
                             id="searchUrlInput"
+                            data-i18n-placeholder="admin.searchUrl"
                             placeholder="🔍 ค้นหา URL, รหัส, หรือผู้สร้าง..."
                         />
                     </div>
                     <div id="urlTableContainer">
-                        <div class="loading">⏳ กำลังโหลดข้อมูล...</div>
+                        <div class="loading" data-i18n="message.loading">
+                            ⏳ กำลังโหลดข้อมูล...
+                        </div>
                     </div>
                 </div>
             </div>
@@ -472,15 +558,15 @@
             <div class="tab-content" id="usersTab">
                 <div class="stats">
                     <div class="stat-card">
-                        <h3>จำนวนผู้ใช้ทั้งหมด</h3>
+                        <h3 data-i18n="admin.totalUsers">จำนวนผู้ใช้ทั้งหมด</h3>
                         <div class="number" id="totalUsersCount">0</div>
                     </div>
                     <div class="stat-card">
-                        <h3>Active Users</h3>
+                        <h3 data-i18n="admin.activeUsers">Active Users</h3>
                         <div class="number" id="activeUsersCount">0</div>
                     </div>
                     <div class="stat-card">
-                        <h3>Admins</h3>
+                        <h3 data-i18n="admin.admins">Admins</h3>
                         <div class="number" id="adminCount">0</div>
                     </div>
                 </div>
@@ -490,11 +576,14 @@
                         <input
                             type="text"
                             id="searchUserInput"
+                            data-i18n-placeholder="admin.searchUser"
                             placeholder="🔍 ค้นหาผู้ใช้..."
                         />
                     </div>
                     <div id="userTableContainer">
-                        <div class="loading">⏳ กำลังโหลดข้อมูล...</div>
+                        <div class="loading" data-i18n="message.loading">
+                            ⏳ กำลังโหลดข้อมูล...
+                        </div>
                     </div>
                 </div>
             </div>
@@ -503,16 +592,16 @@
         <!-- Change Role Modal -->
         <div class="modal" id="roleModal">
             <div class="modal-content">
-                <h3>เปลี่ยน Role</h3>
+                <h3 data-i18n="admin.changeRole">เปลี่ยน Role</h3>
                 <div class="form-group">
-                    <label>ผู้ใช้:</label>
+                    <label data-i18n="admin.user">ผู้ใช้:</label>
                     <div
                         id="modalUserName"
                         style="font-weight: 500; margin-bottom: 10px"
                     ></div>
                 </div>
                 <div class="form-group">
-                    <label>Role ใหม่:</label>
+                    <label data-i18n="admin.newRole">Role ใหม่:</label>
                     <select id="newRoleSelect">
                         <option value="USER">User</option>
                         <option value="ADMIN">Admin</option>
@@ -520,10 +609,18 @@
                     </select>
                 </div>
                 <div class="modal-actions">
-                    <button class="btn-cancel" onclick="closeRoleModal()">
+                    <button
+                        class="btn-cancel"
+                        onclick="closeRoleModal()"
+                        data-i18n="button.cancel"
+                    >
                         ยกเลิก
                     </button>
-                    <button class="btn-confirm" onclick="confirmRoleChange()">
+                    <button
+                        class="btn-confirm"
+                        onclick="confirmRoleChange()"
+                        data-i18n="button.confirm"
+                    >
                         ยืนยัน
                     </button>
                 </div>
@@ -936,5 +1033,6 @@
             // Initialize
             checkAuth();
         </script>
+        <script src="i18n.js"></script>
     </body>
 </html>
