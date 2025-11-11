@@ -427,6 +427,20 @@
                     </div>
                     <div style="display: flex; gap: 10px">
                         <button
+                            onclick="refreshData()"
+                            style="
+                                padding: 10px 20px;
+                                background: #6c757d;
+                                color: white;
+                                border: none;
+                                border-radius: 8px;
+                                cursor: pointer;
+                                font-size: 14px;
+                            "
+                        >
+                            🔄 Refresh
+                        </button>
+                        <button
                             onclick="exportCSV()"
                             style="
                                 padding: 10px 20px;
@@ -898,6 +912,11 @@
                     btn.innerHTML = originalText;
                     btn.style.background = "";
                 }, 2000);
+            }
+
+            // Refresh data
+            function refreshData() {
+                loadUrls();
             }
 
             // Export to CSV
