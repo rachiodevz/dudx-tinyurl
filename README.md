@@ -80,8 +80,8 @@ TOGETHER_API_KEY=your_together_api_key_here
 4. Navigate to **Credentials** → **Create Credentials** → **OAuth 2.0 Client ID**
 5. Configure OAuth consent screen
 6. Add **Authorized redirect URIs** (add all URLs you'll use):
-   - `http://localhost:8080/auth/google/callback`
-   - `http://192.168.1.87:8080/auth/google/callback` (your local network IP)
+   - `http://localhost:8080/auth/google/callback` (local development)
+   - `http://YOUR_LOCAL_IP:8080/auth/google/callback` (for LAN access)
    - `https://yourdomain.com/auth/google/callback` (production domain)
 
 **Note**: The application uses relative callback URLs, so it works with any registered host/IP in Google OAuth Console.
