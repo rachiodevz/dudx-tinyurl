@@ -215,7 +215,26 @@ class I18n {
     document.querySelectorAll("[data-i18n]").forEach((element) => {
       const key = element.getAttribute("data-i18n");
       const translation = this.t(key);
-      element.textContent = translation;
+
+      // Check if element has child nodes (like img, svg, span)
+      // If it has only one text node or is empty, safe to update
+      const hasOnlyText =
+        element.childNodes.length === 0 ||
+        (element.childNodes.length === 1 &&
+          element.childNodes[0].nodeType === 3);
+
+      if (hasOnlyText) {
+        element.textContent = translation;
+      } else {
+        // For elements with children, update only text nodes
+        // Find direct text nodes and update them
+        element.childNodes.forEach((node) => {
+          if (node.nodeType === 3) {
+            // Text node
+            node.textContent = translation;
+          }
+        });
+      }
     });
 
     // Update placeholders
