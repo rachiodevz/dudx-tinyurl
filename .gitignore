@@ -28,3 +28,6 @@ npm-debug.log*
 
 # Session files
 sessions/
+
+# User uploads
+public/uploads/
