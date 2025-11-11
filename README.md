@@ -79,12 +79,11 @@ TOGETHER_API_KEY=your_together_api_key_here
 3. Enable **Google+ API** (or People API)
 4. Navigate to **Credentials** → **Create Credentials** → **OAuth 2.0 Client ID**
 5. Configure OAuth consent screen
-6. Add **Authorized redirect URIs** (add all URLs you'll use):
+6. Add **Authorized redirect URIs**:
    - `http://localhost:8080/auth/google/callback` (local development)
-   - `http://YOUR_LOCAL_IP:8080/auth/google/callback` (for LAN access)
    - `https://yourdomain.com/auth/google/callback` (production domain)
 
-**Note**: The application uses relative callback URLs, so it works with any registered host/IP in Google OAuth Console.
+**Note**: Google OAuth only accepts localhost and domain URIs (not IP addresses) for authorized redirect URIs.
 
 ## AI Chat Configuration
 
