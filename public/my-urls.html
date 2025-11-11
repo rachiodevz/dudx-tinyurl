@@ -376,6 +376,34 @@
                     <h3>สร้างวันนี้</h3>
                     <div class="number" id="todayUrls">0</div>
                 </div>
+                <div class="stat-card">
+                    <h3>👁️ คลิกทั้งหมด</h3>
+                    <div class="number" id="totalClicks">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>📊 ค่าเฉลี่ย/URL</h3>
+                    <div class="number" id="avgClicks">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>🔥 มาแรงที่สุด</h3>
+                    <div
+                        class="number"
+                        style="font-size: 18px; color: #dc3545"
+                        id="topUrl"
+                    >
+                        -
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <h3>⏰ หมดอายุเร็วๆ นี้</h3>
+                    <div
+                        class="number"
+                        style="font-size: 18px; color: #ffa500"
+                        id="expiringSoon"
+                    >
+                        0
+                    </div>
+                </div>
             </div>
 
             <div class="content">
@@ -596,8 +624,43 @@
                     );
                 }).length;
 
+                // Calculate total clicks
+                const totalClicks = allUrls.reduce(
+                    (sum, url) => sum + (url.clicks || 0),
+                    0,
+                );
+
+                // Calculate average clicks
+                const avgClicks =
+                    total > 0 ? Math.round(totalClicks / total) : 0;
+
+                // Find top URL
+                const topUrl =
+                    allUrls.length > 0
+                        ? allUrls.reduce((max, url) =>
+                              (url.clicks || 0) > (max.clicks || 0) ? url : max,
+                          )
+                        : null;
+
+                // Count expiring soon (within 7 days)
+                const now = new Date();
+                const expiringSoon = allUrls.filter((url) => {
+                    if (!url.expires_at) return false;
+                    const expiryDate = new Date(url.expires_at);
+                    const diffDays = Math.ceil((expiryDate - now) / 86400000);
+                    return diffDays > 0 && diffDays <= 7;
+                }).length;
+
                 document.getElementById("totalUrls").textContent = total;
                 document.getElementById("todayUrls").textContent = today;
+                document.getElementById("totalClicks").textContent =
+                    totalClicks.toLocaleString();
+                document.getElementById("avgClicks").textContent = avgClicks;
+                document.getElementById("topUrl").textContent = topUrl
+                    ? topUrl.code
+                    : "-";
+                document.getElementById("expiringSoon").textContent =
+                    expiringSoon;
             }
 
             // Render table
