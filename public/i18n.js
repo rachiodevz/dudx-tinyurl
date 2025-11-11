@@ -170,22 +170,6 @@ const translations = {
     "time.minutesAgo": "{n} นาทีที่แล้ว",
     "time.hoursAgo": "{n} ชั่วโมงที่แล้ว",
     "time.daysAgo": "{n} วันที่แล้ว",
-    "home.createLink": "Create Link",
-    "message.enterUrl": "⚠️ Please enter a URL",
-    "message.creatingLink": "⏳ Creating link...",
-    "message.linkReady": "✅ Your short link:",
-    "message.clickTest": "👆 Click to test or",
-    "button.close": "Close",
-    "button.download": "💾 Download",
-    "status.expired": "❌ Expired",
-    "status.lessThanOneDay": "⚠️ Less than 1 day",
-    "status.daysRemaining": "⏰ {n} days remaining",
-    "status.daysRemainingNeutral": "⏳ {n} days remaining",
-    "validation.required": "Please fill in all required fields",
-    "validation.error": "Error occurred",
-    "validation.connectionError": "Connection error",
-    "message.downloadSuccess": "✅ Download complete!",
-    "status.active": "✅ Active",
   },
 
   en: {
@@ -220,6 +204,7 @@ const translations = {
     "home.title": "Create Short Link",
     "home.customCodeHint":
       "💡 Leave blank = Auto-generate | Custom = Use 3-20 alphanumeric characters",
+    "home.createLink": "Create Link",
 
     // Placeholders
     "placeholder.enterUrl": "Enter your long URL here...",
