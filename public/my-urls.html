@@ -322,8 +322,47 @@
     <body>
         <!-- Login Screen -->
         <div class="login-container hidden" id="loginContainer">
-            <h2>ยินดีต้อนรับ</h2>
-            <p style="margin: 20px 0">กรุณาเข้าสู่ระบบเพื่อจัดการ URL ของคุณ</p>
+            <div
+                style="
+                    display: flex;
+                    gap: 8px;
+                    justify-content: center;
+                    margin-bottom: 20px;
+                "
+            >
+                <button
+                    onclick="window.i18n.setLang('th')"
+                    style="
+                        background: #6c757d;
+                        padding: 6px 12px;
+                        font-size: 13px;
+                        border-radius: 6px;
+                        color: white;
+                        border: none;
+                        cursor: pointer;
+                    "
+                >
+                    🇹🇭 ไทย
+                </button>
+                <button
+                    onclick="window.i18n.setLang('en')"
+                    style="
+                        background: #6c757d;
+                        padding: 6px 12px;
+                        font-size: 13px;
+                        border-radius: 6px;
+                        color: white;
+                        border: none;
+                        cursor: pointer;
+                    "
+                >
+                    🇬🇧 EN
+                </button>
+            </div>
+            <h2 data-i18n="login.welcome">ยินดีต้อนรับ</h2>
+            <p style="margin: 20px 0" data-i18n="myUrls.loginDescription">
+                กรุณาเข้าสู่ระบบเพื่อจัดการ URL ของคุณ
+            </p>
             <button
                 class="login-btn"
                 onclick="window.location.href='/auth/google'"
@@ -346,22 +385,64 @@
                         d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.961L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z"
                     />
                 </svg>
-                เข้าสู่ระบบด้วย Google
+                <span data-i18n="button.loginGoogle"
+                    >เข้าสู่ระบบด้วย Google</span
+                >
             </button>
         </div>
 
         <!-- Main Panel -->
         <div class="container hidden" id="mainPanel">
             <div class="header">
-                <h1>🔗 จัดการ URL ของฉัน</h1>
+                <h1 data-i18n="myUrls.title">🔗 จัดการ URL ของฉัน</h1>
                 <div class="nav">
-                    <a href="/">🏠 หน้าแรก</a>
-                    <a href="/admin" id="adminLink" class="hidden">📊 Admin</a>
+                    <div style="display: flex; gap: 8px; align-items: center">
+                        <button
+                            onclick="window.i18n.setLang('th')"
+                            style="
+                                background: #6c757d;
+                                padding: 6px 12px;
+                                font-size: 13px;
+                                border-radius: 6px;
+                                color: white;
+                                border: none;
+                                cursor: pointer;
+                            "
+                        >
+                            🇹🇭 ไทย
+                        </button>
+                        <button
+                            onclick="window.i18n.setLang('en')"
+                            style="
+                                background: #6c757d;
+                                padding: 6px 12px;
+                                font-size: 13px;
+                                border-radius: 6px;
+                                color: white;
+                                border: none;
+                                cursor: pointer;
+                            "
+                        >
+                            🇬🇧 EN
+                        </button>
+                    </div>
+                    <a href="/" data-i18n="nav.home">🏠 หน้าแรก</a>
+                    <a
+                        href="/admin"
+                        id="adminLink"
+                        class="hidden"
+                        data-i18n="nav.admin"
+                        >📊 Admin</a
+                    >
                     <div class="user-info">
                         <img class="user-photo" id="userPhoto" src="" alt="" />
                         <span id="userName"></span>
                     </div>
-                    <button class="logout-btn" id="logoutBtn">
+                    <button
+                        class="logout-btn"
+                        id="logoutBtn"
+                        data-i18n="button.logout"
+                    >
                         ออกจากระบบ
                     </button>
                 </div>
@@ -369,23 +450,23 @@
 
             <div class="stats">
                 <div class="stat-card">
-                    <h3>URL ของฉันทั้งหมด</h3>
+                    <h3 data-i18n="stats.totalUrls">URL ของฉันทั้งหมด</h3>
                     <div class="number" id="totalUrls">0</div>
                 </div>
                 <div class="stat-card">
-                    <h3>สร้างวันนี้</h3>
+                    <h3 data-i18n="stats.createdToday">สร้างวันนี้</h3>
                     <div class="number" id="todayUrls">0</div>
                 </div>
                 <div class="stat-card">
-                    <h3>👁️ คลิกทั้งหมด</h3>
+                    <h3 data-i18n="stats.totalClicks">👁️ คลิกทั้งหมด</h3>
                     <div class="number" id="totalClicks">0</div>
                 </div>
                 <div class="stat-card">
-                    <h3>📊 ค่าเฉลี่ย/URL</h3>
+                    <h3 data-i18n="stats.avgClicks">📊 ค่าเฉลี่ย/URL</h3>
                     <div class="number" id="avgClicks">0</div>
                 </div>
                 <div class="stat-card">
-                    <h3>🔥 มาแรงที่สุด</h3>
+                    <h3 data-i18n="stats.topUrl">🔥 มาแรงที่สุด</h3>
                     <div
                         class="number"
                         style="font-size: 18px; color: #dc3545"
@@ -395,7 +476,7 @@
                     </div>
                 </div>
                 <div class="stat-card">
-                    <h3>⏰ หมดอายุเร็วๆ นี้</h3>
+                    <h3 data-i18n="stats.expiringSoon">⏰ หมดอายุเร็วๆ นี้</h3>
                     <div
                         class="number"
                         style="font-size: 18px; color: #ffa500"
@@ -422,6 +503,7 @@
                         <input
                             type="text"
                             id="searchInput"
+                            data-i18n-placeholder="placeholder.search"
                             placeholder="🔍 ค้นหา URL หรือรหัส..."
                         />
                     </div>
@@ -437,6 +519,7 @@
                                 cursor: pointer;
                                 font-size: 14px;
                             "
+                            data-i18n="button.refresh"
                         >
                             🔄 Refresh
                         </button>
@@ -451,6 +534,7 @@
                                 cursor: pointer;
                                 font-size: 14px;
                             "
+                            data-i18n="button.exportCSV"
                         >
                             📥 CSV
                         </button>
@@ -465,6 +549,7 @@
                                 cursor: pointer;
                                 font-size: 14px;
                             "
+                            data-i18n="button.exportJSON"
                         >
                             📥 JSON
                         </button>
@@ -472,7 +557,9 @@
                 </div>
 
                 <div id="tableContainer">
-                    <div class="loading">⏳ กำลังโหลดข้อมูล...</div>
+                    <div class="loading" data-i18n="message.loading">
+                        ⏳ กำลังโหลดข้อมูล...
+                    </div>
                 </div>
             </div>
         </div>
@@ -481,33 +568,42 @@
         <div class="modal" id="editModal">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2>✏️ แก้ไข URL</h2>
+                    <h2 data-i18n="modal.editTitle">✏️ แก้ไข URL</h2>
                 </div>
                 <div class="form-group">
-                    <label>รหัสสั้น</label>
+                    <label data-i18n="label.shortCode">รหัสสั้น</label>
                     <input type="text" id="editCode" />
-                    <div class="hint">
+                    <div class="hint" data-i18n="hint.codeFormat">
                         ใช้ตัวอักษรและตัวเลขเท่านั้น (3-20 ตัวอักษร)
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>URL เป้าหมาย</label>
+                    <label data-i18n="label.targetUrl">URL เป้าหมาย</label>
                     <input type="text" id="editTarget" />
                 </div>
                 <div class="form-group">
-                    <label>บันทึก (ตัวเลือก)</label>
+                    <label data-i18n="label.memo">บันทึก (ตัวเลือก)</label>
                     <input
                         type="text"
                         id="editMemo"
+                        data-i18n-placeholder="placeholder.memo"
                         placeholder="เช่น: ลิงก์โปรโมชั่น, เอกสารโปรเจค"
                     />
                 </div>
                 <div class="error-msg" id="editError"></div>
                 <div class="modal-actions">
-                    <button class="btn-secondary" onclick="closeEditModal()">
+                    <button
+                        class="btn-secondary"
+                        onclick="closeEditModal()"
+                        data-i18n="button.cancel"
+                    >
                         ยกเลิก
                     </button>
-                    <button class="btn-primary" onclick="saveEdit()">
+                    <button
+                        class="btn-primary"
+                        onclick="saveEdit()"
+                        data-i18n="button.save"
+                    >
                         บันทึก
                     </button>
                 </div>
@@ -518,7 +614,7 @@
         <div class="modal" id="qrModal">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2>📱 QR Code</h2>
+                    <h2 data-i18n="modal.qrTitle">📱 QR Code</h2>
                 </div>
                 <div style="text-align: center; padding: 20px">
                     <img
@@ -532,10 +628,18 @@
                     </div>
                 </div>
                 <div class="modal-actions">
-                    <button class="btn-secondary" onclick="closeQRModal()">
+                    <button
+                        class="btn-secondary"
+                        onclick="closeQRModal()"
+                        data-i18n="button.close"
+                    >
                         ปิด
                     </button>
-                    <button class="btn-primary" onclick="downloadQR()">
+                    <button
+                        class="btn-primary"
+                        onclick="downloadQR()"
+                        data-i18n="button.download"
+                    >
                         💾 ดาวน์โหลด
                     </button>
                 </div>
@@ -1020,5 +1124,6 @@
             // Initialize
             checkAuth();
         </script>
+        <script src="i18n.js"></script>
     </body>
 </html>
