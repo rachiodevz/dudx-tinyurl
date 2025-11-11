@@ -7,7 +7,60 @@ This document tracks all features, improvements, and changes made to the TinyURL
 
 ## 🗓️ 2025-11-11
 
-### ✨ Major Refactoring
+### 🚀 NEW FEATURES - 6 Major Updates!
+
+#### 1. 👁️ Click/Visit Tracking
+- **Track every visit** to your short URLs
+- **Real-time click counter** displayed in My URLs and Admin panel
+- **Last clicked timestamp** for monitoring
+- Automatic increment on every redirect
+
+#### 2. ✏️ Custom Short Codes
+- **Create your own memorable codes** (e.g., `/meeting`, `/docs2024`)
+- Validation: 3-20 alphanumeric characters
+- **Automatic duplicate detection**
+- **Random code generation** if left blank
+- Easy-to-use input field on homepage
+
+#### 3. ⏰ URL Expiration
+- **Set expiration dates** for temporary URLs
+- Options: 1 day, 7 days, 30 days, 90 days, 1 year, or permanent
+- **Visual status indicators** in My URLs:
+  - ✅ Permanent (green)
+  - ⏳ Active with days remaining (gray)
+  - ⏰ Expiring soon ≤7 days (orange)
+  - ⚠️ Expiring very soon <1 day (red)
+  - ❌ Expired (red, bold)
+- **Auto-block expired URLs** from redirecting
+
+#### 4. 📱 QR Code Generation
+- **One-click QR code generation** for any short URL
+- Beautiful modal display with preview
+- **Download QR codes** as PNG images
+- Perfect for sharing offline or on printed materials
+- Built with `qrcode` library (300x300px, margin: 2)
+
+#### 5. 📥 Export Functionality
+- **Export to CSV** - Excel-compatible format
+- **Export to JSON** - Developer-friendly format
+- Includes all data: code, target, memo, clicks, expiry, timestamps
+- Auto-named files with current date
+- One-click download from My URLs page
+
+#### 6. 📊 Advanced Analytics Dashboard
+- **6 Real-time Statistics Cards:**
+  - Total URLs
+  - URLs created today
+  - 👁️ Total clicks across all URLs
+  - 📊 Average clicks per URL
+  - 🔥 Top performing URL (most clicks)
+  - ⏰ URLs expiring soon (within 7 days)
+- **Smart calculations** update automatically
+- Color-coded highlights for important metrics
+
+---
+
+### ✨ Major Refactoring (Earlier Today)
 - **Restructured codebase** to `src/` folder architecture
   - Separated concerns: `routes/`, `middleware/`, `database/`, `config/`, `utils/`
   - Better code organization and maintainability
@@ -97,17 +150,18 @@ This document tracks all features, improvements, and changes made to the TinyURL
 ## 🚀 Upcoming Features (Planned)
 
 ### High Priority
-- [ ] Click/visit tracking for URLs
-- [ ] Custom short codes (user-defined)
-- [ ] URL expiration dates
-- [ ] QR code generation for short URLs
+- [x] ~~Click/visit tracking for URLs~~ ✅ COMPLETED
+- [x] ~~Custom short codes (user-defined)~~ ✅ COMPLETED
+- [x] ~~URL expiration dates~~ ✅ COMPLETED
+- [x] ~~QR code generation for short URLs~~ ✅ COMPLETED
 
 ### Medium Priority
-- [ ] Export user URLs (CSV/JSON)
+- [x] ~~Export user URLs (CSV/JSON)~~ ✅ COMPLETED
+- [x] ~~URL analytics dashboard~~ ✅ COMPLETED
 - [ ] Bulk URL operations
-- [ ] URL analytics dashboard
 - [ ] Email notifications
 - [ ] API keys for external access
+- [ ] URL visit history/timeline
 
 ### Low Priority
 - [ ] Dark mode
@@ -115,6 +169,7 @@ This document tracks all features, improvements, and changes made to the TinyURL
 - [ ] URL categories/tags
 - [ ] Share URLs to social media
 - [ ] Bundle/build system for production (esbuild)
+- [ ] Charts/graphs for click statistics
 
 ---
 
