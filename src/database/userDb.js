@@ -47,33 +47,33 @@ export class UserDatabase {
         }
 
         if (user) {
-          // Update last login and refresh avatar if needed
+          // Update last login
           user.lastLogin = new Date();
 
-          // Download/update avatar in background (non-blocking)
+          // Try to download/update avatar
           const googlePhoto = profile.photos[0]?.value;
-          if (googlePhoto) {
-            saveUserAvatar(googleId, googlePhoto, profile.displayName)
-              .then((localAvatar) => {
-                if (localAvatar && localAvatar !== user.photo) {
-                  this.db.update(
-                    { googleId },
-                    { $set: { photo: localAvatar } },
-                    {},
-                    (err) => {
-                      if (err) log(`❌ Error updating user avatar: ${err}`);
-                      else log(`✅ Updated avatar for ${profile.displayName}`);
-                    },
-                  );
-                }
-              })
-              .catch((err) => log(`⚠️  Avatar update failed: ${err.message}`));
-          }
 
-          this.db.update({ googleId }, user, {}, (err) => {
-            if (err) log(`❌ Error updating user: ${err}`);
-          });
-          resolve(user);
+          saveUserAvatar(googleId, googlePhoto, profile.displayName)
+            .then((localAvatar) => {
+              if (localAvatar) {
+                user.photo = localAvatar;
+              }
+
+              this.db.update({ googleId }, user, {}, (err) => {
+                if (err) log(`❌ Error updating user: ${err}`);
+              });
+
+              resolve(user);
+            })
+            .catch((err) => {
+              log(`⚠️  Avatar failed, using existing: ${err.message}`);
+
+              this.db.update({ googleId }, user, {}, (err) => {
+                if (err) log(`❌ Error updating user: ${err}`);
+              });
+
+              resolve(user);
+            });
           return;
         }
 
