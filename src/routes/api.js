@@ -66,11 +66,16 @@ export default function initApiRoutes(urlShortener) {
 
   // ----- API: shorten -----
   router.post("/shorten", requireAuth, (req, res) => {
-    const { url, memo } = req.body;
+    const { url, memo, customCode } = req.body;
     if (!url) return res.status(400).json({ error: "Missing URL" });
 
     try {
-      const entry = urlShortener.createShortUrl(url, req.user, memo);
+      const entry = urlShortener.createShortUrl(
+        url,
+        req.user,
+        memo,
+        customCode,
+      );
       res.json({ short: `${req.protocol}://${req.get("host")}/${entry.code}` });
     } catch (error) {
       res.status(400).json({ error: error.message });

@@ -33,7 +33,7 @@ export class URLShortener {
   /**
    * Create a new short URL
    */
-  createShortUrl(targetUrl, user, memo = "") {
+  createShortUrl(targetUrl, user, memo = "", customCode = null) {
     // Validate URL format
     try {
       new URL(targetUrl);
@@ -41,7 +41,28 @@ export class URLShortener {
       throw new Error("Invalid URL format");
     }
 
-    const code = this.generateShortCode();
+    let code;
+
+    // If custom code is provided, validate and use it
+    if (customCode) {
+      // Validate custom code format (3-20 alphanumeric characters)
+      if (!/^[a-zA-Z0-9]{3,20}$/.test(customCode)) {
+        throw new Error(
+          "Custom code must be 3-20 alphanumeric characters only",
+        );
+      }
+
+      // Check if code is already taken
+      if (this.db.findByCode(customCode)) {
+        throw new Error("This code is already taken");
+      }
+
+      code = customCode;
+    } else {
+      // Generate random code
+      code = this.generateShortCode();
+    }
+
     const entry = {
       code,
       target: targetUrl,
