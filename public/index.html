@@ -235,6 +235,24 @@
                 💡 ว่างไว้ = สร้างรหัสอัตโนมัติ | กำหนดเอง =
                 ใช้ตัวอักษรและตัวเลข 3-20 ตัว
             </div>
+            <select
+                id="expirySelect"
+                style="
+                    margin-top: 10px;
+                    padding: 12px;
+                    font-size: 14px;
+                    border: 1px solid #ddd;
+                    border-radius: 8px;
+                    width: 100%;
+                "
+            >
+                <option value="">⏰ ไม่มีวันหมดอายุ (ถาวร)</option>
+                <option value="1">หมดอายุใน 1 วัน</option>
+                <option value="7">หมดอายุใน 7 วัน</option>
+                <option value="30">หมดอายุใน 30 วัน</option>
+                <option value="90">หมดอายุใน 90 วัน</option>
+                <option value="365">หมดอายุใน 1 ปี</option>
+            </select>
             <input
                 type="text"
                 id="memoInput"
@@ -310,6 +328,8 @@
                 const url = input.value.trim();
                 const memo = document.getElementById("memoInput").value.trim();
                 const customCode = customCodeInput.value.trim();
+                const expiresInDays =
+                    document.getElementById("expirySelect").value;
 
                 if (!url) {
                     result.innerHTML = "⚠️ กรุณาใส่ URL ก่อน";
@@ -321,6 +341,9 @@
                     const requestBody = { url, memo };
                     if (customCode) {
                         requestBody.customCode = customCode;
+                    }
+                    if (expiresInDays) {
+                        requestBody.expiresInDays = parseInt(expiresInDays);
                     }
 
                     const res = await fetch("/api/shorten", {
@@ -345,6 +368,7 @@
                         // Clear inputs after success
                         input.value = "";
                         customCodeInput.value = "";
+                        document.getElementById("expirySelect").value = "";
                         document.getElementById("memoInput").value = "";
                     } else {
                         result.innerHTML = "❌ สร้างไม่สำเร็จ";

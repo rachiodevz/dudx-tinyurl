@@ -547,6 +547,7 @@
                                 <th>URL เป้าหมาย</th>
                                 <th>บันทึก</th>
                                 <th>👁️ Clicks</th>
+                                <th>⏰ สถานะ</th>
                                 <th>วันที่สร้าง</th>
                                 <th>จัดการ</th>
                             </tr>
@@ -574,6 +575,9 @@
                                     <td class="date-cell" style="text-align: center; font-weight: 600; color: #007bff;">
                                         ${url.clicks || 0}
                                     </td>
+                                    <td class="date-cell" style="text-align: center;">
+                                        ${getExpiryStatus(url)}
+                                    </td>
                                     <td class="date-cell">${formatDate(url.created_at)}</td>
                                     <td>
                                         <div class="actions">
@@ -597,6 +601,28 @@
                 `;
 
                 container.innerHTML = table;
+            }
+
+            // Get expiry status
+            function getExpiryStatus(url) {
+                if (!url.expires_at) {
+                    return '<span style="color: #28a745;">✅ ถาวร</span>';
+                }
+
+                const now = new Date();
+                const expiryDate = new Date(url.expires_at);
+                const diffMs = expiryDate - now;
+                const diffDays = Math.ceil(diffMs / 86400000);
+
+                if (diffMs <= 0) {
+                    return '<span style="color: #dc3545; font-weight: 600;">❌ หมดอายุแล้ว</span>';
+                } else if (diffDays <= 1) {
+                    return '<span style="color: #ff6b6b;">⚠️ เหลือ < 1 วัน</span>';
+                } else if (diffDays <= 7) {
+                    return `<span style="color: #ffa500;">⏰ เหลือ ${diffDays} วัน</span>`;
+                } else {
+                    return `<span style="color: #666;">⏳ เหลือ ${diffDays} วัน</span>`;
+                }
             }
 
             // Format date

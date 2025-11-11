@@ -33,7 +33,13 @@ export class URLShortener {
   /**
    * Create a new short URL
    */
-  createShortUrl(targetUrl, user, memo = "", customCode = null) {
+  createShortUrl(
+    targetUrl,
+    user,
+    memo = "",
+    customCode = null,
+    expiresInDays = null,
+  ) {
     // Validate URL format
     try {
       new URL(targetUrl);
@@ -76,6 +82,13 @@ export class URLShortener {
       },
     };
 
+    // Add expiration date if specified
+    if (expiresInDays && expiresInDays > 0) {
+      const expiryDate = new Date();
+      expiryDate.setDate(expiryDate.getDate() + parseInt(expiresInDays));
+      entry.expires_at = expiryDate;
+    }
+
     this.db.insert(entry);
     return entry;
   }
@@ -84,7 +97,32 @@ export class URLShortener {
    * Get URL by short code
    */
   getUrlByCode(code) {
-    return this.db.findByCode(code);
+    const url = this.db.findByCode(code);
+
+    // Check if URL is expired
+    if (url && url.expires_at) {
+      const now = new Date();
+      const expiryDate = new Date(url.expires_at);
+      if (now > expiryDate) {
+        return null; // URL has expired
+      }
+    }
+
+    return url;
+  }
+
+  /**
+   * Check if URL is expired
+   */
+  isExpired(code) {
+    const url = this.db.findByCode(code);
+    if (!url || !url.expires_at) {
+      return false;
+    }
+
+    const now = new Date();
+    const expiryDate = new Date(url.expires_at);
+    return now > expiryDate;
   }
 
   /**
