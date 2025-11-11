@@ -244,6 +244,19 @@ class I18n {
       element.placeholder = translation;
     });
 
+    // Update language button active states
+    document.querySelectorAll(".lang-btn").forEach((btn) => {
+      btn.classList.remove("active");
+    });
+
+    // Add active class to current language buttons
+    const activeLang = this.currentLang;
+    document
+      .querySelectorAll(`[id^="langBtn${activeLang === "th" ? "Th" : "En"}"]`)
+      .forEach((btn) => {
+        btn.classList.add("active");
+      });
+
     // Trigger custom event for complex updates
     window.dispatchEvent(
       new CustomEvent("languageChanged", {

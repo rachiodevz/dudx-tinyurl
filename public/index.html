@@ -58,6 +58,20 @@
                 font-size: 14px;
                 font-weight: 500;
             }
+            .lang-btn {
+                background: #6c757d;
+                color: white;
+                border: none;
+                border-radius: 6px;
+                cursor: pointer;
+                transition: background 0.2s;
+            }
+            .lang-btn:hover {
+                background: #5a6268;
+            }
+            .lang-btn.active {
+                background: #28a745 !important;
+            }
             .logout-btn {
                 background: #dc3545;
                 color: white;
@@ -167,28 +181,22 @@
     <body>
         <!-- User Bar -->
         <div class="user-bar hidden" id="userBar">
-            <div style="display: flex; gap: 8px; align-items: center">
+            <div style="display: flex; gap: 5px; align-items: center">
                 <button
                     onclick="window.i18n.setLang('th')"
-                    style="
-                        background: #6c757d;
-                        padding: 6px 12px;
-                        font-size: 13px;
-                        border-radius: 6px;
-                    "
+                    id="langBtnTh1"
+                    class="lang-btn"
+                    style="padding: 5px 10px; font-size: 13px; font-weight: 600"
                 >
-                    🇹🇭 ไทย
+                    TH
                 </button>
                 <button
                     onclick="window.i18n.setLang('en')"
-                    style="
-                        background: #6c757d;
-                        padding: 6px 12px;
-                        font-size: 13px;
-                        border-radius: 6px;
-                    "
+                    id="langBtnEn1"
+                    class="lang-btn"
+                    style="padding: 5px 10px; font-size: 13px; font-weight: 600"
                 >
-                    🇬🇧 EN
+                    EN
                 </button>
             </div>
             <a
@@ -229,34 +237,26 @@
             <div
                 style="
                     display: flex;
-                    gap: 8px;
+                    gap: 5px;
                     justify-content: center;
                     margin-bottom: 20px;
                 "
             >
                 <button
                     onclick="window.i18n.setLang('th')"
-                    style="
-                        background: #6c757d;
-                        padding: 6px 12px;
-                        font-size: 13px;
-                        border-radius: 6px;
-                        color: white;
-                    "
+                    id="langBtnTh2"
+                    class="lang-btn"
+                    style="padding: 5px 10px; font-size: 13px; font-weight: 600"
                 >
-                    🇹🇭 ไทย
+                    TH
                 </button>
                 <button
                     onclick="window.i18n.setLang('en')"
-                    style="
-                        background: #6c757d;
-                        padding: 6px 12px;
-                        font-size: 13px;
-                        border-radius: 6px;
-                        color: white;
-                    "
+                    id="langBtnEn2"
+                    class="lang-btn"
+                    style="padding: 5px 10px; font-size: 13px; font-weight: 600"
                 >
-                    🇬🇧 EN
+                    EN
                 </button>
             </div>
             <h2 data-i18n="login.welcome">ยินดีต้อนรับ</h2>

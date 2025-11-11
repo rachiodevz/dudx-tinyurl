@@ -75,6 +75,20 @@
                 border-radius: 8px;
                 cursor: pointer;
             }
+            .lang-btn {
+                background: #6c757d;
+                color: white;
+                border: none;
+                border-radius: 6px;
+                cursor: pointer;
+                transition: background 0.2s;
+            }
+            .lang-btn:hover {
+                background: #5a6268;
+            }
+            .lang-btn.active {
+                background: #28a745 !important;
+            }
             .logout-btn:hover {
                 background: #c82333;
             }
@@ -388,38 +402,26 @@
             <div
                 style="
                     display: flex;
-                    gap: 8px;
+                    gap: 5px;
                     justify-content: center;
                     margin-bottom: 20px;
                 "
             >
                 <button
                     onclick="window.i18n.setLang('th')"
-                    style="
-                        background: #6c757d;
-                        padding: 6px 12px;
-                        font-size: 13px;
-                        border-radius: 6px;
-                        color: white;
-                        border: none;
-                        cursor: pointer;
-                    "
+                    id="langBtnTh1"
+                    class="lang-btn"
+                    style="padding: 5px 10px; font-size: 13px; font-weight: 600"
                 >
-                    🇹🇭 ไทย
+                    TH
                 </button>
                 <button
                     onclick="window.i18n.setLang('en')"
-                    style="
-                        background: #6c757d;
-                        padding: 6px 12px;
-                        font-size: 13px;
-                        border-radius: 6px;
-                        color: white;
-                        border: none;
-                        cursor: pointer;
-                    "
+                    id="langBtnEn1"
+                    class="lang-btn"
+                    style="padding: 5px 10px; font-size: 13px; font-weight: 600"
                 >
-                    🇬🇧 EN
+                    EN
                 </button>
             </div>
             <h2 data-i18n="login.welcome">ยินดีต้อนรับ</h2>
@@ -459,34 +461,30 @@
             <div class="header">
                 <h1 data-i18n="admin.title">📊 Admin Panel - TinyURL</h1>
                 <div class="nav">
-                    <div style="display: flex; gap: 8px; align-items: center">
+                    <div style="display: flex; gap: 5px; align-items: center">
                         <button
                             onclick="window.i18n.setLang('th')"
+                            id="langBtnTh2"
+                            class="lang-btn"
                             style="
-                                background: #6c757d;
-                                padding: 6px 12px;
+                                padding: 5px 10px;
                                 font-size: 13px;
-                                border-radius: 6px;
-                                color: white;
-                                border: none;
-                                cursor: pointer;
+                                font-weight: 600;
                             "
                         >
-                            🇹🇭 ไทย
+                            TH
                         </button>
                         <button
                             onclick="window.i18n.setLang('en')"
+                            id="langBtnEn2"
+                            class="lang-btn"
                             style="
-                                background: #6c757d;
-                                padding: 6px 12px;
+                                padding: 5px 10px;
                                 font-size: 13px;
-                                border-radius: 6px;
-                                color: white;
-                                border: none;
-                                cursor: pointer;
+                                font-weight: 600;
                             "
                         >
-                            🇬🇧 EN
+                            EN
                         </button>
                     </div>
                     <a href="/" data-i18n="nav.home">🏠 หน้าแรก</a>
