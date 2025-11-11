@@ -208,8 +208,7 @@
                     font-weight: 500;
                 "
                 data-i18n="nav.myUrls"
-                >🔗 URL ของฉัน</a
-            >
+            ></a>
             <a
                 href="/admin"
                 id="adminLink"
@@ -227,9 +226,11 @@
                 <img class="user-photo" id="userPhoto" src="" alt="User" />
                 <span class="user-name" id="userName"></span>
             </div>
-            <button class="logout-btn" id="logoutBtn" data-i18n="button.logout">
-                ออกจากระบบ
-            </button>
+            <button
+                class="logout-btn"
+                id="logoutBtn"
+                data-i18n="button.logout"
+            ></button>
         </div>
 
         <!-- Login Screen -->
@@ -259,10 +260,8 @@
                     EN
                 </button>
             </div>
-            <h2 data-i18n="login.welcome">ยินดีต้อนรับ</h2>
-            <p data-i18n="login.pleaseLogin">
-                กรุณาเข้าสู่ระบบเพื่อใช้งาน TinyURL
-            </p>
+            <h2 data-i18n="login.welcome"></h2>
+            <p data-i18n="login.pleaseLogin"></p>
             <button
                 class="login-btn"
                 onclick="window.location.href='/auth/google'"
@@ -285,9 +284,7 @@
                         d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.961L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z"
                     />
                 </svg>
-                <span data-i18n="button.loginGoogle"
-                    >เข้าสู่ระบบด้วย Google</span
-                >
+                <span data-i18n="button.loginGoogle"></span>
             </button>
         </div>
 
@@ -298,7 +295,8 @@
                 type="text"
                 id="urlInput"
                 data-i18n-placeholder="placeholder.enterUrl"
-                placeholder="กรอกลิงก์ยาวที่นี่..."
+                placeholder=""
+                style="margin-bottom: 10px"
             />
             <input
                 type="text"
@@ -330,35 +328,21 @@
                     width: 100%;
                 "
             >
-                <option value="" data-i18n="expiry.permanent">
-                    ⏰ ไม่มีวันหมดอายุ (ถาวร)
-                </option>
-                <option value="1" data-i18n="expiry.1day">
-                    หมดอายุใน 1 วัน
-                </option>
-                <option value="7" data-i18n="expiry.7days">
-                    หมดอายุใน 7 วัน
-                </option>
-                <option value="30" data-i18n="expiry.30days">
-                    หมดอายุใน 30 วัน
-                </option>
-                <option value="90" data-i18n="expiry.90days">
-                    หมดอายุใน 90 วัน
-                </option>
-                <option value="365" data-i18n="expiry.1year">
-                    หมดอายุใน 1 ปี
-                </option>
+                <option value="" data-i18n="expiry.permanent"></option>
+                <option value="1" data-i18n="expiry.1day"></option>
+                <option value="7" data-i18n="expiry.7days"></option>
+                <option value="30" data-i18n="expiry.30days"></option>
+                <option value="90" data-i18n="expiry.90days"></option>
+                <option value="365" data-i18n="expiry.1year"></option>
             </select>
             <input
                 type="text"
                 id="memoInput"
                 data-i18n-placeholder="placeholder.memo"
-                placeholder="บันทึก note (ตัวเลือก) เช่น: ลิงก์โปรโมชั่น, เอกสารโปรเจค"
+                placeholder=""
                 style="margin-top: 10px"
             />
-            <button id="shortenBtn" data-i18n="button.createLink">
-                สร้างลิงก์
-            </button>
+            <button id="shortenBtn" data-i18n="home.createLink"></button>
             <div class="result" id="result"></div>
             <div class="list" id="list"></div>
         </div>
@@ -450,11 +434,11 @@
                     document.getElementById("expirySelect").value;
 
                 if (!url) {
-                    result.innerHTML = "⚠️ กรุณาใส่ URL ก่อน";
+                    result.innerHTML = window.i18n.t("message.enterUrl");
                     return;
                 }
 
-                result.innerHTML = "⏳ กำลังสร้างลิงก์...";
+                result.innerHTML = window.i18n.t("message.creatingLink");
                 try {
                     const requestBody = { url, memo };
                     if (customCode) {
@@ -472,13 +456,13 @@
                     const data = await res.json();
                     if (data.short) {
                         result.innerHTML = `
-            ✅ ลิงก์สั้นของคุณ:<br>
+            ${window.i18n.t("message.linkReady")}:<br>
             <div class="shortlink">
               <a href="${data.short}" target="_blank" style="color: #007bff; text-decoration: none; font-weight: 600; font-size: 16px;">${data.short}</a>
             </div>
             <div style="margin-top: 12px; font-size: 13px; color: #666;">
-              👆 คลิกเพื่อทดสอบ หรือ
-              <button onclick="navigator.clipboard.writeText('${data.short}')" style="margin-left: 5px;">📋 คัดลอกลิงก์</button>
+              ${window.i18n.t("message.clickTest")}
+              <button onclick="navigator.clipboard.writeText('${data.short}')" style="margin-left: 5px;">📋 ${window.i18n.t("button.copy")}</button>
             </div>
           `;
                         history.unshift(data);
@@ -489,14 +473,16 @@
                         document.getElementById("expirySelect").value = "";
                         document.getElementById("memoInput").value = "";
                     } else {
-                        result.innerHTML = "❌ สร้างไม่สำเร็จ";
+                        result.innerHTML =
+                            "❌ " + window.i18n.t("message.error");
                     }
                 } catch (e) {
                     result.innerHTML =
-                        "❌ มีข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์";
+                        "❌ " + window.i18n.t("message.loadError");
                     // Check if it's an auth error
                     if (e.message && e.message.includes("401")) {
-                        result.innerHTML = "❌ กรุณาเข้าสู่ระบบใหม่";
+                        result.innerHTML =
+                            "❌ " + window.i18n.t("login.pleaseLogin");
                         setTimeout(() => {
                             window.location.reload();
                         }, 1500);

@@ -34,6 +34,31 @@ const translations = {
     "home.title": "สร้างลิงก์สั้น",
     "home.customCodeHint":
       "💡 ว่างไว้ = สร้างรหัสอัตโนมัติ | กำหนดเอง = ใช้ตัวอักษรและตัวเลข 3-20 ตัว",
+    "home.createLink": "สร้างลิงก์",
+    "message.enterUrl": "⚠️ กรุณาใส่ URL ก่อน",
+    "message.creatingLink": "⏳ กำลังสร้างลิงก์...",
+    "message.linkReady": "✅ ลิงก์สั้นของคุณ:",
+    "message.clickTest": "👆 คลิกเพื่อทดสอบ หรือ",
+    "button.close": "ปิด",
+    "button.download": "💾 ดาวน์โหลด",
+    "label.targetUrl": "URL เป้าหมาย",
+    "status.expired": "❌ หมดอายุแล้ว",
+    "status.lessThanOneDay": "⚠️ เหลือ < 1 วัน",
+    "status.daysRemaining": "⏰ เหลือ {n} วัน",
+    "status.daysRemainingNeutral": "⏳ เหลือ {n} วัน",
+    "time.justNow": "เมื่อสักครู่",
+    "time.minutesAgo": "{n} นาทีที่แล้ว",
+    "time.hoursAgo": "{n} ชั่วโมงที่แล้ว",
+    "time.daysAgo": "{n} วันที่แล้ว",
+    "validation.required": "กรุณากรอกข้อมูลให้ครบถ้วน",
+    "validation.error": "เกิดข้อผิดพลาด",
+    "validation.connectionError": "เกิดข้อผิดพลาดในการเชื่อมต่อ",
+    "message.downloadSuccess": "✅ ดาวน์โหลดแล้ว!",
+    "label.memo": "บันทึก (ตัวเลือก)",
+    "label.status": "⏰ สถานะ",
+    "label.createdAt": "วันที่สร้าง",
+    "label.manage": "จัดการ",
+    "status.active": "✅ ถาวร",
 
     // Placeholders
     "placeholder.enterUrl": "กรอกลิงก์ยาวที่นี่...",
@@ -65,6 +90,15 @@ const translations = {
 
     // Messages
     "message.loading": "⏳ กำลังโหลดข้อมูล...",
+    "message.loadError": "❌ ไม่สามารถโหลดข้อมูลได้",
+    "message.error": "❌ เกิดข้อผิดพลาดในการโหลดข้อมูล",
+    "message.noUrls": "ไม่พบข้อมูล URL",
+    "message.noUsers": "ไม่พบข้อมูลผู้ใช้",
+    "message.roleChangeSuccess": "✅ เปลี่ยน Role สำเร็จ",
+    "message.actionSuccess": "✅ {action}สำเร็จ",
+    "message.actionError": "❌ เกิดข้อผิดพลาด",
+    "message.confirmAction": "คุณต้องการ{action}ผู้ใช้นี้หรือไม่?",
+    "message.linkCopied": "✅ คัดลอกลิงก์แล้ว!",
 
     // Modal
     "modal.editTitle": "✏️ แก้ไข URL",
@@ -92,6 +126,58 @@ const translations = {
     "admin.changeRole": "เปลี่ยน Role",
     "admin.user": "ผู้ใช้:",
     "admin.newRole": "Role ใหม่:",
+
+    // Table headers
+    "table.shortLink": "Short Link",
+    "table.targetUrl": "URL เป้าหมาย",
+    "table.memo": "บันทึก",
+    "table.clicks": "👁️ Clicks",
+    "table.creator": "ผู้สร้าง",
+    "table.createdAt": "วันที่สร้าง",
+    "table.actions": "จัดการ",
+    "table.copy": "คัดลอก",
+    "table.name": "ชื่อ",
+    "table.email": "อีเมล",
+    "table.role": "Role",
+    "table.status": "สถานะ",
+    "table.lastLogin": "เข้าสู่ระบบล่าสุด",
+    "table.manage": "การจัดการ",
+
+    // User Management buttons
+    "button.changeRole": "เปลี่ยน Role",
+    "button.deactivate": "ปิดใช้งาน",
+    "button.activate": "เปิดใช้งาน",
+
+    // User status
+    "status.active": "✅ Active",
+    "status.inactive": "❌ Inactive",
+
+    // User roles
+    "role.superAdmin": "Super Admin",
+    "role.admin": "Admin",
+    "role.user": "User",
+
+    // Time ago
+    "time.justNow": "เมื่อสักครู่",
+    "time.minutesAgo": "{n} นาทีที่แล้ว",
+    "time.hoursAgo": "{n} ชั่วโมงที่แล้ว",
+    "time.daysAgo": "{n} วันที่แล้ว",
+    "home.createLink": "Create Link",
+    "message.enterUrl": "⚠️ Please enter a URL",
+    "message.creatingLink": "⏳ Creating link...",
+    "message.linkReady": "✅ Your short link:",
+    "message.clickTest": "👆 Click to test or",
+    "button.close": "Close",
+    "button.download": "💾 Download",
+    "status.expired": "❌ Expired",
+    "status.lessThanOneDay": "⚠️ Less than 1 day",
+    "status.daysRemaining": "⏰ {n} days remaining",
+    "status.daysRemainingNeutral": "⏳ {n} days remaining",
+    "validation.required": "Please fill in all required fields",
+    "validation.error": "Error occurred",
+    "validation.connectionError": "Connection error",
+    "message.downloadSuccess": "✅ Download complete!",
+    "status.active": "✅ Active",
   },
 
   en: {
@@ -153,6 +239,15 @@ const translations = {
 
     // Messages
     "message.loading": "⏳ Loading data...",
+    "message.loadError": "❌ Unable to load data",
+    "message.error": "❌ Error loading data",
+    "message.noUrls": "No URLs found",
+    "message.noUsers": "No users found",
+    "message.roleChangeSuccess": "✅ Role changed successfully",
+    "message.actionSuccess": "✅ {action} successful",
+    "message.actionError": "❌ An error occurred",
+    "message.confirmAction": "Do you want to {action} this user?",
+    "message.linkCopied": "✅ Link copied!",
 
     // Modal
     "modal.editTitle": "✏️ Edit URL",
@@ -180,6 +275,42 @@ const translations = {
     "admin.changeRole": "Change Role",
     "admin.user": "User:",
     "admin.newRole": "New Role:",
+
+    // Table headers
+    "table.shortLink": "Short Link",
+    "table.targetUrl": "Target URL",
+    "table.memo": "Memo",
+    "table.clicks": "👁️ Clicks",
+    "table.creator": "Creator",
+    "table.createdAt": "Created At",
+    "table.actions": "Actions",
+    "table.copy": "Copy",
+    "table.name": "Name",
+    "table.email": "Email",
+    "table.role": "Role",
+    "table.status": "Status",
+    "table.lastLogin": "Last Login",
+    "table.manage": "Manage",
+
+    // User Management buttons
+    "button.changeRole": "Change Role",
+    "button.deactivate": "Deactivate",
+    "button.activate": "Activate",
+
+    // User status
+    "status.active": "✅ Active",
+    "status.inactive": "❌ Inactive",
+
+    // User roles
+    "role.superAdmin": "Super Admin",
+    "role.admin": "Admin",
+    "role.user": "User",
+
+    // Time ago
+    "time.justNow": "just now",
+    "time.minutesAgo": "{n} minutes ago",
+    "time.hoursAgo": "{n} hours ago",
+    "time.daysAgo": "{n} days ago",
   },
 };
 

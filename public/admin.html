@@ -2,7 +2,7 @@
 <html lang="th">
     <head>
         <meta charset="UTF-8" />
-        <title>Admin - TinyURL</title>
+        <title data-i18n="nav.admin">Admin - TinyURL</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <style>
             * {
@@ -424,10 +424,8 @@
                     EN
                 </button>
             </div>
-            <h2 data-i18n="login.welcome">ยินดีต้อนรับ</h2>
-            <p style="margin: 20px 0" data-i18n="admin.loginDescription">
-                กรุณาเข้าสู่ระบบเพื่อเข้าถึงหน้า Admin
-            </p>
+            <h2 data-i18n="login.welcome"></h2>
+            <p style="margin: 20px 0" data-i18n="admin.loginDescription"></p>
             <button
                 class="login-btn"
                 onclick="window.location.href='/auth/google'"
@@ -450,9 +448,7 @@
                         d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.961L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z"
                     />
                 </svg>
-                <span data-i18n="button.loginGoogle"
-                    >เข้าสู่ระบบด้วย Google</span
-                >
+                <span data-i18n="button.loginGoogle"></span>
             </button>
         </div>
 
@@ -487,8 +483,8 @@
                             EN
                         </button>
                     </div>
-                    <a href="/" data-i18n="nav.home">🏠 หน้าแรก</a>
-                    <a href="/my-urls" data-i18n="nav.myUrls">🔗 URL ของฉัน</a>
+                    <a href="/" data-i18n="nav.home"></a>
+                    <a href="/my-urls" data-i18n="nav.myUrls"></a>
                     <div class="user-info">
                         <img class="user-photo" id="userPhoto" src="" alt="" />
                         <span id="userName"></span>
@@ -497,9 +493,7 @@
                         class="logout-btn"
                         id="logoutBtn"
                         data-i18n="button.logout"
-                    >
-                        ออกจากระบบ
-                    </button>
+                    ></button>
                 </div>
             </div>
 
@@ -509,31 +503,27 @@
                     class="tab-btn active"
                     onclick="switchTab('urls')"
                     data-i18n="admin.urlManagement"
-                >
-                    🔗 URL Management
-                </button>
+                ></button>
                 <button
                     class="tab-btn"
                     onclick="switchTab('users')"
                     data-i18n="admin.userManagement"
-                >
-                    👥 User Management
-                </button>
+                ></button>
             </div>
 
             <!-- URLs Tab -->
             <div class="tab-content active" id="urlsTab">
                 <div class="stats">
                     <div class="stat-card">
-                        <h3 data-i18n="admin.totalUrls">จำนวน URL ทั้งหมด</h3>
+                        <h3 data-i18n="admin.totalUrls"></h3>
                         <div class="number" id="totalUrls">0</div>
                     </div>
                     <div class="stat-card">
-                        <h3 data-i18n="stats.createdToday">สร้างวันนี้</h3>
+                        <h3 data-i18n="stats.createdToday"></h3>
                         <div class="number" id="todayUrls">0</div>
                     </div>
                     <div class="stat-card">
-                        <h3 data-i18n="admin.totalUsers">ผู้ใช้งานทั้งหมด</h3>
+                        <h3 data-i18n="admin.totalUsers"></h3>
                         <div class="number" id="totalUsers">0</div>
                     </div>
                 </div>
@@ -544,13 +534,11 @@
                             type="text"
                             id="searchUrlInput"
                             data-i18n-placeholder="admin.searchUrl"
-                            placeholder="🔍 ค้นหา URL, รหัส, หรือผู้สร้าง..."
+                            placeholder=""
                         />
                     </div>
                     <div id="urlTableContainer">
-                        <div class="loading" data-i18n="message.loading">
-                            ⏳ กำลังโหลดข้อมูล...
-                        </div>
+                        <div class="loading" data-i18n="message.loading"></div>
                     </div>
                 </div>
             </div>
@@ -559,15 +547,15 @@
             <div class="tab-content" id="usersTab">
                 <div class="stats">
                     <div class="stat-card">
-                        <h3 data-i18n="admin.totalUsers">จำนวนผู้ใช้ทั้งหมด</h3>
+                        <h3 data-i18n="admin.totalUsers"></h3>
                         <div class="number" id="totalUsersCount">0</div>
                     </div>
                     <div class="stat-card">
-                        <h3 data-i18n="admin.activeUsers">Active Users</h3>
+                        <h3 data-i18n="admin.activeUsers"></h3>
                         <div class="number" id="activeUsersCount">0</div>
                     </div>
                     <div class="stat-card">
-                        <h3 data-i18n="admin.admins">Admins</h3>
+                        <h3 data-i18n="admin.admins"></h3>
                         <div class="number" id="adminCount">0</div>
                     </div>
                 </div>
@@ -578,13 +566,11 @@
                             type="text"
                             id="searchUserInput"
                             data-i18n-placeholder="admin.searchUser"
-                            placeholder="🔍 ค้นหาผู้ใช้..."
+                            placeholder=""
                         />
                     </div>
                     <div id="userTableContainer">
-                        <div class="loading" data-i18n="message.loading">
-                            ⏳ กำลังโหลดข้อมูล...
-                        </div>
+                        <div class="loading" data-i18n="message.loading"></div>
                     </div>
                 </div>
             </div>
@@ -593,20 +579,23 @@
         <!-- Change Role Modal -->
         <div class="modal" id="roleModal">
             <div class="modal-content">
-                <h3 data-i18n="admin.changeRole">เปลี่ยน Role</h3>
+                <h3 data-i18n="admin.changeRole"></h3>
                 <div class="form-group">
-                    <label data-i18n="admin.user">ผู้ใช้:</label>
+                    <label data-i18n="admin.user"></label>
                     <div
                         id="modalUserName"
                         style="font-weight: 500; margin-bottom: 10px"
                     ></div>
                 </div>
                 <div class="form-group">
-                    <label data-i18n="admin.newRole">Role ใหม่:</label>
+                    <label data-i18n="admin.newRole"></label>
                     <select id="newRoleSelect">
-                        <option value="USER">User</option>
-                        <option value="ADMIN">Admin</option>
-                        <option value="SUPER_ADMIN">Super Admin</option>
+                        <option value="USER" data-i18n="role.user"></option>
+                        <option value="ADMIN" data-i18n="role.admin"></option>
+                        <option
+                            value="SUPER_ADMIN"
+                            data-i18n="role.superAdmin"
+                        ></option>
                     </select>
                 </div>
                 <div class="modal-actions">
@@ -614,16 +603,12 @@
                         class="btn-cancel"
                         onclick="closeRoleModal()"
                         data-i18n="button.cancel"
-                    >
-                        ยกเลิก
-                    </button>
+                    ></button>
                     <button
                         class="btn-confirm"
                         onclick="confirmRoleChange()"
                         data-i18n="button.confirm"
-                    >
-                        ยืนยัน
-                    </button>
+                    ></button>
                 </div>
             </div>
         </div>
@@ -716,12 +701,12 @@
                         renderUrlTable();
                     } else {
                         document.getElementById("urlTableContainer").innerHTML =
-                            '<div class="empty">❌ ไม่สามารถโหลดข้อมูลได้</div>';
+                            `<div class="empty">${window.i18n.t("message.loadError")}</div>`;
                     }
                 } catch (e) {
                     console.error("Failed to load URLs:", e);
                     document.getElementById("urlTableContainer").innerHTML =
-                        '<div class="empty">❌ เกิดข้อผิดพลาดในการโหลดข้อมูล</div>';
+                        `<div class="empty">${window.i18n.t("message.error")}</div>`;
                 }
             }
 
@@ -751,8 +736,7 @@
             function renderUrlTable() {
                 const container = document.getElementById("urlTableContainer");
                 if (filteredUrls.length === 0) {
-                    container.innerHTML =
-                        '<div class="empty">ไม่พบข้อมูล URL</div>';
+                    container.innerHTML = `<div class="empty">${window.i18n.t("message.noUrls")}</div>`;
                     return;
                 }
 
@@ -760,13 +744,13 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>Short Link</th>
-                                <th>URL เป้าหมาย</th>
-                                <th>บันทึก</th>
-                                <th>👁️ Clicks</th>
-                                <th>ผู้สร้าง</th>
-                                <th>วันที่สร้าง</th>
-                                <th>คัดลอก</th>
+                                <th>${window.i18n.t("table.shortLink")}</th>
+                                <th>${window.i18n.t("table.targetUrl")}</th>
+                                <th>${window.i18n.t("table.memo")}</th>
+                                <th>${window.i18n.t("table.clicks")}</th>
+                                <th>${window.i18n.t("table.creator")}</th>
+                                <th>${window.i18n.t("table.createdAt")}</th>
+                                <th>${window.i18n.t("table.copy")}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -802,7 +786,7 @@
                                     <td class="date-cell">${formatDate(url.created_at)}</td>
                                     <td>
                                         <button class="copy-btn" onclick="copyUrl('${window.location.origin}/${url.code}')">
-                                            📋 คัดลอก
+                                            📋 ${window.i18n.t("table.copy")}
                                         </button>
                                     </td>
                                 </tr>
@@ -828,12 +812,12 @@
                         document.getElementById(
                             "userTableContainer",
                         ).innerHTML =
-                            '<div class="empty">❌ ไม่สามารถโหลดข้อมูลผู้ใช้ได้</div>';
+                            `<div class="empty">${window.i18n.t("message.loadError")}</div>`;
                     }
                 } catch (e) {
                     console.error("Failed to load users:", e);
                     document.getElementById("userTableContainer").innerHTML =
-                        '<div class="empty">❌ เกิดข้อผิดพลาดในการโหลดข้อมูล</div>';
+                        `<div class="empty">${window.i18n.t("message.error")}</div>`;
                 }
             }
 
@@ -853,8 +837,7 @@
             function renderUserTable() {
                 const container = document.getElementById("userTableContainer");
                 if (filteredUsers.length === 0) {
-                    container.innerHTML =
-                        '<div class="empty">ไม่พบข้อมูลผู้ใช้</div>';
+                    container.innerHTML = `<div class="empty">${window.i18n.t("message.noUsers")}</div>`;
                     return;
                 }
 
@@ -862,12 +845,12 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>ชื่อ</th>
-                                <th>อีเมล</th>
-                                <th>Role</th>
-                                <th>สถานะ</th>
-                                <th>เข้าสู่ระบบล่าสุด</th>
-                                <th>การจัดการ</th>
+                                <th>${window.i18n.t("table.name")}</th>
+                                <th>${window.i18n.t("table.email")}</th>
+                                <th>${window.i18n.t("table.role")}</th>
+                                <th>${window.i18n.t("table.status")}</th>
+                                <th>${window.i18n.t("table.lastLogin")}</th>
+                                <th>${window.i18n.t("table.manage")}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -884,11 +867,11 @@
                                     <td>${user.email}</td>
                                     <td>
                                         <span class="role-badge role-${user.role.toLowerCase().replace("_", "")}">
-                                            ${user.role === "SUPER_ADMIN" ? "Super Admin" : user.role === "ADMIN" ? "Admin" : "User"}
+                                            ${user.role === "SUPER_ADMIN" ? window.i18n.t("role.superAdmin") : user.role === "ADMIN" ? window.i18n.t("role.admin") : window.i18n.t("role.user")}
                                         </span>
                                     </td>
                                     <td class="${user.isActive ? "status-active" : "status-inactive"}">
-                                        ${user.isActive ? "✅ Active" : "❌ Inactive"}
+                                        ${user.isActive ? window.i18n.t("status.active") : window.i18n.t("status.inactive")}
                                     </td>
                                     <td class="date-cell">${user.lastLogin ? formatDate(user.lastLogin) : "-"}</td>
                                     <td>
@@ -896,10 +879,10 @@
                                             user.googleId !== currentUser.id
                                                 ? `
                                             <button class="action-btn btn-role" onclick="openRoleModal('${user.googleId}', '${user.name}', '${user.role}')">
-                                                เปลี่ยน Role
+                                                ${window.i18n.t("button.changeRole")}
                                             </button>
                                             <button class="action-btn btn-toggle" onclick="toggleUserStatus('${user.googleId}', ${user.isActive})">
-                                                ${user.isActive ? "ปิดใช้งาน" : "เปิดใช้งาน"}
+                                                ${user.isActive ? window.i18n.t("button.deactivate") : window.i18n.t("button.activate")}
                                             </button>
                                         `
                                                 : '<span style="color: #999;">-</span>'
@@ -940,7 +923,7 @@
                     );
 
                     if (res.ok) {
-                        alert("✅ เปลี่ยน Role สำเร็จ");
+                        alert(window.i18n.t("message.roleChangeSuccess"));
                         closeRoleModal();
                         loadUsers();
                     } else {
@@ -949,13 +932,18 @@
                     }
                 } catch (e) {
                     console.error("Failed to change role:", e);
-                    alert("❌ เกิดข้อผิดพลาด");
+                    alert(window.i18n.t("message.actionError"));
                 }
             }
 
             async function toggleUserStatus(userId, isActive) {
-                const action = isActive ? "ปิดใช้งาน" : "เปิดใช้งาน";
-                if (!confirm(`คุณต้องการ${action}ผู้ใช้นี้หรือไม่?`)) return;
+                const action = isActive
+                    ? window.i18n.t("button.deactivate")
+                    : window.i18n.t("button.activate");
+                const confirmMsg = window.i18n
+                    .t("message.confirmAction")
+                    .replace("{action}", action.toLowerCase());
+                if (!confirm(confirmMsg)) return;
 
                 try {
                     const res = await fetch(
@@ -966,7 +954,10 @@
                     );
 
                     if (res.ok) {
-                        alert(`✅ ${action}สำเร็จ`);
+                        const successMsg = window.i18n
+                            .t("message.actionSuccess")
+                            .replace("{action}", action);
+                        alert(successMsg);
                         loadUsers();
                     } else {
                         const error = await res.json();
@@ -974,7 +965,7 @@
                     }
                 } catch (e) {
                     console.error("Failed to toggle status:", e);
-                    alert("❌ เกิดข้อผิดพลาด");
+                    alert(window.i18n.t("message.actionError"));
                 }
             }
 
@@ -987,12 +978,23 @@
                 const diffHours = Math.floor(diffMs / 3600000);
                 const diffDays = Math.floor(diffMs / 86400000);
 
-                if (diffMins < 1) return "เมื่อสักครู่";
-                if (diffMins < 60) return `${diffMins} นาทีที่แล้ว`;
-                if (diffHours < 24) return `${diffHours} ชั่วโมงที่แล้ว`;
-                if (diffDays < 7) return `${diffDays} วันที่แล้ว`;
+                if (diffMins < 1) return window.i18n.t("time.justNow");
+                if (diffMins < 60)
+                    return window.i18n
+                        .t("time.minutesAgo")
+                        .replace("{n}", diffMins);
+                if (diffHours < 24)
+                    return window.i18n
+                        .t("time.hoursAgo")
+                        .replace("{n}", diffHours);
+                if (diffDays < 7)
+                    return window.i18n
+                        .t("time.daysAgo")
+                        .replace("{n}", diffDays);
 
-                return date.toLocaleDateString("th-TH", {
+                const locale =
+                    window.i18n.currentLang === "th" ? "th-TH" : "en-US";
+                return date.toLocaleDateString(locale, {
                     year: "numeric",
                     month: "short",
                     day: "numeric",
@@ -1003,7 +1005,7 @@
 
             function copyUrl(url) {
                 navigator.clipboard.writeText(url).then(() => {
-                    alert("✅ คัดลอกลิงก์แล้ว!");
+                    alert(window.i18n.t("message.linkCopied"));
                 });
             }
 
