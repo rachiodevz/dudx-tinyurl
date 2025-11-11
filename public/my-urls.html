@@ -356,7 +356,7 @@
                 <h1>🔗 จัดการ URL ของฉัน</h1>
                 <div class="nav">
                     <a href="/">🏠 หน้าแรก</a>
-                    <a href="/admin">📊 Admin</a>
+                    <a href="/admin" id="adminLink" class="hidden">📊 Admin</a>
                     <div class="user-info">
                         <img class="user-photo" id="userPhoto" src="" alt="" />
                         <span id="userName"></span>
@@ -450,6 +450,16 @@
                         document.getElementById("userName").textContent =
                             user.name;
                         document.getElementById("userPhoto").src = user.photo;
+
+                        // Show admin link only for ADMIN or SUPER_ADMIN
+                        const adminLink = document.getElementById("adminLink");
+                        if (
+                            user.role === "ADMIN" ||
+                            user.role === "SUPER_ADMIN"
+                        ) {
+                            adminLink.classList.remove("hidden");
+                        }
+
                         loadUrls();
                     } else {
                         document

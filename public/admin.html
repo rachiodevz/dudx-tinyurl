@@ -17,7 +17,7 @@
                 padding: 20px;
             }
             .container {
-                max-width: 1200px;
+                max-width: 1400px;
                 margin: 0 auto;
             }
             .header {
@@ -75,6 +75,51 @@
             .logout-btn:hover {
                 background: #c82333;
             }
+
+            /* Tabs */
+            .tabs {
+                background: white;
+                padding: 0;
+                border-radius: 12px 12px 0 0;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                display: flex;
+                gap: 0;
+                margin-bottom: -1px;
+            }
+            .tab-btn {
+                padding: 15px 30px;
+                border: none;
+                background: transparent;
+                cursor: pointer;
+                font-size: 15px;
+                font-weight: 500;
+                color: #666;
+                border-bottom: 3px solid transparent;
+                transition: all 0.2s;
+            }
+            .tab-btn:hover {
+                color: #007bff;
+                background: #f8f9fa;
+            }
+            .tab-btn.active {
+                color: #007bff;
+                border-bottom-color: #007bff;
+                background: white;
+            }
+            .tab-btn:first-child {
+                border-radius: 12px 0 0 0;
+            }
+            .tab-btn:last-child {
+                border-radius: 0 12px 0 0;
+            }
+
+            .tab-content {
+                display: none;
+            }
+            .tab-content.active {
+                display: block;
+            }
+
             .stats {
                 display: grid;
                 grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -100,7 +145,7 @@
             .content {
                 background: white;
                 padding: 30px;
-                border-radius: 12px;
+                border-radius: 0 0 12px 12px;
                 box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             }
             .search-box {
@@ -137,7 +182,7 @@
                 background: #f8f9fa;
             }
             .code-cell {
-                font-family: system-ui, sans-serif;
+                font-family: "Courier New", monospace;
                 min-width: 120px;
             }
             .url-cell {
@@ -180,6 +225,120 @@
             .copy-btn:hover {
                 background: #0056b3;
             }
+
+            /* User Management Styles */
+            .role-badge {
+                display: inline-block;
+                padding: 4px 12px;
+                border-radius: 12px;
+                font-size: 12px;
+                font-weight: 600;
+            }
+            .role-user {
+                background: #e3f2fd;
+                color: #1976d2;
+            }
+            .role-admin {
+                background: #fff3e0;
+                color: #f57c00;
+            }
+            .role-superadmin {
+                background: #fce4ec;
+                color: #c2185b;
+            }
+            .status-active {
+                color: #28a745;
+                font-weight: 600;
+            }
+            .status-inactive {
+                color: #dc3545;
+                font-weight: 600;
+            }
+            .action-btn {
+                padding: 6px 12px;
+                border: none;
+                border-radius: 6px;
+                cursor: pointer;
+                font-size: 12px;
+                margin-right: 5px;
+            }
+            .btn-toggle {
+                background: #ffc107;
+                color: #000;
+            }
+            .btn-toggle:hover {
+                background: #ffb300;
+            }
+            .btn-role {
+                background: #17a2b8;
+                color: white;
+            }
+            .btn-role:hover {
+                background: #138496;
+            }
+            .modal {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 1000;
+                align-items: center;
+                justify-content: center;
+            }
+            .modal.show {
+                display: flex;
+            }
+            .modal-content {
+                background: white;
+                padding: 30px;
+                border-radius: 12px;
+                max-width: 400px;
+                width: 90%;
+            }
+            .modal-content h3 {
+                margin-bottom: 20px;
+            }
+            .modal-actions {
+                display: flex;
+                gap: 10px;
+                margin-top: 20px;
+                justify-content: flex-end;
+            }
+            .btn-cancel {
+                background: #6c757d;
+                color: white;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 6px;
+                cursor: pointer;
+            }
+            .btn-confirm {
+                background: #007bff;
+                color: white;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 6px;
+                cursor: pointer;
+            }
+            .form-group {
+                margin-bottom: 15px;
+            }
+            .form-group label {
+                display: block;
+                margin-bottom: 5px;
+                font-weight: 500;
+            }
+            .form-group select {
+                width: 100%;
+                padding: 8px;
+                border: 1px solid #ddd;
+                border-radius: 6px;
+                font-size: 14px;
+            }
+
             .loading {
                 text-align: center;
                 padding: 40px;
@@ -268,32 +427,105 @@
                 </div>
             </div>
 
-            <div class="stats">
-                <div class="stat-card">
-                    <h3>จำนวน URL ทั้งหมด</h3>
-                    <div class="number" id="totalUrls">0</div>
+            <!-- Tabs -->
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab('urls')">
+                    🔗 URL Management
+                </button>
+                <button class="tab-btn" onclick="switchTab('users')">
+                    👥 User Management
+                </button>
+            </div>
+
+            <!-- URLs Tab -->
+            <div class="tab-content active" id="urlsTab">
+                <div class="stats">
+                    <div class="stat-card">
+                        <h3>จำนวน URL ทั้งหมด</h3>
+                        <div class="number" id="totalUrls">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>สร้างวันนี้</h3>
+                        <div class="number" id="todayUrls">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>ผู้ใช้งานทั้งหมด</h3>
+                        <div class="number" id="totalUsers">0</div>
+                    </div>
                 </div>
-                <div class="stat-card">
-                    <h3>สร้างวันนี้</h3>
-                    <div class="number" id="todayUrls">0</div>
-                </div>
-                <div class="stat-card">
-                    <h3>ผู้ใช้งานทั้งหมด</h3>
-                    <div class="number" id="totalUsers">0</div>
+
+                <div class="content">
+                    <div class="search-box">
+                        <input
+                            type="text"
+                            id="searchUrlInput"
+                            placeholder="🔍 ค้นหา URL, รหัส, หรือผู้สร้าง..."
+                        />
+                    </div>
+                    <div id="urlTableContainer">
+                        <div class="loading">⏳ กำลังโหลดข้อมูล...</div>
+                    </div>
                 </div>
             </div>
 
-            <div class="content">
-                <div class="search-box">
-                    <input
-                        type="text"
-                        id="searchInput"
-                        placeholder="🔍 ค้นหา URL, รหัส, หรือผู้สร้าง..."
-                    />
+            <!-- Users Tab -->
+            <div class="tab-content" id="usersTab">
+                <div class="stats">
+                    <div class="stat-card">
+                        <h3>จำนวนผู้ใช้ทั้งหมด</h3>
+                        <div class="number" id="totalUsersCount">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Active Users</h3>
+                        <div class="number" id="activeUsersCount">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Admins</h3>
+                        <div class="number" id="adminCount">0</div>
+                    </div>
                 </div>
 
-                <div id="tableContainer">
-                    <div class="loading">⏳ กำลังโหลดข้อมูล...</div>
+                <div class="content">
+                    <div class="search-box">
+                        <input
+                            type="text"
+                            id="searchUserInput"
+                            placeholder="🔍 ค้นหาผู้ใช้..."
+                        />
+                    </div>
+                    <div id="userTableContainer">
+                        <div class="loading">⏳ กำลังโหลดข้อมูล...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Change Role Modal -->
+        <div class="modal" id="roleModal">
+            <div class="modal-content">
+                <h3>เปลี่ยน Role</h3>
+                <div class="form-group">
+                    <label>ผู้ใช้:</label>
+                    <div
+                        id="modalUserName"
+                        style="font-weight: 500; margin-bottom: 10px"
+                    ></div>
+                </div>
+                <div class="form-group">
+                    <label>Role ใหม่:</label>
+                    <select id="newRoleSelect">
+                        <option value="USER">User</option>
+                        <option value="ADMIN">Admin</option>
+                        <option value="SUPER_ADMIN">Super Admin</option>
+                    </select>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn-cancel" onclick="closeRoleModal()">
+                        ยกเลิก
+                    </button>
+                    <button class="btn-confirm" onclick="confirmRoleChange()">
+                        ยืนยัน
+                    </button>
                 </div>
             </div>
         </div>
@@ -301,13 +533,17 @@
         <script>
             let allUrls = [];
             let filteredUrls = [];
+            let allUsers = [];
+            let filteredUsers = [];
+            let currentUser = null;
+            let selectedUserId = null;
 
             // Check authentication
             async function checkAuth() {
                 try {
                     const res = await fetch("/auth/user");
                     if (res.ok) {
-                        const user = await res.json();
+                        currentUser = await res.json();
                         document
                             .getElementById("loginContainer")
                             .classList.add("hidden");
@@ -315,9 +551,11 @@
                             .getElementById("adminPanel")
                             .classList.remove("hidden");
                         document.getElementById("userName").textContent =
-                            user.name;
-                        document.getElementById("userPhoto").src = user.photo;
+                            currentUser.name;
+                        document.getElementById("userPhoto").src =
+                            currentUser.photo;
                         loadUrls();
+                        loadUsers();
                     } else {
                         document
                             .getElementById("loginContainer")
@@ -344,28 +582,42 @@
                     window.location.href = "/auth/logout";
                 });
 
-            // Load URLs from API
+            // Switch tabs
+            function switchTab(tab) {
+                const tabs = ["urls", "users"];
+                tabs.forEach((t) => {
+                    document
+                        .getElementById(t + "Tab")
+                        .classList.remove("active");
+                });
+                document.getElementById(tab + "Tab").classList.add("active");
+
+                const btns = document.querySelectorAll(".tab-btn");
+                btns.forEach((btn) => btn.classList.remove("active"));
+                event.target.classList.add("active");
+            }
+
+            // ===== URLs Management =====
             async function loadUrls() {
                 try {
                     const res = await fetch("/api/urls");
                     if (res.ok) {
                         allUrls = await res.json();
                         filteredUrls = allUrls;
-                        updateStats();
-                        renderTable();
+                        updateUrlStats();
+                        renderUrlTable();
                     } else {
-                        document.getElementById("tableContainer").innerHTML =
+                        document.getElementById("urlTableContainer").innerHTML =
                             '<div class="empty">❌ ไม่สามารถโหลดข้อมูลได้</div>';
                     }
                 } catch (e) {
                     console.error("Failed to load URLs:", e);
-                    document.getElementById("tableContainer").innerHTML =
+                    document.getElementById("urlTableContainer").innerHTML =
                         '<div class="empty">❌ เกิดข้อผิดพลาดในการโหลดข้อมูล</div>';
                 }
             }
 
-            // Update statistics
-            function updateStats() {
+            function updateUrlStats() {
                 const total = allUrls.length;
                 const today = allUrls.filter((url) => {
                     const created = new Date(url.created_at);
@@ -388,10 +640,8 @@
                 document.getElementById("totalUsers").textContent = uniqueUsers;
             }
 
-            // Render table
-            function renderTable() {
-                const container = document.getElementById("tableContainer");
-
+            function renderUrlTable() {
+                const container = document.getElementById("urlTableContainer");
                 if (filteredUrls.length === 0) {
                     container.innerHTML =
                         '<div class="empty">ไม่พบข้อมูล URL</div>';
@@ -417,10 +667,7 @@
                                 <tr>
                                     <td class="code-cell">
                                         <a href="${window.location.origin}/${url.code}" target="_blank"
-                                           style="color: #007bff; text-decoration: none; font-weight: 600; font-family: 'Courier New', monospace; font-size: 14px;"
-                                           onmouseover="this.style.textDecoration='underline'"
-                                           onmouseout="this.style.textDecoration='none'"
-                                           title="คลิกเพื่อทดสอบ: ${window.location.origin}/${url.code}">
+                                           style="color: #007bff; text-decoration: none; font-weight: 600;">
                                             🔗 ${url.code}
                                         </a>
                                     </td>
@@ -453,11 +700,173 @@
                         </tbody>
                     </table>
                 `;
-
                 container.innerHTML = table;
             }
 
-            // Format date
+            // ===== User Management =====
+            async function loadUsers() {
+                try {
+                    const res = await fetch("/api/admin/users");
+                    if (res.ok) {
+                        allUsers = await res.json();
+                        filteredUsers = allUsers;
+                        updateUserStats();
+                        renderUserTable();
+                    } else {
+                        document.getElementById(
+                            "userTableContainer",
+                        ).innerHTML =
+                            '<div class="empty">❌ ไม่สามารถโหลดข้อมูลผู้ใช้ได้</div>';
+                    }
+                } catch (e) {
+                    console.error("Failed to load users:", e);
+                    document.getElementById("userTableContainer").innerHTML =
+                        '<div class="empty">❌ เกิดข้อผิดพลาดในการโหลดข้อมูล</div>';
+                }
+            }
+
+            function updateUserStats() {
+                const total = allUsers.length;
+                const active = allUsers.filter((u) => u.isActive).length;
+                const admins = allUsers.filter(
+                    (u) => u.role === "ADMIN" || u.role === "SUPER_ADMIN",
+                ).length;
+
+                document.getElementById("totalUsersCount").textContent = total;
+                document.getElementById("activeUsersCount").textContent =
+                    active;
+                document.getElementById("adminCount").textContent = admins;
+            }
+
+            function renderUserTable() {
+                const container = document.getElementById("userTableContainer");
+                if (filteredUsers.length === 0) {
+                    container.innerHTML =
+                        '<div class="empty">ไม่พบข้อมูลผู้ใช้</div>';
+                    return;
+                }
+
+                const table = `
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ชื่อ</th>
+                                <th>อีเมล</th>
+                                <th>Role</th>
+                                <th>สถานะ</th>
+                                <th>เข้าสู่ระบบล่าสุด</th>
+                                <th>การจัดการ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${filteredUsers
+                                .map(
+                                    (user) => `
+                                <tr>
+                                    <td class="user-cell">
+                                        <div style="display: flex; align-items: center; gap: 10px;">
+                                            <img src="${user.photo}" alt="" style="width: 32px; height: 32px; border-radius: 50%;">
+                                            <div class="user-name">${user.name}</div>
+                                        </div>
+                                    </td>
+                                    <td>${user.email}</td>
+                                    <td>
+                                        <span class="role-badge role-${user.role.toLowerCase().replace("_", "")}">
+                                            ${user.role === "SUPER_ADMIN" ? "Super Admin" : user.role === "ADMIN" ? "Admin" : "User"}
+                                        </span>
+                                    </td>
+                                    <td class="${user.isActive ? "status-active" : "status-inactive"}">
+                                        ${user.isActive ? "✅ Active" : "❌ Inactive"}
+                                    </td>
+                                    <td class="date-cell">${user.lastLogin ? formatDate(user.lastLogin) : "-"}</td>
+                                    <td>
+                                        ${
+                                            user.googleId !== currentUser.id
+                                                ? `
+                                            <button class="action-btn btn-role" onclick="openRoleModal('${user.googleId}', '${user.name}', '${user.role}')">
+                                                เปลี่ยน Role
+                                            </button>
+                                            <button class="action-btn btn-toggle" onclick="toggleUserStatus('${user.googleId}', ${user.isActive})">
+                                                ${user.isActive ? "ปิดใช้งาน" : "เปิดใช้งาน"}
+                                            </button>
+                                        `
+                                                : '<span style="color: #999;">-</span>'
+                                        }
+                                    </td>
+                                </tr>
+                            `,
+                                )
+                                .join("")}
+                        </tbody>
+                    </table>
+                `;
+                container.innerHTML = table;
+            }
+
+            function openRoleModal(userId, userName, currentRole) {
+                selectedUserId = userId;
+                document.getElementById("modalUserName").textContent = userName;
+                document.getElementById("newRoleSelect").value = currentRole;
+                document.getElementById("roleModal").classList.add("show");
+            }
+
+            function closeRoleModal() {
+                document.getElementById("roleModal").classList.remove("show");
+                selectedUserId = null;
+            }
+
+            async function confirmRoleChange() {
+                const newRole = document.getElementById("newRoleSelect").value;
+                try {
+                    const res = await fetch(
+                        `/api/admin/users/${selectedUserId}/role`,
+                        {
+                            method: "PUT",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ role: newRole }),
+                        },
+                    );
+
+                    if (res.ok) {
+                        alert("✅ เปลี่ยน Role สำเร็จ");
+                        closeRoleModal();
+                        loadUsers();
+                    } else {
+                        const error = await res.json();
+                        alert("❌ " + error.error);
+                    }
+                } catch (e) {
+                    console.error("Failed to change role:", e);
+                    alert("❌ เกิดข้อผิดพลาด");
+                }
+            }
+
+            async function toggleUserStatus(userId, isActive) {
+                const action = isActive ? "ปิดใช้งาน" : "เปิดใช้งาน";
+                if (!confirm(`คุณต้องการ${action}ผู้ใช้นี้หรือไม่?`)) return;
+
+                try {
+                    const res = await fetch(
+                        `/api/admin/users/${userId}/toggle-status`,
+                        {
+                            method: "PUT",
+                        },
+                    );
+
+                    if (res.ok) {
+                        alert(`✅ ${action}สำเร็จ`);
+                        loadUsers();
+                    } else {
+                        const error = await res.json();
+                        alert("❌ " + error.error);
+                    }
+                } catch (e) {
+                    console.error("Failed to toggle status:", e);
+                    alert("❌ เกิดข้อผิดพลาด");
+                }
+            }
+
+            // ===== Utilities =====
             function formatDate(dateStr) {
                 const date = new Date(dateStr);
                 const now = new Date();
@@ -480,7 +889,6 @@
                 });
             }
 
-            // Copy URL to clipboard
             function copyUrl(url) {
                 navigator.clipboard.writeText(url).then(() => {
                     alert("✅ คัดลอกลิงก์แล้ว!");
@@ -489,7 +897,7 @@
 
             // Search functionality
             document
-                .getElementById("searchInput")
+                .getElementById("searchUrlInput")
                 ?.addEventListener("input", (e) => {
                     const query = e.target.value.toLowerCase();
                     filteredUrls = allUrls.filter((url) => {
@@ -505,7 +913,20 @@
                                         .includes(query)))
                         );
                     });
-                    renderTable();
+                    renderUrlTable();
+                });
+
+            document
+                .getElementById("searchUserInput")
+                ?.addEventListener("input", (e) => {
+                    const query = e.target.value.toLowerCase();
+                    filteredUsers = allUsers.filter((user) => {
+                        return (
+                            user.name.toLowerCase().includes(query) ||
+                            user.email.toLowerCase().includes(query)
+                        );
+                    });
+                    renderUserTable();
                 });
 
             // Initialize

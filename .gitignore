@@ -8,6 +8,7 @@ node_modules/
 
 # Database files
 *.db
+*.nedb
 data/
 
 # OS files
@@ -24,6 +25,10 @@ Thumbs.db
 logs/
 *.log
 npm-debug.log*
+server.log
 
 # Session files
 sessions/
+
+# Old server file (replaced by init.js)
+server.js

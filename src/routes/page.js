@@ -8,7 +8,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Initialize page routes
-export default function initPageRoutes(urls) {
+export default function initPageRoutes(urlShortener) {
   // ----- authentication routes -----
   router.get(
     "/auth/google",
@@ -30,7 +30,15 @@ export default function initPageRoutes(urls) {
 
   router.get("/auth/user", (req, res) => {
     if (req.isAuthenticated()) {
-      res.json(req.user);
+      // Return user info including role for frontend
+      res.json({
+        googleId: req.user.googleId,
+        email: req.user.email,
+        name: req.user.name,
+        photo: req.user.photo,
+        role: req.user.role,
+        isActive: req.user.isActive,
+      });
     } else {
       res.status(401).json({ error: "Not authenticated" });
     }
@@ -38,21 +46,21 @@ export default function initPageRoutes(urls) {
 
   // ----- page routes (without .html) -----
   router.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "..", "public", "index.html"));
+    res.sendFile(path.join(__dirname, "..", "..", "public", "index.html"));
   });
 
   router.get("/my-urls", (req, res) => {
-    res.sendFile(path.join(__dirname, "..", "public", "my-urls.html"));
+    res.sendFile(path.join(__dirname, "..", "..", "public", "my-urls.html"));
   });
 
   router.get("/admin", (req, res) => {
-    res.sendFile(path.join(__dirname, "..", "public", "admin.html"));
+    res.sendFile(path.join(__dirname, "..", "..", "public", "admin.html"));
   });
 
   // ----- URL redirect (MUST BE LAST) -----
   router.get("/:code", (req, res) => {
-    const found = urls.find((u) => u.code === req.params.code);
-    if (found) res.redirect(found.target);
+    const url = urlShortener.getUrlByCode(req.params.code);
+    if (url) res.redirect(url.target);
     else res.status(404).send("Not found");
   });
 

@@ -163,6 +163,8 @@
             >
             <a
                 href="/admin"
+                id="adminLink"
+                class="hidden"
                 style="
                     text-decoration: none;
                     color: #007bff;
@@ -253,6 +255,17 @@
                         userBar.classList.remove("hidden");
                         userName.textContent = user.name;
                         userPhoto.src = user.photo;
+
+                        // Show admin link only for ADMIN or SUPER_ADMIN
+                        const adminLink = document.getElementById("adminLink");
+                        if (
+                            user.role === "ADMIN" ||
+                            user.role === "SUPER_ADMIN"
+                        ) {
+                            adminLink.classList.remove("hidden");
+                        } else {
+                            adminLink.classList.add("hidden");
+                        }
                     } else {
                         // User is not authenticated
                         loginContainer.classList.remove("hidden");
