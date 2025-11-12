@@ -40,32 +40,6 @@
             <span data-i18n="guest.timesPerDay">ครั้ง/วัน</span>
         </div>
 
-        <!-- Signup Modal -->
-        <div class="modal hidden" id="signupModal">
-            <div class="modal-content">
-                <span class="modal-close" id="modalClose">&times;</span>
-                <p class="quota-message" data-i18n="guest.quotaExhausted">
-                    ⚠️ คุณใช้ quota หมดแล้ว สมัครฟรีเพื่อรับสิทธิพิเศษ:
-                </p>
-                <ul class="benefits-list">
-                    <li data-i18n="guest.benefit1">✅ สร้างลิงก์ไม่จำกัด</li>
-                    <li data-i18n="guest.benefit2">✨ กำหนดชื่อลิงก์เองได้</li>
-                    <li data-i18n="guest.benefit3">
-                        📝 แก้ไข ลบ และเพิ่ม memo ได้
-                    </li>
-                    <li data-i18n="guest.benefit4">⏰ กำหนดวันหมดอายุเองได้</li>
-                    <li data-i18n="guest.benefit5">📊 ดูสถิติการคลิก</li>
-                </ul>
-                <button
-                    class="signup-btn"
-                    onclick="window.location.href='/auth/google'"
-                    data-i18n="guest.signup"
-                >
-                    สมัครสมาชิกฟรี
-                </button>
-            </div>
-        </div>
-
         <!-- Main Form -->
         <div class="card" id="mainApp">
             <h2 data-i18n="home.title">สร้างลิงก์สั้น</h2>
@@ -121,6 +95,7 @@
             <div class="result" id="result"></div>
         </div>
 
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="/i18n.js"></script>
         <script src="/navbar.js"></script>
         <script>
@@ -148,28 +123,46 @@
                 }
             }
 
-            // Show signup modal
+            // Show signup modal with SweetAlert
             function showSignupModal() {
-                document
-                    .getElementById("signupModal")
-                    .classList.remove("hidden");
-            }
+                const currentLang = window.i18n?.getLang() || "th";
+                const benefits =
+                    currentLang === "th"
+                        ? [
+                              "✅ สร้างลิงก์ไม่จำกัด",
+                              "✨ กำหนดชื่อลิงก์เองได้",
+                              "📝 แก้ไข ลบ และเพิ่ม memo ได้",
+                              "⏰ กำหนดวันหมดอายุเองได้",
+                              "📊 ดูสถิติการคลิก",
+                          ]
+                        : [
+                              "✅ Unlimited URL creation",
+                              "✨ Custom link names",
+                              "📝 Edit, delete and add memo",
+                              "⏰ Custom expiration dates",
+                              "📊 View click statistics",
+                          ];
 
-            // Close modal
-            document.addEventListener("DOMContentLoaded", () => {
-                const modal = document.getElementById("signupModal");
-                const modalClose = document.getElementById("modalClose");
-
-                modalClose.addEventListener("click", () => {
-                    modal.classList.add("hidden");
-                });
-
-                modal.addEventListener("click", (e) => {
-                    if (e.target === modal) {
-                        modal.classList.add("hidden");
+                Swal.fire({
+                    icon: "warning",
+                    title:
+                        window.i18n?.t("guest.quotaExhausted") ||
+                        "⚠️ คุณใช้ quota หมดแล้ว",
+                    html:
+                        '<ul style="text-align: left; padding-left: 20px;">' +
+                        benefits.map((b) => "<li>" + b + "</li>").join("") +
+                        "</ul>",
+                    confirmButtonText:
+                        window.i18n?.t("guest.signup") || "สมัครสมาชิกฟรี",
+                    confirmButtonColor: "#667eea",
+                    showCancelButton: true,
+                    cancelButtonText: currentLang === "th" ? "ปิด" : "Close",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "/auth/google";
                     }
                 });
-            });
+            }
 
             // Initialize navbar with callback
             const navbar = new Navbar({
@@ -249,6 +242,12 @@
                     const result = document.getElementById("result");
 
                     // Check if guest quota exhausted
+                    console.log(
+                        "Debug: isGuest=",
+                        isGuest,
+                        "guestRemaining=",
+                        guestRemaining,
+                    );
                     if (
                         isGuest &&
                         guestRemaining !== null &&
