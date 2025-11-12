@@ -85,6 +85,13 @@ class Navbar {
     document.body.insertBefore(navbarContainer, document.body.firstChild);
 
     this.setupEventListeners();
+
+    // Translate navbar elements after injection
+    setTimeout(() => {
+      if (window.i18n) {
+        window.i18n.updatePage();
+      }
+    }, 0);
   }
 
   setupEventListeners() {
