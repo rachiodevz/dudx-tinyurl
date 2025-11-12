@@ -18,6 +18,24 @@ export const config = {
     .split(",")
     .map((e) => e.trim())
     .filter((e) => e),
+
+  // Runtime configurable settings (can be updated via admin panel later)
+  sessionMaxAgeDays: parseInt(process.env.SESSION_MAX_AGE_DAYS || "7", 10),
+  guestDailyLimit: parseInt(process.env.GUEST_DAILY_LIMIT || "3", 10),
+
+  // Method to update config at runtime
+  updateConfig(key, value) {
+    if (this.hasOwnProperty(key)) {
+      this[key] = value;
+      return true;
+    }
+    return false;
+  },
+
+  // Computed getters for derived values
+  get sessionMaxAge() {
+    return this.sessionMaxAgeDays * 24 * 60 * 60 * 1000;
+  },
 };
 
 export default config;

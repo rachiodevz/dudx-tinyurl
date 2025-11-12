@@ -1,4 +1,5 @@
 import express from "express";
+import config from "../config/index.js";
 import { requireAuth } from "../middleware/auth.js";
 import { checkGuestLimit, getClientIp } from "../middleware/guest.js";
 import QRCode from "qrcode";
@@ -89,78 +90,82 @@ export default function initApiRoutes(urlShortener, guestDb) {
 
   // ----- API: shorten -----
   // Apply guest limit check (skips if authenticated)
-  router.post("/shorten", checkGuestLimit(guestDb, 3), async (req, res) => {
-    const { url, memo, customCode, expiresInDays } = req.body;
-    if (!url) return res.status(400).json({ error: "Missing URL" });
-
-    try {
-      const isAuthenticated = req.isAuthenticated();
-
-      // Guest users cannot use custom codes
-      if (!isAuthenticated && customCode) {
-        return res.status(403).json({
-          error: "Custom codes are only available for registered users",
-          requiresLogin: true,
-        });
-      }
-
-      // Create short URL
-      // Guest users: auto-expire in 90 days, no memo
-      const finalExpiryDays = isAuthenticated ? expiresInDays : 90;
-      const finalMemo = isAuthenticated ? memo : "";
-
-      const entry = urlShortener.createShortUrl(
-        url,
-        isAuthenticated ? req.user : null,
-        finalMemo,
-        isAuthenticated ? customCode : null,
-        finalExpiryDays,
-      );
-
-      // Record guest usage if not authenticated
-      if (!isAuthenticated) {
-        try {
-          await guestDb.incrementUsage(req.guestId, entry.code);
-        } catch (err) {
-          console.error("Failed to record guest usage:", err);
-        }
-      }
-
-      // Generate QR code with DUDX branding
-      const shortUrl = `${req.protocol}://${req.get("host")}/${entry.code}`;
-      let qrCode;
+  router.post(
+    "/shorten",
+    checkGuestLimit(guestDb, config.guestDailyLimit),
+    async (req, res) => {
+      const { url, memo, customCode, expiresInDays } = req.body;
+      if (!url) return res.status(400).json({ error: "Missing URL" });
 
       try {
-        qrCode = await generateBrandedQRCode(shortUrl, {
-          size: 400,
-          logoText: "DUDX",
-          includeUrl: true,
-        });
-      } catch (error) {
-        console.error("Branded QR failed, using simple:", error);
-        qrCode = await generateSimpleQRCode(shortUrl, 300);
-      }
+        const isAuthenticated = req.isAuthenticated();
 
-      // Return response with QR code and remaining limit info for guests
-      const response = {
-        short: shortUrl,
-        code: entry.code,
-        target: entry.target,
-        qrCode: qrCode,
-      };
+        // Guest users cannot use custom codes
+        if (!isAuthenticated && customCode) {
+          return res.status(403).json({
+            error: "Custom codes are only available for registered users",
+            requiresLogin: true,
+          });
+        }
 
-      if (!isAuthenticated && req.guestLimit) {
-        response.guestInfo = {
-          remaining: req.guestLimit.remaining - 1,
-          limit: req.guestLimit.limit,
+        // Create short URL
+        // Guest users: auto-expire in 90 days, no memo
+        const finalExpiryDays = isAuthenticated ? expiresInDays : 90;
+        const finalMemo = isAuthenticated ? memo : "";
+
+        const entry = urlShortener.createShortUrl(
+          url,
+          isAuthenticated ? req.user : null,
+          finalMemo,
+          isAuthenticated ? customCode : null,
+          finalExpiryDays,
+        );
+
+        // Record guest usage if not authenticated
+        if (!isAuthenticated) {
+          try {
+            await guestDb.incrementUsage(req.guestId, entry.code);
+          } catch (err) {
+            console.error("Failed to record guest usage:", err);
+          }
+        }
+
+        // Generate QR code with DUDX branding
+        const shortUrl = `${req.protocol}://${req.get("host")}/${entry.code}`;
+        let qrCode;
+
+        try {
+          qrCode = await generateBrandedQRCode(shortUrl, {
+            size: 400,
+            logoText: "DUDX",
+            includeUrl: true,
+          });
+        } catch (error) {
+          console.error("Branded QR failed, using simple:", error);
+          qrCode = await generateSimpleQRCode(shortUrl, 300);
+        }
+
+        // Return response with QR code and remaining limit info for guests
+        const response = {
+          short: shortUrl,
+          code: entry.code,
+          target: entry.target,
+          qrCode: qrCode,
         };
-      }
 
-      res.json(response);
-    } catch (error) {
-      res.status(400).json({ error: error.message });
-    }
-  });
+        if (!isAuthenticated && req.guestLimit) {
+          response.guestInfo = {
+            remaining: req.guestLimit.remaining - 1,
+            limit: req.guestLimit.limit,
+          };
+        }
+
+        res.json(response);
+      } catch (error) {
+        res.status(400).json({ error: error.message });
+      }
+    },
+  );
 
   // ----- API: generate QR code -----
   router.get("/qr/:code", requireAuth, async (req, res) => {

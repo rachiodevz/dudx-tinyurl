@@ -34,7 +34,7 @@ export function createApp(urlShortener, userDb, guestDb) {
       saveUninitialized: false,
       cookie: {
         secure: false,
-        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+        maxAge: config.sessionMaxAge,
       },
       store: new NedbSessionStore({
         filename: path.join(__dirname, "..", "data", "sessions.nedb"),
