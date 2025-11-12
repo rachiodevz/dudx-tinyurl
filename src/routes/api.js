@@ -13,7 +13,7 @@ const router = express.Router();
 // Initialize API routes
 export default function initApiRoutes(urlShortener, guestDb) {
   // ----- API: get current user info -----
-  router.get("/user", (req, res) => {
+  router.get("/user", async (req, res) => {
     if (req.isAuthenticated()) {
       res.json({
         isAuthenticated: true,
@@ -25,7 +25,27 @@ export default function initApiRoutes(urlShortener, guestDb) {
         isActive: req.user.isActive,
       });
     } else {
-      res.json({ isAuthenticated: false });
+      // For guests, include remaining URL count
+      const guestId = req.cookies.guest_id;
+      if (guestId) {
+        try {
+          const limitCheck = await guestDb.checkLimit(
+            guestId,
+            config.guestCreateUrlDailyLimit,
+          );
+          res.json({
+            isAuthenticated: false,
+            guestInfo: {
+              remaining: limitCheck.remaining,
+              limit: limitCheck.limit,
+            },
+          });
+        } catch (error) {
+          res.json({ isAuthenticated: false });
+        }
+      } else {
+        res.json({ isAuthenticated: false });
+      }
     }
   });
 

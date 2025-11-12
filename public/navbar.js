@@ -213,7 +213,7 @@ class Navbar {
 
       if (!data.isAuthenticated) {
         this.hideNavbar();
-        this.onAuthChange?.(null);
+        this.onAuthChange?.(data); // Pass guest data (includes guestInfo)
         return null;
       }
 

@@ -89,6 +89,8 @@ const translations = {
     "guest.signupButton": "สมัครสมาชิกฟรี",
     "guest.remaining": "เหลืออีก",
     "guest.timesPerDay": "ครั้ง/วัน",
+    "guest.quotaExhausted":
+      "⚠️ คุณใช้ quota หมดแล้ว สมัครฟรีเพื่อรับสิทธิพิเศษ:",
     "guest.limitExceeded":
       "คุณใช้งานครบ 3 ครั้งต่อวันแล้ว กรุณาสมัครสมาชิกเพื่อใช้งานไม่จำกัด",
 
@@ -267,6 +269,8 @@ const translations = {
     "guest.signupButton": "Sign Up Free",
     "guest.remaining": "Remaining",
     "guest.timesPerDay": "times/day",
+    "guest.quotaExhausted":
+      "⚠️ You've used all your quota. Sign up free for premium benefits:",
     "guest.limitExceeded":
       "You've reached the 3 URLs per day limit. Please sign up for unlimited access!",
 
