@@ -4,7 +4,7 @@ class Navbar {
     // Configuration: array of menu items
     this.menuItems = config.menuItems || [
       {
-        href: "/",
+        href: "/create",
         i18nKey: "nav.create",
         id: "createLink",
         icon: "✨",

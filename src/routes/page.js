@@ -18,7 +18,7 @@ export default function initPageRoutes(urlShortener) {
   router.get(
     "/auth/google/callback",
     passport.authenticate("google", { failureRedirect: "/" }),
-    (req, res) => res.redirect("/"),
+    (req, res) => res.redirect("/create"),
   );
 
   router.get("/auth/logout", (req, res) => {
@@ -46,6 +46,12 @@ export default function initPageRoutes(urlShortener) {
 
   // ----- page routes (without .html) -----
   router.get("/", (req, res) => {
+    res.sendFile(
+      path.join(__dirname, "..", "..", "public", "page", "create.html"),
+    );
+  });
+
+  router.get("/create", (req, res) => {
     res.sendFile(
       path.join(__dirname, "..", "..", "public", "page", "create.html"),
     );
