@@ -8,6 +8,48 @@
         <link rel="stylesheet" href="/css/create.css" />
     </head>
     <body>
+        <!-- Navbar (for logged-in users only) -->
+        <nav class="navbar hidden" id="navbar">
+            <div class="navbar-container">
+                <a href="/" class="navbar-brand">
+                    <span class="brand-icon">🔗</span>
+                    DUDX
+                </a>
+                <div class="navbar-menu">
+                    <a
+                        href="/create"
+                        class="navbar-link active"
+                        data-i18n="nav.create"
+                        >สร้างลิงก์</a
+                    >
+                    <a
+                        href="/my-urls"
+                        class="navbar-link"
+                        data-i18n="nav.myUrls"
+                        >จัดการลิงก์</a
+                    >
+                    <a href="/chat" class="navbar-link" data-i18n="nav.chat"
+                        >💬 Chat</a
+                    >
+                    <button
+                        class="navbar-link"
+                        id="logoutBtn"
+                        data-i18n="nav.logout"
+                    >
+                        ออกจากระบบ
+                    </button>
+                    <div class="language-buttons">
+                        <button class="lang-btn" id="langBtnTh" data-lang="th">
+                            TH
+                        </button>
+                        <button class="lang-btn" id="langBtnEn" data-lang="en">
+                            EN
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
         <!-- Guest Benefits Banner (hidden for logged-in users) -->
         <div class="benefits-banner hidden" id="benefitsBanner">
             <div class="benefits-content">
@@ -115,26 +157,41 @@
             // Check authentication on page load
             async function checkAuth() {
                 try {
-                    // Wait for navbar to be ready
-                    while (!window.navbar) {
-                        await new Promise((resolve) => setTimeout(resolve, 50));
-                    }
+                    const response = await fetch("/api/user");
+                    const data = await response.json();
 
-                    // Use navbar component's checkAuth
-                    const user = await window.navbar.checkAuth();
-
-                    if (user) {
-                        // User is authenticated - hide guest elements
+                    if (data.isAuthenticated) {
+                        // User is authenticated
                         isGuest = false;
+
+                        // Show navbar, hide guest elements
+                        document
+                            .getElementById("navbar")
+                            .classList.remove("hidden");
                         document
                             .getElementById("benefitsBanner")
                             .classList.add("hidden");
                         document
                             .getElementById("guestCounter")
                             .classList.add("hidden");
+
+                        // Show all fields for authenticated users
+                        customCodeInput.style.display = "block";
+                        document.querySelector(
+                            '[data-i18n="home.customCodeHint"]',
+                        ).style.display = "block";
+                        document.getElementById("expirySelect").style.display =
+                            "block";
+                        document.getElementById("memoInput").style.display =
+                            "block";
                     } else {
-                        // User is guest - show guest UI
+                        // User is guest
                         isGuest = true;
+
+                        // Hide navbar, show guest elements
+                        document
+                            .getElementById("navbar")
+                            .classList.add("hidden");
                         document
                             .getElementById("benefitsBanner")
                             .classList.remove("hidden");
@@ -292,8 +349,37 @@
 
             // Make it globally accessible
             window.downloadQRCode = downloadQRCode;
+
+            // Logout handler
+            const logoutBtn = document.getElementById("logoutBtn");
+            if (logoutBtn) {
+                logoutBtn.addEventListener("click", async () => {
+                    await fetch("/api/logout", { method: "POST" });
+                    window.location.href = "/";
+                });
+            }
+
+            // Language buttons
+            document.querySelectorAll(".lang-btn").forEach((btn) => {
+                btn.addEventListener("click", () => {
+                    const lang = btn.getAttribute("data-lang");
+                    window.i18n.setLang(lang);
+                    document
+                        .querySelectorAll(".lang-btn")
+                        .forEach((b) => b.classList.remove("active"));
+                    btn.classList.add("active");
+                });
+            });
+
+            // Set initial language
+            const currentLang = window.i18n.getLang();
+            const langBtn = document.getElementById(
+                `langBtn${currentLang === "th" ? "Th" : "En"}`,
+            );
+            if (langBtn) {
+                langBtn.classList.add("active");
+            }
         </script>
-        <script src="navbar.js"></script>
-        <script src="i18n.js"></script>
+        <script src="/i18n.js"></script>
     </body>
 </html>
