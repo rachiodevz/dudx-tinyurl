@@ -75,11 +75,13 @@ export class URLShortener {
       memo,
       clicks: 0,
       created_at: new Date(),
-      created_by: {
-        id: user.googleId,
-        name: user.name,
-        email: user.email,
-      },
+      created_by: user
+        ? {
+            id: user.googleId,
+            name: user.name,
+            email: user.email,
+          }
+        : null,
     };
 
     // Add expiration date if specified
