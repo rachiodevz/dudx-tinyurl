@@ -125,7 +125,7 @@
         <script src="/navbar.js"></script>
         <script>
             let isGuest = true;
-            let guestRemaining = 3;
+            let guestRemaining = null; // Will be updated from API
 
             // Update guest UI based on remaining count
             function updateGuestUI(remaining) {
@@ -249,7 +249,11 @@
                     const result = document.getElementById("result");
 
                     // Check if guest quota exhausted
-                    if (isGuest && guestRemaining === 0) {
+                    if (
+                        isGuest &&
+                        guestRemaining !== null &&
+                        guestRemaining === 0
+                    ) {
                         showSignupModal();
                         return;
                     }
