@@ -173,11 +173,15 @@
                     const result = document.getElementById("result");
 
                     if (!url) {
-                        result.innerHTML = window.i18n.t("message.enterUrl");
+                        result.innerHTML = window.i18n
+                            ? window.i18n.t("message.enterUrl")
+                            : "⚠️ กรุณาใส่ URL ก่อน";
                         return;
                     }
 
-                    result.innerHTML = window.i18n.t("message.creatingLink");
+                    result.innerHTML = window.i18n
+                        ? window.i18n.t("message.creatingLink")
+                        : "⏳ กำลังสร้างลิงก์...";
 
                     try {
                         const requestBody = { url, memo };
