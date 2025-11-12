@@ -1,221 +1,328 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="th">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="showlink.title">ลิงก์ของคุณพร้อมใช้งาน - DUDX URL Shortener</title>
-    <link rel="stylesheet" href="/css/global.css">
-    <link rel="stylesheet" href="/css/showlink.css">
-</head>
-<body>
-    <nav class="navbar">
-        <div class="navbar-container">
-            <a href="/" class="navbar-brand">
-                <span class="brand-icon">🔗</span>
-                DUDX
-            </a>
-            <div class="navbar-menu">
-                <a href="/create" class="navbar-link" data-i18n="nav.create">สร้างลิงก์</a>
-                <a href="/manage" class="navbar-link hidden" id="manageLink" data-i18n="nav.manage">จัดการลิงก์</a>
-                <a href="/chat" class="navbar-link hidden" id="chatLink" data-i18n="nav.chat">💬 Chat</a>
-                <button class="navbar-link hidden" id="logoutBtn" data-i18n="nav.logout">ออกจากระบบ</button>
-                <a href="/login" class="navbar-link" id="loginLink" data-i18n="nav.login">เข้าสู่ระบบ</a>
-                <div class="language-buttons">
-                    <button class="lang-btn" data-lang="th">TH</button>
-                    <button class="lang-btn" data-lang="en">EN</button>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>ลิงก์ของคุณพร้อมใช้งาน - DUDX URL Shortener</title>
+        <link rel="stylesheet" href="/css/navbar.css" />
+        <link rel="stylesheet" href="/css/showlink.css" />
+    </head>
+    <body>
+        <nav class="navbar">
+            <div class="navbar-container">
+                <a href="/" class="navbar-brand">
+                    <span class="brand-icon">🔗</span>
+                    DUDX
+                </a>
+                <div class="navbar-menu">
+                    <a href="/create" class="navbar-link" data-i18n="nav.create"
+                        >สร้างลิงก์</a
+                    >
+                    <a
+                        href="/my-urls"
+                        class="navbar-link hidden"
+                        id="manageLink"
+                        data-i18n="nav.myUrls"
+                        >จัดการลิงก์</a
+                    >
+                    <a
+                        href="/chat"
+                        class="navbar-link hidden"
+                        id="chatLink"
+                        data-i18n="nav.chat"
+                        >💬 Chat</a
+                    >
+                    <button
+                        class="navbar-link hidden"
+                        id="logoutBtn"
+                        data-i18n="nav.logout"
+                    >
+                        ออกจากระบบ
+                    </button>
+                    <a
+                        href="/login"
+                        class="navbar-link"
+                        id="loginLink"
+                        data-i18n="nav.login"
+                        >เข้าสู่ระบบ</a
+                    >
+                    <div class="language-buttons">
+                        <button class="lang-btn" id="langBtnTh" data-lang="th">
+                            TH
+                        </button>
+                        <button class="lang-btn" id="langBtnEn" data-lang="en">
+                            EN
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container">
+            <div class="success-header">
+                <div class="success-icon">✅</div>
+                <h1 data-i18n="showlink.success">
+                    ลิงก์สั้นของคุณพร้อมใช้งานแล้ว!
+                </h1>
+            </div>
+
+            <!-- Benefits Banner for Guests -->
+            <div class="benefits-banner hidden" id="benefitsBanner">
+                <h3 data-i18n="guest.benefitsTitle">
+                    🎁 สมัครสมาชิกเพื่อรับสิทธิพิเศษ!
+                </h3>
+                <ul class="benefits-list">
+                    <li data-i18n="guest.benefit1">✅ สร้างลิงก์ไม่จำกัด</li>
+                    <li data-i18n="guest.benefit2">✨ กำหนดชื่อลิงก์เองได้</li>
+                    <li data-i18n="guest.benefit3">
+                        📝 แก้ไข ลบ และเพิ่ม memo ได้
+                    </li>
+                    <li data-i18n="guest.benefit4">⏰ กำหนดวันหมดอายุเองได้</li>
+                    <li data-i18n="guest.benefit5">📊 ดูสถิติการคลิก</li>
+                </ul>
+                <button
+                    class="signup-btn"
+                    onclick="window.location.href='/auth/google'"
+                    data-i18n="guest.signupButton"
+                >
+                    สมัครสมาชิกฟรี
+                </button>
+            </div>
+
+            <!-- QR Code Section -->
+            <div class="qr-section" id="qrSection">
+                <h2 data-i18n="showlink.qrTitle">QR Code</h2>
+                <div class="qr-container">
+                    <img id="qrImage" src="" alt="QR Code" />
+                </div>
+                <button
+                    class="btn-primary"
+                    id="downloadQRBtn"
+                    data-i18n="showlink.downloadQR"
+                >
+                    💾 ดาวน์โหลด QR Code
+                </button>
+            </div>
+
+            <!-- Short Link Section -->
+            <div class="link-section">
+                <h2 data-i18n="showlink.linkTitle">ลิงก์สั้นของคุณ</h2>
+                <div class="link-display">
+                    <input type="text" id="shortLinkInput" readonly />
+                    <button
+                        class="btn-copy"
+                        id="copyBtn"
+                        data-i18n="showlink.copy"
+                    >
+                        📋 Copy
+                    </button>
+                </div>
+                <div
+                    class="copy-feedback hidden"
+                    id="copyFeedback"
+                    data-i18n="showlink.copied"
+                >
+                    ✅ คัดลอกแล้ว!
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button
+                    class="btn-primary btn-large"
+                    onclick="window.location.href='/create'"
+                    data-i18n="showlink.createNew"
+                >
+                    ➕ สร้าง Link ใหม่
+                </button>
+            </div>
+
+            <!-- Link Info (if available) -->
+            <div class="link-info hidden" id="linkInfo">
+                <h3 data-i18n="showlink.details">รายละเอียด</h3>
+                <div class="info-item">
+                    <span class="info-label" data-i18n="showlink.targetUrl"
+                        >URL เป้าหมาย:</span
+                    >
+                    <span class="info-value" id="targetUrl"></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label" data-i18n="showlink.expiresAt"
+                        >หมดอายุ:</span
+                    >
+                    <span class="info-value" id="expiresAt"></span>
+                </div>
+                <div class="info-item hidden" id="memoItem">
+                    <span class="info-label" data-i18n="showlink.memo"
+                        >Memo:</span
+                    >
+                    <span class="info-value" id="memoValue"></span>
                 </div>
             </div>
         </div>
-    </nav>
 
-    <div class="container">
-        <div class="success-header">
-            <div class="success-icon">✅</div>
-            <h1 data-i18n="showlink.success">ลิงก์สั้นของคุณพร้อมใช้งานแล้ว!</h1>
-        </div>
+        <script src="/i18n.js"></script>
+        <script>
+            let linkData = null;
 
-        <!-- Benefits Banner for Guests -->
-        <div class="benefits-banner hidden" id="benefitsBanner">
-            <h3 data-i18n="guest.benefitsTitle">🎁 สมัครสมาชิกเพื่อรับสิทธิพิเศษ!</h3>
-            <ul class="benefits-list">
-                <li data-i18n="guest.benefit1">✅ สร้างลิงก์ไม่จำกัด</li>
-                <li data-i18n="guest.benefit2">✨ กำหนดชื่อลิงก์เองได้</li>
-                <li data-i18n="guest.benefit3">📝 แก้ไข ลบ และเพิ่ม memo ได้</li>
-                <li data-i18n="guest.benefit4">⏰ กำหนดวันหมดอายุเองได้</li>
-                <li data-i18n="guest.benefit5">📊 ดูสถิติการคลิก</li>
-            </ul>
-            <button class="signup-btn" onclick="window.location.href='/auth/google'" data-i18n="guest.signupButton">
-                สมัครสมาชิกฟรี
-            </button>
-        </div>
+            // Get code from URL parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            const code = urlParams.get("code");
 
-        <!-- QR Code Section -->
-        <div class="qr-section" id="qrSection">
-            <h2 data-i18n="showlink.qrTitle">QR Code</h2>
-            <div class="qr-container">
-                <img id="qrImage" src="" alt="QR Code" />
-            </div>
-            <button class="btn-primary" id="downloadQRBtn" data-i18n="showlink.downloadQR">
-                💾 ดาวน์โหลด QR Code
-            </button>
-        </div>
-
-        <!-- Short Link Section -->
-        <div class="link-section">
-            <h2 data-i18n="showlink.linkTitle">ลิงก์สั้นของคุณ</h2>
-            <div class="link-display">
-                <input type="text" id="shortLinkInput" readonly />
-                <button class="btn-copy" id="copyBtn" data-i18n="showlink.copy">
-                    📋 Copy
-                </button>
-            </div>
-            <div class="copy-feedback hidden" id="copyFeedback" data-i18n="showlink.copied">
-                ✅ คัดลอกแล้ว!
-            </div>
-        </div>
-
-        <!-- Action Buttons -->
-        <div class="action-buttons">
-            <button class="btn-primary btn-large" onclick="window.location.href='/create'" data-i18n="showlink.createNew">
-                ➕ สร้าง Link ใหม่
-            </button>
-        </div>
-
-        <!-- Link Info (if available) -->
-        <div class="link-info hidden" id="linkInfo">
-            <h3 data-i18n="showlink.details">รายละเอียด</h3>
-            <div class="info-item">
-                <span class="info-label" data-i18n="showlink.targetUrl">URL เป้าหมาย:</span>
-                <span class="info-value" id="targetUrl"></span>
-            </div>
-            <div class="info-item">
-                <span class="info-label" data-i18n="showlink.expiresAt">หมดอายุ:</span>
-                <span class="info-value" id="expiresAt"></span>
-            </div>
-            <div class="info-item hidden" id="memoItem">
-                <span class="info-label" data-i18n="showlink.memo">Memo:</span>
-                <span class="info-value" id="memoValue"></span>
-            </div>
-        </div>
-    </div>
-
-    <script type="module">
-        import { translate, getCurrentLanguage, setupLanguageButtons } from '/i18n.js';
-
-        let linkData = null;
-
-        // Get code from URL parameter
-        const urlParams = new URLSearchParams(window.location.search);
-        const code = urlParams.get('code');
-
-        if (!code) {
-            window.location.href = '/create';
-        }
-
-        // Check authentication
-        async function checkAuth() {
-            try {
-                const response = await fetch('/api/user');
-                const data = await response.json();
-
-                if (data.isAuthenticated) {
-                    document.getElementById('loginLink').classList.add('hidden');
-                    document.getElementById('logoutBtn').classList.remove('hidden');
-                    document.getElementById('manageLink').classList.remove('hidden');
-                    document.getElementById('chatLink').classList.remove('hidden');
-                } else {
-                    // Show benefits banner for guests
-                    document.getElementById('benefitsBanner').classList.remove('hidden');
-                }
-            } catch (error) {
-                console.error('Error checking auth:', error);
+            if (!code) {
+                window.location.href = "/create";
             }
-        }
 
-        // Load link data
-        async function loadLinkData() {
-            try {
-                const response = await fetch(`/api/link/${code}`);
-                if (!response.ok) {
-                    throw new Error('Link not found');
-                }
+            // Check authentication
+            async function checkAuth() {
+                try {
+                    const response = await fetch("/api/user");
+                    const data = await response.json();
 
-                linkData = await response.json();
-
-                // Display QR Code
-                if (linkData.qrCode) {
-                    document.getElementById('qrImage').src = linkData.qrCode;
-                } else {
-                    document.getElementById('qrSection').classList.add('hidden');
-                }
-
-                // Display short link
-                const shortUrl = `${window.location.origin}/${linkData.code}`;
-                document.getElementById('shortLinkInput').value = shortUrl;
-
-                // Display link info
-                if (linkData.target) {
-                    document.getElementById('linkInfo').classList.remove('hidden');
-                    document.getElementById('targetUrl').textContent = linkData.target;
-
-                    if (linkData.expires_at) {
-                        const expiryDate = new Date(linkData.expires_at);
-                        document.getElementById('expiresAt').textContent = expiryDate.toLocaleDateString('th-TH');
+                    if (data.isAuthenticated) {
+                        document
+                            .getElementById("loginLink")
+                            .classList.add("hidden");
+                        document
+                            .getElementById("logoutBtn")
+                            .classList.remove("hidden");
+                        document
+                            .getElementById("manageLink")
+                            .classList.remove("hidden");
+                        document
+                            .getElementById("chatLink")
+                            .classList.remove("hidden");
                     } else {
-                        document.getElementById('expiresAt').textContent = translate('showlink.noExpiry');
+                        // Show benefits banner for guests
+                        document
+                            .getElementById("benefitsBanner")
+                            .classList.remove("hidden");
                     }
-
-                    if (linkData.memo) {
-                        document.getElementById('memoItem').classList.remove('hidden');
-                        document.getElementById('memoValue').textContent = linkData.memo;
-                    }
+                } catch (error) {
+                    console.error("Error checking auth:", error);
                 }
-            } catch (error) {
-                console.error('Error loading link:', error);
-                alert(translate('showlink.errorLoading'));
-                window.location.href = '/create';
             }
-        }
 
-        // Copy to clipboard
-        document.getElementById('copyBtn').addEventListener('click', async () => {
-            const input = document.getElementById('shortLinkInput');
-            try {
-                await navigator.clipboard.writeText(input.value);
-                const feedback = document.getElementById('copyFeedback');
-                feedback.classList.remove('hidden');
-                setTimeout(() => {
-                    feedback.classList.add('hidden');
-                }, 2000);
-            } catch (error) {
-                input.select();
-                document.execCommand('copy');
+            // Load link data
+            async function loadLinkData() {
+                try {
+                    const response = await fetch(`/api/link/${code}`);
+                    if (!response.ok) {
+                        throw new Error("Link not found");
+                    }
+
+                    linkData = await response.json();
+
+                    // Display QR Code
+                    if (linkData.qrCode) {
+                        document.getElementById("qrImage").src =
+                            linkData.qrCode;
+                    } else {
+                        document
+                            .getElementById("qrSection")
+                            .classList.add("hidden");
+                    }
+
+                    // Display short link
+                    const shortUrl = `${window.location.origin}/${linkData.code}`;
+                    document.getElementById("shortLinkInput").value = shortUrl;
+
+                    // Display link info
+                    if (linkData.target) {
+                        document
+                            .getElementById("linkInfo")
+                            .classList.remove("hidden");
+                        document.getElementById("targetUrl").textContent =
+                            linkData.target;
+
+                        if (linkData.expires_at) {
+                            const expiryDate = new Date(linkData.expires_at);
+                            document.getElementById("expiresAt").textContent =
+                                expiryDate.toLocaleDateString("th-TH");
+                        } else {
+                            document.getElementById("expiresAt").textContent =
+                                window.i18n.t("showlink.noExpiry");
+                        }
+
+                        if (linkData.memo) {
+                            document
+                                .getElementById("memoItem")
+                                .classList.remove("hidden");
+                            document.getElementById("memoValue").textContent =
+                                linkData.memo;
+                        }
+                    }
+                } catch (error) {
+                    console.error("Error loading link:", error);
+                    alert(window.i18n.t("showlink.errorLoading"));
+                    window.location.href = "/create";
+                }
             }
-        });
 
-        // Download QR Code
-        document.getElementById('downloadQRBtn').addEventListener('click', () => {
-            if (linkData && linkData.qrCode) {
-                const link = document.createElement('a');
-                link.href = linkData.qrCode;
-                link.download = `DUDX-QR-${linkData.code}.png`;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            }
-        });
+            // Copy to clipboard
+            document
+                .getElementById("copyBtn")
+                .addEventListener("click", async () => {
+                    const input = document.getElementById("shortLinkInput");
+                    try {
+                        await navigator.clipboard.writeText(input.value);
+                        const feedback =
+                            document.getElementById("copyFeedback");
+                        feedback.classList.remove("hidden");
+                        setTimeout(() => {
+                            feedback.classList.add("hidden");
+                        }, 2000);
+                    } catch (error) {
+                        input.select();
+                        document.execCommand("copy");
+                    }
+                });
 
-        // Logout
-        document.getElementById('logoutBtn').addEventListener('click', async () => {
-            await fetch('/api/logout', { method: 'POST' });
-            window.location.href = '/';
-        });
+            // Download QR Code
+            document
+                .getElementById("downloadQRBtn")
+                .addEventListener("click", () => {
+                    if (linkData && linkData.qrCode) {
+                        const link = document.createElement("a");
+                        link.href = linkData.qrCode;
+                        link.download = `DUDX-QR-${linkData.code}.png`;
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    }
+                });
 
-        // Initialize
-        setupLanguageButtons();
-        translate();
-        checkAuth();
-        loadLinkData();
-    </script>
-</body>
+            // Logout
+            document
+                .getElementById("logoutBtn")
+                .addEventListener("click", async () => {
+                    await fetch("/api/logout", { method: "POST" });
+                    window.location.href = "/";
+                });
+
+            // Language buttons
+            document.querySelectorAll(".lang-btn").forEach((btn) => {
+                btn.addEventListener("click", () => {
+                    const lang = btn.getAttribute("data-lang");
+                    window.i18n.setLang(lang);
+
+                    // Update active state
+                    document
+                        .querySelectorAll(".lang-btn")
+                        .forEach((b) => b.classList.remove("active"));
+                    btn.classList.add("active");
+                });
+            });
+
+            // Set initial active language button
+            const currentLang = window.i18n.getLang();
+            document
+                .getElementById(`langBtn${currentLang === "th" ? "Th" : "En"}`)
+                .classList.add("active");
+
+            // Initialize
+            checkAuth();
+            loadLinkData();
+        </script>
+    </body>
 </html>
