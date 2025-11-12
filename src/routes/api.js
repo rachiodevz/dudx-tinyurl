@@ -11,6 +11,23 @@ const router = express.Router();
 
 // Initialize API routes
 export default function initApiRoutes(urlShortener, guestDb) {
+  // ----- API: get current user info -----
+  router.get("/user", (req, res) => {
+    if (req.isAuthenticated()) {
+      res.json({
+        isAuthenticated: true,
+        googleId: req.user.googleId,
+        email: req.user.email,
+        name: req.user.name,
+        photo: req.user.photo,
+        role: req.user.role,
+        isActive: req.user.isActive,
+      });
+    } else {
+      res.json({ isAuthenticated: false });
+    }
+  });
+
   // ----- API: get all URLs (admin) -----
   router.get("/urls", requireAuth, (req, res) => {
     const urls = urlShortener.getAllUrls();

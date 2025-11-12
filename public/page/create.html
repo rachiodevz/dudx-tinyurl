@@ -358,28 +358,33 @@
                     window.location.href = "/";
                 });
             }
-
-            // Language buttons
+        </script>
+        <script src="/i18n.js"></script>
+        <script>
+            // Language buttons - run after i18n loads
             document.querySelectorAll(".lang-btn").forEach((btn) => {
                 btn.addEventListener("click", () => {
                     const lang = btn.getAttribute("data-lang");
-                    window.i18n.setLang(lang);
-                    document
-                        .querySelectorAll(".lang-btn")
-                        .forEach((b) => b.classList.remove("active"));
-                    btn.classList.add("active");
+                    if (window.i18n) {
+                        window.i18n.setLang(lang);
+                        document
+                            .querySelectorAll(".lang-btn")
+                            .forEach((b) => b.classList.remove("active"));
+                        btn.classList.add("active");
+                    }
                 });
             });
 
             // Set initial language
-            const currentLang = window.i18n.getLang();
-            const langBtn = document.getElementById(
-                `langBtn${currentLang === "th" ? "Th" : "En"}`,
-            );
-            if (langBtn) {
-                langBtn.classList.add("active");
+            if (window.i18n) {
+                const currentLang = window.i18n.getLang();
+                const langBtn = document.getElementById(
+                    `langBtn${currentLang === "th" ? "Th" : "En"}`,
+                );
+                if (langBtn) {
+                    langBtn.classList.add("active");
+                }
             }
         </script>
-        <script src="/i18n.js"></script>
     </body>
 </html>
