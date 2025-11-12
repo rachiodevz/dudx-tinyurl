@@ -1577,6 +1577,36 @@ find /backups -name "tinyurl_*.tar.gz" -mtime +7 -delete
 
 ---
 
+## Communication Guidelines
+
+### Token Usage Reporting
+**IMPORTANT**: Report token usage at the end of EVERY response to maintain transparency and help user track budget.
+
+**Format**:
+```
+**Response tokens**: ~XXX used | Total: X/200,000 | Remaining: X (XX.X%)
+```
+
+**Requirements**:
+- Show tokens used in THIS response (approximate)
+- Show cumulative total used in session
+- Show remaining tokens
+- Show percentage remaining
+- Place at the very end of every message
+
+**Example**:
+```
+**Response tokens**: ~150 used | Total: 22,500/200,000 | Remaining: 177,500 (88.8%)
+```
+
+**Notes**:
+- Token usage is approximate based on system reminders showing actual counts
+- Thai text uses 2-3x more tokens than English
+- File reads consume tokens based on file size
+- Tool results count toward total
+
+---
+
 ## Quick Reference
 
 ### Useful Commands
