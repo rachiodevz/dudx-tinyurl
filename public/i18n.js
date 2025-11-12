@@ -78,6 +78,18 @@ const translations = {
     "expiry.90days": "หมดอายุใน 90 วัน",
     "expiry.1year": "หมดอายุใน 1 ปี",
 
+    // Guest Mode
+    "guest.benefitsTitle": "🎁 สมัครสมาชิกเพื่อรับสิทธิพิเศษ!",
+    "guest.benefit1": "✅ สร้างลิงก์ไม่จำกัด",
+    "guest.benefit2": "✨ กำหนดชื่อลิงก์เองได้",
+    "guest.benefit3": "📝 แก้ไขและลบลิงก์ได้",
+    "guest.benefit4": "📊 ดูสถิติการคลิก",
+    "guest.signup": "สมัครสมาชิกฟรี",
+    "guest.remaining": "เหลืออีก",
+    "guest.timesPerDay": "ครั้ง/วัน",
+    "guest.limitExceeded":
+      "คุณใช้งานครบ 3 ครั้งต่อวันแล้ว กรุณาสมัครสมาชิกเพื่อใช้งานไม่จำกัด",
+
     // My URLs page
     "myUrls.title": "🔗 จัดการ URL ของฉัน",
     "myUrls.loginDescription": "กรุณาเข้าสู่ระบบเพื่อจัดการ URL ของคุณ",
@@ -219,6 +231,18 @@ const translations = {
     "expiry.30days": "Expires in 30 days",
     "expiry.90days": "Expires in 90 days",
     "expiry.1year": "Expires in 1 year",
+
+    // Guest Mode
+    "guest.benefitsTitle": "🎁 Sign Up for Premium Benefits!",
+    "guest.benefit1": "✅ Unlimited URL creation",
+    "guest.benefit2": "✨ Custom link names",
+    "guest.benefit3": "📝 Edit and delete links",
+    "guest.benefit4": "📊 View click statistics",
+    "guest.signup": "Sign Up Free",
+    "guest.remaining": "Remaining",
+    "guest.timesPerDay": "times/day",
+    "guest.limitExceeded":
+      "You've reached the 3 URLs per day limit. Please sign up for unlimited access!",
 
     // My URLs page
     "myUrls.title": "🔗 Manage My URLs",

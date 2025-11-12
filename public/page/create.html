@@ -8,6 +8,35 @@
         <link rel="stylesheet" href="/css/create.css" />
     </head>
     <body>
+        <!-- Guest Benefits Banner (hidden for logged-in users) -->
+        <div class="benefits-banner hidden" id="benefitsBanner">
+            <div class="benefits-content">
+                <h3 data-i18n="guest.benefitsTitle">
+                    🎁 สมัครสมาชิกเพื่อรับสิทธิพิเศษ!
+                </h3>
+                <ul class="benefits-list">
+                    <li data-i18n="guest.benefit1">✅ สร้างลิงก์ไม่จำกัด</li>
+                    <li data-i18n="guest.benefit2">✨ กำหนดชื่อลิงก์เองได้</li>
+                    <li data-i18n="guest.benefit3">📝 แก้ไขและลบลิงก์ได้</li>
+                    <li data-i18n="guest.benefit4">📊 ดูสถิติการคลิก</li>
+                </ul>
+                <button
+                    class="signup-btn"
+                    onclick="window.location.href='/auth/google'"
+                    data-i18n="guest.signup"
+                >
+                    สมัครสมาชิกฟรี
+                </button>
+            </div>
+        </div>
+
+        <!-- Guest Usage Counter -->
+        <div class="guest-counter hidden" id="guestCounter">
+            <span data-i18n="guest.remaining">เหลืออีก</span>
+            <strong id="remainingCount">3</strong>
+            <span data-i18n="guest.timesPerDay">ครั้ง/วัน</span>
+        </div>
+
         <!-- Main App -->
         <div class="card" id="mainApp">
             <h2 data-i18n="home.title">สร้างลิงก์สั้น</h2>
@@ -77,6 +106,9 @@
 
             const history = [];
 
+            let isGuest = true;
+            let guestRemaining = 3;
+
             // Check authentication on page load
             async function checkAuth() {
                 try {
@@ -88,13 +120,45 @@
                     // Use navbar component's checkAuth
                     const user = await window.navbar.checkAuth();
 
-                    if (!user) {
-                        // User is not authenticated, redirect to login
-                        window.location.href = "/";
+                    if (user) {
+                        // User is authenticated - hide guest elements
+                        isGuest = false;
+                        document
+                            .getElementById("benefitsBanner")
+                            .classList.add("hidden");
+                        document
+                            .getElementById("guestCounter")
+                            .classList.add("hidden");
+                    } else {
+                        // User is guest - show guest UI
+                        isGuest = true;
+                        document
+                            .getElementById("benefitsBanner")
+                            .classList.remove("hidden");
+                        document
+                            .getElementById("guestCounter")
+                            .classList.remove("hidden");
+
+                        // Hide custom code field for guests
+                        customCodeInput.style.display = "none";
+                        document.querySelector(
+                            '[data-i18n="home.customCodeHint"]',
+                        ).style.display = "none";
                     }
                 } catch (e) {
                     console.error("Auth check failed:", e);
-                    window.location.href = "/";
+                    // Allow guest access on error
+                    isGuest = true;
+                    document
+                        .getElementById("benefitsBanner")
+                        .classList.remove("hidden");
+                    document
+                        .getElementById("guestCounter")
+                        .classList.remove("hidden");
+                    customCodeInput.style.display = "none";
+                    document.querySelector(
+                        '[data-i18n="home.customCodeHint"]',
+                    ).style.display = "none";
                 }
             }
 
@@ -129,6 +193,32 @@
                         body: JSON.stringify(requestBody),
                     });
                     const data = await res.json();
+
+                    if (!res.ok) {
+                        // Handle errors
+                        if (res.status === 429) {
+                            // Rate limit exceeded
+                            result.innerHTML = `
+                                ❌ ${data.message || window.i18n.t("guest.limitExceeded")}<br>
+                                <button onclick="window.location.href='/auth/google'" style="margin-top: 10px; padding: 8px 16px; background: #4285f4; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                                    ${window.i18n.t("guest.signup")}
+                                </button>
+                            `;
+                        } else if (data.requiresLogin) {
+                            result.innerHTML = `
+                                ❌ ${data.error}<br>
+                                <button onclick="window.location.href='/auth/google'" style="margin-top: 10px;">
+                                    ${window.i18n.t("button.loginGoogle")}
+                                </button>
+                            `;
+                        } else {
+                            result.innerHTML =
+                                "❌ " +
+                                (data.error || window.i18n.t("message.error"));
+                        }
+                        return;
+                    }
+
                     if (data.short) {
                         result.innerHTML = `
             ${window.i18n.t("message.linkReady")}:<br>
@@ -139,12 +229,47 @@
               ${window.i18n.t("message.clickTest")}
               <button onclick="navigator.clipboard.writeText('${data.short}')" style="margin-left: 5px;">📋 ${window.i18n.t("button.copy")}</button>
             </div>
+            ${
+                data.qrCode
+                    ? `
+            <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+              <h4 style="margin: 0 0 10px 0; font-size: 14px;">QR Code</h4>
+              <img src="${data.qrCode}" alt="QR Code" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" />
+              <div style="margin-top: 10px;">
+                <button onclick="downloadQRCode('${data.qrCode}', '${data.code}')" style="background: #28a745; color: white; padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-size: 13px;">
+                  💾 ${window.i18n.t("button.download")} QR Code
+                </button>
+              </div>
+            </div>
+            `
+                    : ""
+            }
           `;
+
+                        // Update guest counter if applicable
+                        if (data.guestInfo) {
+                            guestRemaining = data.guestInfo.remaining;
+                            document.getElementById(
+                                "remainingCount",
+                            ).textContent = guestRemaining;
+
+                            if (guestRemaining === 0) {
+                                document.getElementById(
+                                    "guestCounter",
+                                ).style.color = "#dc3545";
+                                document.getElementById(
+                                    "guestCounter",
+                                ).style.fontWeight = "bold";
+                            }
+                        }
+
                         history.unshift(data);
                         renderList();
                         // Clear inputs after success
                         input.value = "";
-                        customCodeInput.value = "";
+                        if (!isGuest) {
+                            customCodeInput.value = "";
+                        }
                         document.getElementById("expirySelect").value = "";
                         document.getElementById("memoInput").value = "";
                     } else {
@@ -173,6 +298,19 @@
                     )
                     .join("");
             }
+
+            // Download QR Code function
+            function downloadQRCode(dataUrl, filename) {
+                const link = document.createElement("a");
+                link.href = dataUrl;
+                link.download = `qrcode-${filename}.png`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+
+            // Make it globally accessible
+            window.downloadQRCode = downloadQRCode;
         </script>
         <script src="navbar.js"></script>
         <script src="i18n.js"></script>

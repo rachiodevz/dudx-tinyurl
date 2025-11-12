@@ -1,11 +1,16 @@
 import express from "express";
 import { requireAuth } from "../middleware/auth.js";
+import { checkGuestLimit, getClientIp } from "../middleware/guest.js";
 import QRCode from "qrcode";
+import {
+  generateBrandedQRCode,
+  generateSimpleQRCode,
+} from "../utils/qrcode-generator.js";
 
 const router = express.Router();
 
 // Initialize API routes
-export default function initApiRoutes(urlShortener) {
+export default function initApiRoutes(urlShortener, guestDb) {
   // ----- API: get all URLs (admin) -----
   router.get("/urls", requireAuth, (req, res) => {
     const urls = urlShortener.getAllUrls();
@@ -66,19 +71,71 @@ export default function initApiRoutes(urlShortener) {
   });
 
   // ----- API: shorten -----
-  router.post("/shorten", requireAuth, (req, res) => {
+  // Apply guest limit check (skips if authenticated)
+  router.post("/shorten", checkGuestLimit(guestDb, 3), async (req, res) => {
     const { url, memo, customCode, expiresInDays } = req.body;
     if (!url) return res.status(400).json({ error: "Missing URL" });
 
     try {
+      const isAuthenticated = req.isAuthenticated();
+
+      // Guest users cannot use custom codes
+      if (!isAuthenticated && customCode) {
+        return res.status(403).json({
+          error: "Custom codes are only available for registered users",
+          requiresLogin: true,
+        });
+      }
+
+      // Create short URL
       const entry = urlShortener.createShortUrl(
         url,
-        req.user,
+        isAuthenticated ? req.user : null,
         memo,
-        customCode,
+        isAuthenticated ? customCode : null,
         expiresInDays,
       );
-      res.json({ short: `${req.protocol}://${req.get("host")}/${entry.code}` });
+
+      // Record guest usage if not authenticated
+      if (!isAuthenticated) {
+        try {
+          await guestDb.incrementUsage(req.guestId, entry.code);
+        } catch (err) {
+          console.error("Failed to record guest usage:", err);
+        }
+      }
+
+      // Generate QR code with DUDX branding
+      const shortUrl = `${req.protocol}://${req.get("host")}/${entry.code}`;
+      let qrCode;
+
+      try {
+        qrCode = await generateBrandedQRCode(shortUrl, {
+          size: 400,
+          logoText: "DUDX",
+          includeUrl: true,
+        });
+      } catch (error) {
+        console.error("Branded QR failed, using simple:", error);
+        qrCode = await generateSimpleQRCode(shortUrl, 300);
+      }
+
+      // Return response with QR code and remaining limit info for guests
+      const response = {
+        short: shortUrl,
+        code: entry.code,
+        target: entry.target,
+        qrCode: qrCode,
+      };
+
+      if (!isAuthenticated && req.guestLimit) {
+        response.guestInfo = {
+          remaining: req.guestLimit.remaining - 1,
+          limit: req.guestLimit.limit,
+        };
+      }
+
+      res.json(response);
     } catch (error) {
       res.status(400).json({ error: error.message });
     }

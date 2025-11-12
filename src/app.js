@@ -1,11 +1,13 @@
 import express from "express";
 import session from "express-session";
 import passport from "passport";
+import cookieParser from "cookie-parser";
 import path from "path";
 import { fileURLToPath } from "url";
 import config from "./config/index.js";
 import { setupAuth } from "./middleware/auth.js";
 import { requestLogger } from "./middleware/logging.js";
+import { ensureGuestId } from "./middleware/guest.js";
 import { log } from "./utils/logger.js";
 import initApiRoutes from "./routes/api.js";
 import initPageRoutes from "./routes/page.js";
@@ -15,11 +17,12 @@ import chatRoutes from "./routes/chat.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-export function createApp(urlShortener, userDb) {
+export function createApp(urlShortener, userDb, guestDb) {
   const app = express();
 
   // ----- middleware -----
   app.use(express.json());
+  app.use(cookieParser());
 
   // Session setup (MUST BE BEFORE PASSPORT)
   app.use(
@@ -36,6 +39,9 @@ export function createApp(urlShortener, userDb) {
   app.use(passport.initialize());
   app.use(passport.session());
 
+  // Guest tracking middleware (AFTER PASSPORT)
+  app.use(ensureGuestId);
+
   // Request logging middleware (AFTER PASSPORT SO req.user IS AVAILABLE)
   app.use(requestLogger);
 
@@ -46,8 +52,8 @@ export function createApp(urlShortener, userDb) {
   // Chat routes
   app.use(chatRoutes);
 
-  // API routes
-  app.use("/api", initApiRoutes(urlShortener));
+  // API routes (pass guestDb for limit checking)
+  app.use("/api", initApiRoutes(urlShortener, guestDb));
 
   // Static files
   app.use(express.static(path.join(__dirname, "..", "public")));

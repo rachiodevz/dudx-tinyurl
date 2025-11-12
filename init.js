@@ -8,6 +8,7 @@
 import config from "./src/config/index.js";
 import Database from "./src/database/db.js";
 import UserDatabase from "./src/database/userDb.js";
+import GuestDatabase from "./src/models/guest.js";
 import URLShortener from "./src/main.js";
 import { createApp } from "./src/app.js";
 import { log } from "./src/utils/logger.js";
@@ -23,13 +24,17 @@ async function init() {
     const userDb = new UserDatabase();
     await userDb.initialize();
 
+    log("📦 Initializing Guest database...");
+    const guestDb = new GuestDatabase();
+    await guestDb.initialize();
+
     // Initialize business logic
     log("🎯 Initializing URL Shortener...");
     const urlShortener = new URLShortener(database);
 
     // Create Express app
     log("⚙️  Setting up Express app...");
-    const app = createApp(urlShortener, userDb);
+    const app = createApp(urlShortener, userDb, guestDb);
 
     // Start server
     app.listen(config.port, () => {
