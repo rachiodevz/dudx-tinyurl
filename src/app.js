@@ -1,5 +1,6 @@
 import express from "express";
 import session from "express-session";
+import NedbStore from "connect-nedb-session";
 import passport from "passport";
 import cookieParser from "cookie-parser";
 import path from "path";
@@ -25,12 +26,19 @@ export function createApp(urlShortener, userDb, guestDb) {
   app.use(cookieParser());
 
   // Session setup (MUST BE BEFORE PASSPORT)
+  const NedbSessionStore = NedbStore(session);
   app.use(
     session({
       secret: config.sessionSecret,
       resave: false,
       saveUninitialized: false,
-      cookie: { secure: false },
+      cookie: {
+        secure: false,
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      },
+      store: new NedbSessionStore({
+        filename: path.join(__dirname, "..", "data", "sessions.nedb"),
+      }),
     }),
   );
 
