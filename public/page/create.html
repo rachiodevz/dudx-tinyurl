@@ -112,12 +112,14 @@
                 remainingCountEl.textContent = remaining;
 
                 if (remaining === 0) {
-                    // Disable button and gray out
-                    shortenBtn.disabled = true;
+                    // Gray out button and counter
+                    shortenBtn.style.background = "#ccc";
+                    shortenBtn.style.cursor = "not-allowed";
                     guestCounter.style.color = "#999";
                     guestCounter.style.fontWeight = "normal";
                 } else {
-                    shortenBtn.disabled = false;
+                    shortenBtn.style.background = "#007bff";
+                    shortenBtn.style.cursor = "pointer";
                     guestCounter.style.color = "#856404";
                     guestCounter.style.fontWeight = "500";
                 }
