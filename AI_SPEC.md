@@ -1019,6 +1019,138 @@ window.i18n.t("message.greeting", { name: "John" });
 
 ---
 
+## Guest Mode Features
+
+### Overview
+Guest users can create URLs without authentication, with limitations to encourage signup.
+
+### Guest Tracking System
+- **Cookie-based**: `guest_id` UUID stored in cookie
+- **IP tracking**: Secondary identifier for redundancy  
+- **Database**: `src/models/guest.js` tracks usage per day
+- **Cleanup**: Auto-delete records older than 30 days
+
+### Guest Limitations
+- **Daily limit**: 3 URLs per day
+- **No custom codes**: Auto-generated codes only
+- **No memo field**: Hidden from UI
+- **Fixed expiry**: 90 days (cannot customize)
+- **No editing**: Cannot edit or delete URLs
+- **No analytics**: Cannot view click statistics
+
+### Guest UI Elements
+**Benefits Banner** (`benefitsBanner`):
+- Shown on `create.html` and `showlink.html` for guests only
+- Hidden for authenticated users
+- Displays 5 benefits of signing up
+- Purple gradient design
+
+**Guest Counter** (`guestCounter`):
+- Shows remaining URLs count (e.g., "เหลืออีก 2 ครั้ง/วัน")
+- Updates after each URL creation
+- Turns red when limit reached
+
+### Implementation Files
+- `src/models/guest.js` - Guest database model
+- `src/middleware/guest.js` - Guest middleware (tracking, limits)
+- `src/utils/qrcode-generator.js` - QR code generation
+- `public/css/create.css` - Guest UI styles
+
+---
+
+## Debugging Best Practices
+
+### Systematic Debugging Approach
+
+#### 1. **i18n Translation Issues**
+
+**Symptom**: Showing key instead of translated text (e.g., "message.enterUrl")
+
+**ALWAYS CHECK IN THIS ORDER**:
+1. ✅ Does key exist in **Thai** translations?
+2. ✅ **Does key exist in English translations?** ← Most common issue!
+3. Check current language: `console.log(window.i18n.currentLang)`
+4. Check i18n is loaded: `console.log(window.i18n)`
+
+**Pattern Recognition**:
+- Key shows as-is = **Key missing in active language**
+- Nothing shows = i18n not loaded
+- Wrong language = Language detection issue
+
+**Example Fix**:
+```javascript
+// ❌ WRONG: Only in Thai
+const translations = {
+  th: { "message.enterUrl": "⚠️ กรุณาใส่ URL ก่อน" },
+  en: { /* missing! */ }
+};
+
+// ✅ CORRECT: In both languages
+const translations = {
+  th: { "message.enterUrl": "⚠️ กรุณาใส่ URL ก่อน" },
+  en: { "message.enterUrl": "⚠️ Please enter a URL" }
+};
+```
+
+#### 2. **Navbar/Component Not Showing**
+
+**Symptom**: Navbar HTML injected but not displayed properly
+
+**CHECK**:
+1. CSS path correct? (use `/css/navbar.css` not `css/navbar.css`)
+2. Body layout conflicts? (flex centering breaks fixed navbar)
+3. i18n not translating navbar elements?
+4. JavaScript errors blocking execution?
+
+**Solution Pattern**:
+```css
+/* Guest mode: centered content */
+body:not(:has(.navbar:not(.hidden))) {
+    display: flex;
+    justify-content: center;
+}
+
+/* Logged-in: navbar at top */
+body:has(.navbar:not(.hidden)) {
+    padding-top: 60px;
+}
+```
+
+#### 3. **Shared Component Pattern**
+
+**When refactoring duplicated code**:
+1. Identify common pattern across pages
+2. Create shared component (e.g., `navbar.js`)
+3. Support multiple modes/styles (e.g., `navbar` vs `user-bar`)
+4. Maintain backward compatibility
+5. Test on ALL pages using the component
+
+**Anti-pattern**: Copy-pasting navbar HTML in every page  
+**Better**: Single navbar component with configuration
+
+#### 4. **Console-Driven Debugging**
+
+When stuck, **add console.log immediately**:
+```javascript
+console.log('Current lang:', window.i18n.currentLang);
+console.log('Translation result:', window.i18n.t("key"));
+console.log('Has key?:', window.i18n.translations.en["key"]);
+```
+
+Remove debug logs after fixing, don't commit them.
+
+#### 5. **Feature Addition Checklist**
+
+When adding guest-restricted features:
+- [ ] Update `checkAuth()` logic in page
+- [ ] Hide UI elements for guests (`.style.display = "none"`)
+- [ ] Show benefits banner for guests
+- [ ] Enforce restrictions in API (defense in depth)
+- [ ] Update i18n with new keys (**both languages!**)
+- [ ] Test as guest AND logged-in user
+
+---
+
 ## Troubleshooting Guide
 
 ### Common Issues
