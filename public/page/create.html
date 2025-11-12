@@ -17,8 +17,11 @@
                 <ul class="benefits-list">
                     <li data-i18n="guest.benefit1">✅ สร้างลิงก์ไม่จำกัด</li>
                     <li data-i18n="guest.benefit2">✨ กำหนดชื่อลิงก์เองได้</li>
-                    <li data-i18n="guest.benefit3">📝 แก้ไขและลบลิงก์ได้</li>
-                    <li data-i18n="guest.benefit4">📊 ดูสถิติการคลิก</li>
+                    <li data-i18n="guest.benefit3">
+                        📝 แก้ไข ลบ และเพิ่ม memo ได้
+                    </li>
+                    <li data-i18n="guest.benefit4">⏰ กำหนดวันหมดอายุเองได้</li>
+                    <li data-i18n="guest.benefit5">📊 ดูสถิติการคลิก</li>
                 </ul>
                 <button
                     class="signup-btn"
@@ -144,6 +147,12 @@
                         document.querySelector(
                             '[data-i18n="home.customCodeHint"]',
                         ).style.display = "none";
+
+                        // Hide memo and expiry fields for guests
+                        document.getElementById("expirySelect").style.display =
+                            "none";
+                        document.getElementById("memoInput").style.display =
+                            "none";
                     }
                 } catch (e) {
                     console.error("Auth check failed:", e);
@@ -159,6 +168,9 @@
                     document.querySelector(
                         '[data-i18n="home.customCodeHint"]',
                     ).style.display = "none";
+                    document.getElementById("expirySelect").style.display =
+                        "none";
+                    document.getElementById("memoInput").style.display = "none";
                 }
             }
 

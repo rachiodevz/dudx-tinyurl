@@ -88,12 +88,16 @@ export default function initApiRoutes(urlShortener, guestDb) {
       }
 
       // Create short URL
+      // Guest users: auto-expire in 90 days, no memo
+      const finalExpiryDays = isAuthenticated ? expiresInDays : 90;
+      const finalMemo = isAuthenticated ? memo : "";
+
       const entry = urlShortener.createShortUrl(
         url,
         isAuthenticated ? req.user : null,
-        memo,
+        finalMemo,
         isAuthenticated ? customCode : null,
-        expiresInDays,
+        finalExpiryDays,
       );
 
       // Record guest usage if not authenticated
