@@ -40,7 +40,7 @@ class Navbar {
           </a>
           <div class="navbar-menu">
             ${navLinks}
-            <button class="navbar-link" id="logoutBtn" data-i18n="nav.logout">ออกจากระบบ</button>
+            <button class="navbar-link" id="logoutBtn" data-i18n="nav.logout"></button>
             <div class="language-buttons">
               <button class="lang-btn" id="langBtnTh" data-lang="th">TH</button>
               <button class="lang-btn" id="langBtnEn" data-lang="en">EN</button>
