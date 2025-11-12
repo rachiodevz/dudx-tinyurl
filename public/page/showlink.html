@@ -4,10 +4,11 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>ลิงก์ของคุณ - DUDX URL Shortener</title>
+        <link rel="stylesheet" href="/css/navbar.css" />
         <link rel="stylesheet" href="/css/showlink.css" />
     </head>
     <body>
-        <!-- Guest Benefits Banner (hidden for logged-in users) -->
+        <!-- Guest Benefits Banner -->
         <div class="benefits-banner hidden" id="benefitsBanner">
             <div class="benefits-content">
                 <h3 data-i18n="guest.benefitsTitle">
@@ -33,16 +34,6 @@
         </div>
 
         <div class="container">
-            <!-- Language Buttons -->
-            <div class="language-buttons">
-                <button class="lang-btn" id="langBtnTh" data-lang="th">
-                    TH
-                </button>
-                <button class="lang-btn" id="langBtnEn" data-lang="en">
-                    EN
-                </button>
-            </div>
-
             <!-- Main Card -->
             <div class="card">
                 <!-- QR Code -->
@@ -88,32 +79,34 @@
         </div>
 
         <script src="/i18n.js"></script>
+        <script src="/navbar.js"></script>
         <script>
-            let linkData = null;
             const urlParams = new URLSearchParams(window.location.search);
             const code = urlParams.get("code");
+            let linkData = null;
 
             if (!code) {
                 window.location.href = "/create";
             }
 
-            // Check authentication
-            async function checkAuth() {
-                try {
-                    const response = await fetch("/api/user");
-                    const data = await response.json();
-
-                    if (!data.isAuthenticated) {
+            // Initialize navbar - no callback needed, just hide benefits banner for logged-in users
+            const navbar = new Navbar({
+                style: "navbar",
+                onAuthChange: (user) => {
+                    if (user) {
+                        document
+                            .getElementById("benefitsBanner")
+                            .classList.add("hidden");
+                    } else {
                         document
                             .getElementById("benefitsBanner")
                             .classList.remove("hidden");
                     }
-                } catch (error) {
-                    document
-                        .getElementById("benefitsBanner")
-                        .classList.remove("hidden");
-                }
-            }
+                },
+            });
+
+            // Check auth and load link data
+            navbar.checkAuth();
 
             // Load link data
             async function loadLinkData() {
@@ -123,13 +116,11 @@
 
                     linkData = await response.json();
 
-                    // Display QR Code
                     if (linkData.qrCode) {
                         document.getElementById("qrImage").src =
                             linkData.qrCode;
                     }
 
-                    // Display short link
                     const shortUrl = `${window.location.origin}/${linkData.code}`;
                     document.getElementById("shortLinkInput").value = shortUrl;
                 } catch (error) {
@@ -139,6 +130,8 @@
                 }
             }
 
+            loadLinkData();
+
             // Copy to clipboard
             document
                 .getElementById("copyBtn")
@@ -146,27 +139,21 @@
                     const input = document.getElementById("shortLinkInput");
                     try {
                         await navigator.clipboard.writeText(input.value);
-                        showCopyFeedback();
                     } catch (error) {
                         input.select();
                         document.execCommand("copy");
-                        showCopyFeedback();
                     }
-                });
 
-            function showCopyFeedback() {
-                const feedback = document.getElementById("copyFeedback");
-                feedback.classList.remove("hidden");
-                setTimeout(() => {
-                    feedback.classList.add("hidden");
-                }, 2000);
-            }
+                    const feedback = document.getElementById("copyFeedback");
+                    feedback.classList.remove("hidden");
+                    setTimeout(() => feedback.classList.add("hidden"), 2000);
+                });
 
             // Download QR Code
             document
                 .getElementById("downloadQRBtn")
                 .addEventListener("click", () => {
-                    if (linkData && linkData.qrCode) {
+                    if (linkData?.qrCode) {
                         const link = document.createElement("a");
                         link.href = linkData.qrCode;
                         link.download = `DUDX-QR-${linkData.code}.png`;
@@ -175,28 +162,6 @@
                         document.body.removeChild(link);
                     }
                 });
-
-            // Language buttons
-            document.querySelectorAll(".lang-btn").forEach((btn) => {
-                btn.addEventListener("click", () => {
-                    const lang = btn.getAttribute("data-lang");
-                    window.i18n.setLang(lang);
-                    document
-                        .querySelectorAll(".lang-btn")
-                        .forEach((b) => b.classList.remove("active"));
-                    btn.classList.add("active");
-                });
-            });
-
-            // Set initial language
-            const currentLang = window.i18n.getLang();
-            document
-                .getElementById(`langBtn${currentLang === "th" ? "Th" : "En"}`)
-                .classList.add("active");
-
-            // Initialize
-            checkAuth();
-            loadLinkData();
         </script>
     </body>
 </html>
