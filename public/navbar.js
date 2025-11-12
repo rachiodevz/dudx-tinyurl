@@ -107,9 +107,8 @@ class Navbar {
     const langBtnTh = document.getElementById("langBtnTh");
     const langBtnEn = document.getElementById("langBtnEn");
 
-    logoutBtn?.addEventListener("click", async () => {
-      await fetch("/api/logout", { method: "POST" });
-      window.location.href = "/";
+    logoutBtn?.addEventListener("click", () => {
+      window.location.href = "/auth/logout";
     });
 
     const updateActiveLanguage = () => {
