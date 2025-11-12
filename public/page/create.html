@@ -127,23 +127,13 @@
 
             // Show signup modal with SweetAlert
             function showSignupModal() {
-                const currentLang = window.i18n?.getLang() || "th";
-                const benefits =
-                    currentLang === "th"
-                        ? [
-                              "✅ สร้างลิงก์ไม่จำกัด",
-                              "✨ กำหนดชื่อลิงก์เองได้",
-                              "📝 แก้ไข ลบ และเพิ่ม memo ได้",
-                              "⏰ กำหนดวันหมดอายุเองได้",
-                              "📊 ดูสถิติการคลิก",
-                          ]
-                        : [
-                              "✅ Unlimited URL creation",
-                              "✨ Custom link names",
-                              "📝 Edit, delete and add memo",
-                              "⏰ Custom expiration dates",
-                              "📊 View click statistics",
-                          ];
+                const benefits = [
+                    window.i18n?.t("guest.benefit1"),
+                    window.i18n?.t("guest.benefit2"),
+                    window.i18n?.t("guest.benefit3"),
+                    window.i18n?.t("guest.benefit4"),
+                    window.i18n?.t("guest.benefit5"),
+                ];
 
                 Swal.fire({
                     icon: "warning",
@@ -154,11 +144,11 @@
                         '<ul style="text-align: left; padding-left: 20px;">' +
                         benefits.map((b) => "<li>" + b + "</li>").join("") +
                         "</ul>",
-                    confirmButtonText:
-                        window.i18n?.t("guest.signup") || "สมัครสมาชิกฟรี",
+                    confirmButtonText: window.i18n?.t("guest.signup"),
                     confirmButtonColor: "#667eea",
                     showCancelButton: true,
-                    cancelButtonText: currentLang === "th" ? "ปิด" : "Close",
+                    cancelButtonText:
+                        window.i18n?.getLang() === "th" ? "ปิด" : "Close",
                 }).then((result) => {
                     if (result.isConfirmed) {
                         window.location.href = "/auth/google";
