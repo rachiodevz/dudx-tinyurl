@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>ลิงก์ของคุณพร้อมใช้งาน - DUDX URL Shortener</title>
+        <title>ลิงก์ของคุณ - DUDX URL Shortener</title>
         <link rel="stylesheet" href="/css/showlink.css" />
     </head>
     <body>
@@ -33,7 +33,7 @@
         </div>
 
         <div class="container">
-            <!-- Language Buttons (Top Right) -->
+            <!-- Language Buttons -->
             <div class="language-buttons">
                 <button class="lang-btn" id="langBtnTh" data-lang="th">
                     TH
@@ -43,31 +43,21 @@
                 </button>
             </div>
 
-            <div class="success-header">
-                <div class="success-icon">✅</div>
-                <h1 data-i18n="showlink.success">
-                    ลิงก์สั้นของคุณพร้อมใช้งานแล้ว!
-                </h1>
-            </div>
-
-            <!-- QR Code Section -->
-            <div class="qr-section" id="qrSection">
-                <h2 data-i18n="showlink.qrTitle">QR Code</h2>
+            <!-- Main Card -->
+            <div class="card">
+                <!-- QR Code -->
                 <div class="qr-container">
                     <img id="qrImage" src="" alt="QR Code" />
                 </div>
                 <button
-                    class="btn-primary"
+                    class="btn-download"
                     id="downloadQRBtn"
                     data-i18n="showlink.downloadQR"
                 >
                     💾 ดาวน์โหลด QR Code
                 </button>
-            </div>
 
-            <!-- Short Link Section -->
-            <div class="link-section">
-                <h2 data-i18n="showlink.linkTitle">ลิงก์สั้นของคุณ</h2>
+                <!-- Short Link -->
                 <div class="link-display">
                     <input type="text" id="shortLinkInput" readonly />
                     <button
@@ -75,7 +65,7 @@
                         id="copyBtn"
                         data-i18n="showlink.copy"
                     >
-                        📋 คัดลอก
+                        📋 Copy
                     </button>
                 </div>
                 <div
@@ -85,35 +75,10 @@
                 >
                     ✅ คัดลอกแล้ว!
                 </div>
-            </div>
 
-            <!-- Link Info (if available) -->
-            <div class="link-info hidden" id="linkInfo">
-                <h3 data-i18n="showlink.details">รายละเอียด</h3>
-                <div class="info-item">
-                    <span class="info-label" data-i18n="showlink.targetUrl"
-                        >URL เป้าหมาย:</span
-                    >
-                    <span class="info-value" id="targetUrl"></span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label" data-i18n="showlink.expiresAt"
-                        >หมดอายุ:</span
-                    >
-                    <span class="info-value" id="expiresAt"></span>
-                </div>
-                <div class="info-item hidden" id="memoItem">
-                    <span class="info-label" data-i18n="showlink.memo"
-                        >Memo:</span
-                    >
-                    <span class="info-value" id="memoValue"></span>
-                </div>
-            </div>
-
-            <!-- Action Buttons -->
-            <div class="action-buttons">
+                <!-- Create New Button -->
                 <button
-                    class="btn-primary btn-large"
+                    class="btn-create-new"
                     onclick="window.location.href='/create'"
                     data-i18n="showlink.createNew"
                 >
@@ -125,8 +90,6 @@
         <script src="/i18n.js"></script>
         <script>
             let linkData = null;
-
-            // Get code from URL parameter
             const urlParams = new URLSearchParams(window.location.search);
             const code = urlParams.get("code");
 
@@ -141,17 +104,14 @@
                     const data = await response.json();
 
                     if (!data.isAuthenticated) {
-                        // Show benefits banner for guests
                         document
                             .getElementById("benefitsBanner")
                             .classList.remove("hidden");
                     }
                 } catch (error) {
-                    // If error, assume guest and show banner
                     document
                         .getElementById("benefitsBanner")
                         .classList.remove("hidden");
-                    console.error("Error checking auth:", error);
                 }
             }
 
@@ -159,9 +119,7 @@
             async function loadLinkData() {
                 try {
                     const response = await fetch(`/api/link/${code}`);
-                    if (!response.ok) {
-                        throw new Error("Link not found");
-                    }
+                    if (!response.ok) throw new Error("Link not found");
 
                     linkData = await response.json();
 
@@ -169,43 +127,13 @@
                     if (linkData.qrCode) {
                         document.getElementById("qrImage").src =
                             linkData.qrCode;
-                    } else {
-                        document
-                            .getElementById("qrSection")
-                            .classList.add("hidden");
                     }
 
                     // Display short link
                     const shortUrl = `${window.location.origin}/${linkData.code}`;
                     document.getElementById("shortLinkInput").value = shortUrl;
-
-                    // Display link info
-                    if (linkData.target) {
-                        document
-                            .getElementById("linkInfo")
-                            .classList.remove("hidden");
-                        document.getElementById("targetUrl").textContent =
-                            linkData.target;
-
-                        if (linkData.expires_at) {
-                            const expiryDate = new Date(linkData.expires_at);
-                            document.getElementById("expiresAt").textContent =
-                                expiryDate.toLocaleDateString("th-TH");
-                        } else {
-                            document.getElementById("expiresAt").textContent =
-                                window.i18n.t("showlink.noExpiry");
-                        }
-
-                        if (linkData.memo) {
-                            document
-                                .getElementById("memoItem")
-                                .classList.remove("hidden");
-                            document.getElementById("memoValue").textContent =
-                                linkData.memo;
-                        }
-                    }
                 } catch (error) {
-                    console.error("Error loading link:", error);
+                    console.error("Error:", error);
                     alert(window.i18n.t("showlink.errorLoading"));
                     window.location.href = "/create";
                 }
@@ -218,23 +146,21 @@
                     const input = document.getElementById("shortLinkInput");
                     try {
                         await navigator.clipboard.writeText(input.value);
-                        const feedback =
-                            document.getElementById("copyFeedback");
-                        feedback.classList.remove("hidden");
-                        setTimeout(() => {
-                            feedback.classList.add("hidden");
-                        }, 2000);
+                        showCopyFeedback();
                     } catch (error) {
                         input.select();
                         document.execCommand("copy");
-                        const feedback =
-                            document.getElementById("copyFeedback");
-                        feedback.classList.remove("hidden");
-                        setTimeout(() => {
-                            feedback.classList.add("hidden");
-                        }, 2000);
+                        showCopyFeedback();
                     }
                 });
+
+            function showCopyFeedback() {
+                const feedback = document.getElementById("copyFeedback");
+                feedback.classList.remove("hidden");
+                setTimeout(() => {
+                    feedback.classList.add("hidden");
+                }, 2000);
+            }
 
             // Download QR Code
             document
@@ -255,8 +181,6 @@
                 btn.addEventListener("click", () => {
                     const lang = btn.getAttribute("data-lang");
                     window.i18n.setLang(lang);
-
-                    // Update active state
                     document
                         .querySelectorAll(".lang-btn")
                         .forEach((b) => b.classList.remove("active"));
@@ -264,7 +188,7 @@
                 });
             });
 
-            // Set initial active language button
+            // Set initial language
             const currentLang = window.i18n.getLang();
             document
                 .getElementById(`langBtn${currentLang === "th" ? "Th" : "En"}`)

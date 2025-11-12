@@ -11,35 +11,9 @@ body {
 }
 
 .container {
-    max-width: 600px;
+    max-width: 500px;
     width: 100%;
     position: relative;
-}
-
-.success-header {
-    text-align: center;
-    margin-bottom: 40px;
-}
-
-.success-icon {
-    font-size: 64px;
-    margin-bottom: 20px;
-    animation: scaleIn 0.5s ease-out;
-}
-
-@keyframes scaleIn {
-    from {
-        transform: scale(0);
-    }
-    to {
-        transform: scale(1);
-    }
-}
-
-.success-header h1 {
-    color: #2d3748;
-    font-size: 28px;
-    margin: 0;
 }
 
 /* Language Buttons */
@@ -84,6 +58,7 @@ body {
     margin-bottom: 20px;
     box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
     width: 100%;
+    max-width: 500px;
 }
 
 .benefits-content h3 {
@@ -122,52 +97,50 @@ body {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* QR Section */
-.qr-section {
-    background: #f8f9fa;
-    padding: 30px;
-    border-radius: 12px;
-    text-align: center;
-    margin-bottom: 30px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.qr-section h2 {
-    margin: 0 0 20px 0;
-    color: #2d3748;
-    font-size: 22px;
-}
-
-.qr-container {
+/* Main Card */
+.card {
     background: white;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* QR Code */
+.qr-container {
+    background: #f8f9fa;
     padding: 20px;
-    border-radius: 8px;
+    border-radius: 12px;
     display: inline-block;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
 }
 
 .qr-container img {
-    max-width: 100%;
+    max-width: 300px;
+    width: 100%;
     height: auto;
     display: block;
+    border-radius: 8px;
 }
 
-/* Link Section */
-.link-section {
-    background: white;
-    padding: 30px;
-    border-radius: 12px;
-    margin-bottom: 30px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+.btn-download {
+    background: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 25px;
+    transition: background 0.2s;
 }
 
-.link-section h2 {
-    margin: 0 0 20px 0;
-    color: #2d3748;
-    font-size: 22px;
+.btn-download:hover {
+    background: #218838;
 }
 
+/* Link Display */
 .link-display {
     display: flex;
     gap: 10px;
@@ -179,21 +152,22 @@ body {
     padding: 12px 15px;
     border: 2px solid #e2e8f0;
     border-radius: 8px;
-    font-size: 16px;
+    font-size: 15px;
     font-family: monospace;
     background: #f8f9fa;
+    text-align: center;
 }
 
 .btn-copy {
     background: #48bb78;
     color: white;
     border: none;
-    padding: 12px 24px;
+    padding: 12px 20px;
     border-radius: 8px;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 600;
     cursor: pointer;
-    transition: background 0.3s;
+    transition: background 0.2s;
     white-space: nowrap;
 }
 
@@ -204,94 +178,38 @@ body {
 .copy-feedback {
     color: #38a169;
     font-weight: 600;
-    margin-top: 10px;
-    animation: fadeIn 0.3s;
+    font-size: 14px;
+    margin-bottom: 15px;
+    min-height: 20px;
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-/* Action Buttons */
-.action-buttons {
-    text-align: center;
-    margin: 30px 0;
-}
-
-.btn-primary {
-    background: #4299e1;
+/* Create New Button */
+.btn-create-new {
+    background: #007bff;
     color: white;
+    padding: 12px 30px;
     border: none;
-    padding: 12px 24px;
     border-radius: 8px;
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
-    transition: background 0.3s;
+    width: 100%;
+    margin-top: 10px;
+    transition: background 0.2s;
 }
 
-.btn-primary:hover {
-    background: #3182ce;
-}
-
-.btn-large {
-    padding: 15px 40px;
-    font-size: 18px;
-}
-
-/* Link Info */
-.link-info {
-    background: white;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.link-info h3 {
-    margin: 0 0 20px 0;
-    color: #2d3748;
-    font-size: 20px;
-}
-
-.info-item {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 15px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid #e2e8f0;
-}
-
-.info-item:last-child {
-    border-bottom: none;
-    margin-bottom: 0;
-    padding-bottom: 0;
-}
-
-.info-label {
-    font-weight: 600;
-    color: #4a5568;
-    min-width: 120px;
-}
-
-.info-value {
-    color: #2d3748;
-    word-break: break-all;
+.btn-create-new:hover {
+    background: #0056b3;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
     .container {
-        margin: 20px auto;
-        padding: 15px;
+        padding: 0 15px;
     }
 
-    .success-header h1 {
-        font-size: 22px;
+    .card {
+        padding: 20px;
     }
 
     .link-display {
@@ -302,19 +220,8 @@ body {
         width: 100%;
     }
 
-    .qr-section,
-    .link-section,
-    .link-info {
-        padding: 20px;
-    }
-
-    .info-item {
-        flex-direction: column;
-        gap: 5px;
-    }
-
-    .info-label {
-        min-width: auto;
+    .qr-container img {
+        max-width: 250px;
     }
 }
 
