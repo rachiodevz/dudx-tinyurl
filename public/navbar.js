@@ -262,3 +262,18 @@ class Navbar {
 
 // Export for use in other scripts
 window.Navbar = Navbar;
+
+// Auto-initialize for backward compatibility (my-urls.html)
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", () => {
+    if (!window.navbar) {
+      window.navbar = new Navbar({ style: "user-bar" });
+      window.navbar.checkAuth();
+    }
+  });
+} else {
+  if (!window.navbar) {
+    window.navbar = new Navbar({ style: "user-bar" });
+    window.navbar.checkAuth();
+  }
+}
