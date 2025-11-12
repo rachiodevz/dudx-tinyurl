@@ -173,9 +173,10 @@
                     const result = document.getElementById("result");
 
                     if (!url) {
-                        result.innerHTML = window.i18n
-                            ? window.i18n.t("message.enterUrl")
-                            : "⚠️ กรุณาใส่ URL ก่อน";
+                        const msg = window.i18n.t("message.enterUrl");
+                        console.log("i18n.t result:", msg);
+                        console.log("currentLang:", window.i18n.currentLang);
+                        result.innerHTML = msg;
                         return;
                     }
 
