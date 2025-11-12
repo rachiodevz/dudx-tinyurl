@@ -170,10 +170,11 @@
             const navbar = new Navbar({
                 style: "navbar",
                 onAuthChange: (userData) => {
-                    isGuest = !userData;
+                    isGuest = !userData || !userData.isAuthenticated;
 
                     if (userData && userData.isAuthenticated) {
-                        // Logged-in user: hide guest elements, show all fields
+                        // Logged-in user: reset guest counter, hide guest elements, show all fields
+                        guestRemaining = null;
                         document
                             .getElementById("benefitsBanner")
                             .classList.add("hidden");
