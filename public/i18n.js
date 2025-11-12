@@ -86,10 +86,27 @@ const translations = {
     "guest.benefit4": "⏰ กำหนดวันหมดอายุเองได้",
     "guest.benefit5": "📊 ดูสถิติการคลิก",
     "guest.signup": "สมัครสมาชิกฟรี",
+    "guest.signupButton": "สมัครสมาชิกฟรี",
     "guest.remaining": "เหลืออีก",
     "guest.timesPerDay": "ครั้ง/วัน",
     "guest.limitExceeded":
       "คุณใช้งานครบ 3 ครั้งต่อวันแล้ว กรุณาสมัครสมาชิกเพื่อใช้งานไม่จำกัด",
+
+    // Show Link page
+    "showlink.title": "ลิงก์ของคุณพร้อมใช้งาน - DUDX URL Shortener",
+    "showlink.success": "ลิงก์สั้นของคุณพร้อมใช้งานแล้ว!",
+    "showlink.qrTitle": "QR Code",
+    "showlink.downloadQR": "💾 ดาวน์โหลด QR Code",
+    "showlink.linkTitle": "ลิงก์สั้นของคุณ",
+    "showlink.copy": "📋 คัดลอก",
+    "showlink.copied": "✅ คัดลอกแล้ว!",
+    "showlink.createNew": "➕ สร้าง Link ใหม่",
+    "showlink.details": "รายละเอียด",
+    "showlink.targetUrl": "URL เป้าหมาย",
+    "showlink.expiresAt": "หมดอายุ",
+    "showlink.memo": "บันทึก",
+    "showlink.noExpiry": "ไม่มีวันหมดอายุ",
+    "showlink.errorLoading": "ไม่สามารถโหลดข้อมูลลิงก์ได้",
 
     // My URLs page
     "myUrls.title": "🔗 จัดการ URL ของฉัน",
@@ -241,10 +258,27 @@ const translations = {
     "guest.benefit4": "⏰ Custom expiration dates",
     "guest.benefit5": "📊 View click statistics",
     "guest.signup": "Sign Up Free",
+    "guest.signupButton": "Sign Up Free",
     "guest.remaining": "Remaining",
     "guest.timesPerDay": "times/day",
     "guest.limitExceeded":
       "You've reached the 3 URLs per day limit. Please sign up for unlimited access!",
+
+    // Show Link page
+    "showlink.title": "Your Link is Ready - DUDX URL Shortener",
+    "showlink.success": "Your short link is ready!",
+    "showlink.qrTitle": "QR Code",
+    "showlink.downloadQR": "💾 Download QR Code",
+    "showlink.linkTitle": "Your Short Link",
+    "showlink.copy": "📋 Copy",
+    "showlink.copied": "✅ Copied!",
+    "showlink.createNew": "➕ Create New Link",
+    "showlink.details": "Details",
+    "showlink.targetUrl": "Target URL",
+    "showlink.expiresAt": "Expires At",
+    "showlink.memo": "Memo",
+    "showlink.noExpiry": "No expiration",
+    "showlink.errorLoading": "Failed to load link data",
 
     // My URLs page
     "myUrls.title": "🔗 Manage My URLs",

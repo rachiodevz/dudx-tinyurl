@@ -232,32 +232,6 @@
                     }
 
                     if (data.short) {
-                        result.innerHTML = `
-            ${window.i18n.t("message.linkReady")}:<br>
-            <div class="shortlink">
-              <a href="${data.short}" target="_blank" style="color: #007bff; text-decoration: none; font-weight: 600; font-size: 16px;">${data.short}</a>
-            </div>
-            <div style="margin-top: 12px; font-size: 13px; color: #666;">
-              ${window.i18n.t("message.clickTest")}
-              <button onclick="navigator.clipboard.writeText('${data.short}')" style="margin-left: 5px;">📋 ${window.i18n.t("button.copy")}</button>
-            </div>
-            ${
-                data.qrCode
-                    ? `
-            <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
-              <h4 style="margin: 0 0 10px 0; font-size: 14px;">QR Code</h4>
-              <img src="${data.qrCode}" alt="QR Code" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" />
-              <div style="margin-top: 10px;">
-                <button onclick="downloadQRCode('${data.qrCode}', '${data.code}')" style="background: #28a745; color: white; padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-size: 13px;">
-                  💾 ${window.i18n.t("button.download")} QR Code
-                </button>
-              </div>
-            </div>
-            `
-                    : ""
-            }
-          `;
-
                         // Update guest counter if applicable
                         if (data.guestInfo) {
                             guestRemaining = data.guestInfo.remaining;
@@ -275,13 +249,8 @@
                             }
                         }
 
-                        history.unshift(data);
-                        renderList();
-                        // Clear inputs after success
-                        input.value = "";
-                        if (!isGuest) {
-                            customCodeInput.value = "";
-                        }
+                        // Redirect to showlink page
+                        window.location.href = `/showlink?code=${data.code}`;
                         document.getElementById("expirySelect").value = "";
                         document.getElementById("memoInput").value = "";
                     } else {

@@ -1,0 +1,275 @@
+.container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.success-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.success-icon {
+    font-size: 64px;
+    margin-bottom: 20px;
+    animation: scaleIn 0.5s ease-out;
+}
+
+@keyframes scaleIn {
+    from {
+        transform: scale(0);
+    }
+    to {
+        transform: scale(1);
+    }
+}
+
+.success-header h1 {
+    color: #2d3748;
+    font-size: 28px;
+    margin: 0;
+}
+
+/* Benefits Banner */
+.benefits-banner {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.benefits-banner h3 {
+    margin: 0 0 15px 0;
+    font-size: 20px;
+}
+
+.benefits-list {
+    list-style: none;
+    padding: 0;
+    margin: 15px 0;
+}
+
+.benefits-list li {
+    padding: 8px 0;
+    font-size: 15px;
+}
+
+.signup-btn {
+    background: white;
+    color: #667eea;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: transform 0.2s;
+}
+
+.signup-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* QR Section */
+.qr-section {
+    background: #f8f9fa;
+    padding: 30px;
+    border-radius: 12px;
+    text-align: center;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.qr-section h2 {
+    margin: 0 0 20px 0;
+    color: #2d3748;
+    font-size: 22px;
+}
+
+.qr-container {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    display: inline-block;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.qr-container img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Link Section */
+.link-section {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.link-section h2 {
+    margin: 0 0 20px 0;
+    color: #2d3748;
+    font-size: 22px;
+}
+
+.link-display {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.link-display input {
+    flex: 1;
+    padding: 12px 15px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 16px;
+    font-family: monospace;
+    background: #f8f9fa;
+}
+
+.btn-copy {
+    background: #48bb78;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+    white-space: nowrap;
+}
+
+.btn-copy:hover {
+    background: #38a169;
+}
+
+.copy-feedback {
+    color: #38a169;
+    font-weight: 600;
+    margin-top: 10px;
+    animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Action Buttons */
+.action-buttons {
+    text-align: center;
+    margin: 30px 0;
+}
+
+.btn-primary {
+    background: #4299e1;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-primary:hover {
+    background: #3182ce;
+}
+
+.btn-large {
+    padding: 15px 40px;
+    font-size: 18px;
+}
+
+/* Link Info */
+.link-info {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.link-info h3 {
+    margin: 0 0 20px 0;
+    color: #2d3748;
+    font-size: 20px;
+}
+
+.info-item {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.info-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.info-label {
+    font-weight: 600;
+    color: #4a5568;
+    min-width: 120px;
+}
+
+.info-value {
+    color: #2d3748;
+    word-break: break-all;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container {
+        margin: 20px auto;
+        padding: 15px;
+    }
+
+    .success-header h1 {
+        font-size: 22px;
+    }
+
+    .link-display {
+        flex-direction: column;
+    }
+
+    .btn-copy {
+        width: 100%;
+    }
+
+    .qr-section,
+    .link-section,
+    .link-info {
+        padding: 20px;
+    }
+
+    .info-item {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .info-label {
+        min-width: auto;
+    }
+}
+
+.hidden {
+    display: none;
+}

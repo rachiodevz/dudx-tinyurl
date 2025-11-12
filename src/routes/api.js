@@ -171,5 +171,45 @@ export default function initApiRoutes(urlShortener, guestDb) {
     }
   });
 
+  // ----- API: get link data by code -----
+  router.get("/link/:code", async (req, res) => {
+    const { code } = req.params;
+    const url = urlShortener.getUrlByCode(code);
+
+    if (!url) {
+      return res.status(404).json({ error: "Link not found" });
+    }
+
+    try {
+      // Generate QR code for this link
+      const shortUrl = `${req.protocol}://${req.get("host")}/${code}`;
+      let qrCode;
+
+      try {
+        qrCode = await generateBrandedQRCode(shortUrl, {
+          size: 400,
+          logoText: "DUDX",
+          includeUrl: true,
+        });
+      } catch (error) {
+        console.error("Branded QR failed, using simple:", error);
+        qrCode = await generateSimpleQRCode(shortUrl, 300);
+      }
+
+      // Return link data with QR code
+      res.json({
+        code: url.code,
+        target: url.target,
+        memo: url.memo,
+        clicks: url.clicks,
+        created_at: url.created_at,
+        expires_at: url.expires_at,
+        qrCode: qrCode,
+      });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to load link data" });
+    }
+  });
+
   return router;
 }

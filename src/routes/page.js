@@ -81,6 +81,12 @@ export default function initPageRoutes(urlShortener) {
     );
   });
 
+  router.get("/showlink", (req, res) => {
+    res.sendFile(
+      path.join(__dirname, "..", "..", "public", "page", "showlink.html"),
+    );
+  });
+
   // ----- URL redirect (MUST BE LAST) -----
   router.get("/:code", (req, res) => {
     const url = urlShortener.getUrlByCode(req.params.code);
