@@ -20,8 +20,11 @@ export const config = {
     .filter((e) => e),
 
   // Runtime configurable settings (can be updated via admin panel later)
-  sessionMaxAgeDays: parseInt(process.env.SESSION_MAX_AGE_DAYS || "7", 10),
-  guestDailyLimit: parseInt(process.env.GUEST_DAILY_LIMIT || "3", 10),
+  sessionMaxAgeHours: parseInt(process.env.SESSION_MAX_AGE_HOURS || "168", 10), // 168 hours = 7 days
+  guestCreateUrlDailyLimit: parseInt(
+    process.env.GUEST_CREATE_URL_DAILY_LIMIT || "3",
+    10,
+  ),
 
   // Method to update config at runtime
   updateConfig(key, value) {
@@ -32,9 +35,9 @@ export const config = {
     return false;
   },
 
-  // Computed getters for derived values
+  // Computed getters for derived values (convert hours to milliseconds)
   get sessionMaxAge() {
-    return this.sessionMaxAgeDays * 24 * 60 * 60 * 1000;
+    return this.sessionMaxAgeHours * 60 * 60 * 1000;
   },
 };
 

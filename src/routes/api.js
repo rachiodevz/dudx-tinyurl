@@ -92,7 +92,7 @@ export default function initApiRoutes(urlShortener, guestDb) {
   // Apply guest limit check (skips if authenticated)
   router.post(
     "/shorten",
-    checkGuestLimit(guestDb, config.guestDailyLimit),
+    checkGuestLimit(guestDb, config.guestCreateUrlDailyLimit),
     async (req, res) => {
       const { url, memo, customCode, expiresInDays } = req.body;
       if (!url) return res.status(400).json({ error: "Missing URL" });
