@@ -4,70 +4,12 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>ลิงก์ของคุณพร้อมใช้งาน - DUDX URL Shortener</title>
-        <link rel="stylesheet" href="/css/navbar.css" />
         <link rel="stylesheet" href="/css/showlink.css" />
     </head>
     <body>
-        <nav class="navbar">
-            <div class="navbar-container">
-                <a href="/" class="navbar-brand">
-                    <span class="brand-icon">🔗</span>
-                    DUDX
-                </a>
-                <div class="navbar-menu">
-                    <a href="/create" class="navbar-link" data-i18n="nav.create"
-                        >สร้างลิงก์</a
-                    >
-                    <a
-                        href="/my-urls"
-                        class="navbar-link hidden"
-                        id="manageLink"
-                        data-i18n="nav.myUrls"
-                        >จัดการลิงก์</a
-                    >
-                    <a
-                        href="/chat"
-                        class="navbar-link hidden"
-                        id="chatLink"
-                        data-i18n="nav.chat"
-                        >💬 Chat</a
-                    >
-                    <button
-                        class="navbar-link hidden"
-                        id="logoutBtn"
-                        data-i18n="nav.logout"
-                    >
-                        ออกจากระบบ
-                    </button>
-                    <a
-                        href="/login"
-                        class="navbar-link"
-                        id="loginLink"
-                        data-i18n="nav.login"
-                        >เข้าสู่ระบบ</a
-                    >
-                    <div class="language-buttons">
-                        <button class="lang-btn" id="langBtnTh" data-lang="th">
-                            TH
-                        </button>
-                        <button class="lang-btn" id="langBtnEn" data-lang="en">
-                            EN
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </nav>
-
-        <div class="container">
-            <div class="success-header">
-                <div class="success-icon">✅</div>
-                <h1 data-i18n="showlink.success">
-                    ลิงก์สั้นของคุณพร้อมใช้งานแล้ว!
-                </h1>
-            </div>
-
-            <!-- Benefits Banner for Guests -->
-            <div class="benefits-banner hidden" id="benefitsBanner">
+        <!-- Guest Benefits Banner (hidden for logged-in users) -->
+        <div class="benefits-banner hidden" id="benefitsBanner">
+            <div class="benefits-content">
                 <h3 data-i18n="guest.benefitsTitle">
                     🎁 สมัครสมาชิกเพื่อรับสิทธิพิเศษ!
                 </h3>
@@ -83,10 +25,29 @@
                 <button
                     class="signup-btn"
                     onclick="window.location.href='/auth/google'"
-                    data-i18n="guest.signupButton"
+                    data-i18n="guest.signup"
                 >
                     สมัครสมาชิกฟรี
                 </button>
+            </div>
+        </div>
+
+        <div class="container">
+            <!-- Language Buttons (Top Right) -->
+            <div class="language-buttons">
+                <button class="lang-btn" id="langBtnTh" data-lang="th">
+                    TH
+                </button>
+                <button class="lang-btn" id="langBtnEn" data-lang="en">
+                    EN
+                </button>
+            </div>
+
+            <div class="success-header">
+                <div class="success-icon">✅</div>
+                <h1 data-i18n="showlink.success">
+                    ลิงก์สั้นของคุณพร้อมใช้งานแล้ว!
+                </h1>
             </div>
 
             <!-- QR Code Section -->
@@ -114,7 +75,7 @@
                         id="copyBtn"
                         data-i18n="showlink.copy"
                     >
-                        📋 Copy
+                        📋 คัดลอก
                     </button>
                 </div>
                 <div
@@ -124,17 +85,6 @@
                 >
                     ✅ คัดลอกแล้ว!
                 </div>
-            </div>
-
-            <!-- Action Buttons -->
-            <div class="action-buttons">
-                <button
-                    class="btn-primary btn-large"
-                    onclick="window.location.href='/create'"
-                    data-i18n="showlink.createNew"
-                >
-                    ➕ สร้าง Link ใหม่
-                </button>
             </div>
 
             <!-- Link Info (if available) -->
@@ -159,6 +109,17 @@
                     <span class="info-value" id="memoValue"></span>
                 </div>
             </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button
+                    class="btn-primary btn-large"
+                    onclick="window.location.href='/create'"
+                    data-i18n="showlink.createNew"
+                >
+                    ➕ สร้าง Link ใหม่
+                </button>
+            </div>
         </div>
 
         <script src="/i18n.js"></script>
@@ -179,26 +140,17 @@
                     const response = await fetch("/api/user");
                     const data = await response.json();
 
-                    if (data.isAuthenticated) {
-                        document
-                            .getElementById("loginLink")
-                            .classList.add("hidden");
-                        document
-                            .getElementById("logoutBtn")
-                            .classList.remove("hidden");
-                        document
-                            .getElementById("manageLink")
-                            .classList.remove("hidden");
-                        document
-                            .getElementById("chatLink")
-                            .classList.remove("hidden");
-                    } else {
+                    if (!data.isAuthenticated) {
                         // Show benefits banner for guests
                         document
                             .getElementById("benefitsBanner")
                             .classList.remove("hidden");
                     }
                 } catch (error) {
+                    // If error, assume guest and show banner
+                    document
+                        .getElementById("benefitsBanner")
+                        .classList.remove("hidden");
                     console.error("Error checking auth:", error);
                 }
             }
@@ -275,6 +227,12 @@
                     } catch (error) {
                         input.select();
                         document.execCommand("copy");
+                        const feedback =
+                            document.getElementById("copyFeedback");
+                        feedback.classList.remove("hidden");
+                        setTimeout(() => {
+                            feedback.classList.add("hidden");
+                        }, 2000);
                     }
                 });
 
@@ -290,14 +248,6 @@
                         link.click();
                         document.body.removeChild(link);
                     }
-                });
-
-            // Logout
-            document
-                .getElementById("logoutBtn")
-                .addEventListener("click", async () => {
-                    await fetch("/api/logout", { method: "POST" });
-                    window.location.href = "/";
                 });
 
             // Language buttons
