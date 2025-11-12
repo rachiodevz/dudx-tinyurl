@@ -102,6 +102,11 @@
                             .getElementById("benefitsBanner")
                             .classList.remove("hidden");
                     }
+
+                    // Update translations after auth change
+                    if (window.i18n) {
+                        window.i18n.updatePage();
+                    }
                 },
             });
 
