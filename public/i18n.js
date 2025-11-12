@@ -235,6 +235,12 @@ const translations = {
     "home.customCodeHint":
       "💡 Leave blank = Auto-generate | Custom = Use 3-20 alphanumeric characters",
     "home.createLink": "Create Link",
+    "message.enterUrl": "⚠️ Please enter a URL",
+    "message.creatingLink": "⏳ Creating link...",
+    "message.linkReady": "✅ Your short link:",
+    "message.clickTest": "👆 Click to test or",
+    "message.error": "❌ An error occurred",
+    "message.loadError": "❌ Failed to load",
 
     // Placeholders
     "placeholder.enterUrl": "Enter your long URL here...",

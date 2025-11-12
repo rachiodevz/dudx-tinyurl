@@ -173,10 +173,7 @@
                     const result = document.getElementById("result");
 
                     if (!url) {
-                        const msg = window.i18n.t("message.enterUrl");
-                        console.log("i18n.t result:", msg);
-                        console.log("currentLang:", window.i18n.currentLang);
-                        result.innerHTML = msg;
+                        result.innerHTML = window.i18n.t("message.enterUrl");
                         return;
                     }
 
